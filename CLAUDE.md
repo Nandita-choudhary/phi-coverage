@@ -117,6 +117,9 @@ First look, June quarters, Australia-wide, recomputed from the raw sheets on 17 
 - **apra.gov.au is reachable from Nandita's Mac** (tested 17 Oct 2026), though some cloud
   sandboxes block it. GitHub Actions runners can reach it too, which is why the scheduled
   refresh works there.
+- **The ACT sits inside NSW until September 2009** (APRA's notes). NSW's series breaks then.
+  For long state comparisons, combine NSW and ACT or start in December 2009; for coverage
+  before then, add the ACT's population to NSW's.
 - **APRA's sheets have different header depths.** `HTPoliciesXTypeofCover` has two header rows;
   each table inside `MembershipByAgeData` starts on its own row. Find the header by its names,
   never by a fixed row number.

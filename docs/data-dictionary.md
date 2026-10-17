@@ -39,3 +39,29 @@ One row per quarter, state, gender and five-year age band. 24,240 rows: 77 quart
 | `insured_persons` | integer | People covered by a hospital treatment policy at the end of the quarter (its InsuredPersons column) | as above | as above |
 | `source_file` | text | The APRA file the row came from | — | — |
 | `source_sheet` | text | The sheet and table the row came from | — | — |
+
+## published_totals · APRA's own count, used by checks.py
+
+One row per quarter and state. 606 rows: 77 quarters, June 2007 to June 2026. The ACT is
+missing until September 2009 because APRA counted it inside NSW until then.
+
+| Column | Type | Definition | Source file | Source sheet |
+| ------ | ---- | ---------- | ----------- | ------------ |
+| `quarter_end` | date | Last day of the quarter | Quarterly Private Health Insurance Membership Trends [quarter].xlsx | `MembershipData`, tables `HTOnly` and `HTandGTCombined` |
+| `state` | text | NSW, VIC, QLD, WA, SA, TAS, ACT or NT | as above | as above |
+| `hospital_policies` | integer | Hospital policies sold on their own plus those combined with extras (Coverage = Policies) | as above | as above |
+| `hospital_insured_persons` | integer | People covered by those policies (Coverage = Insured persons) | as above | as above |
+| `source_file`, `source_sheet` | text | Where the row came from | — | — |
+
+## population · for coverage rates
+
+One row per quarter and state. 616 rows: 77 quarters, all 8 states, ACT listed throughout. For
+coverage before December 2009, add the ACT's population to NSW's, because APRA's membership
+figures for NSW include the ACT until then.
+
+| Column | Type | Definition | Source file | Source sheet |
+| ------ | ---- | ---------- | ----------- | ------------ |
+| `quarter_end` | date | Last day of the quarter | Quarterly Private Health Insurance Membership Trends [quarter].xlsx | `MembershipData`, table `PopulationState` |
+| `state` | text | APRA's StateShortName: NSW, VIC, QLD, WA, SA, TAS, ACT or NT | as above | as above |
+| `population` | integer | State population, from ABS figures as APRA publishes them | as above | as above |
+| `source_file`, `source_sheet` | text | Where the row came from | — | — |

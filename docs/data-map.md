@@ -317,3 +317,22 @@ reading the sheets, and they win where the two disagree.
   95; check the glossary for whether 95 means 95 and over.
 - Check figures, June quarters, Australia: 9,144,641 insured persons in 2007 (13.3% aged
   65+); 12,823,752 in 2026 (20.9% aged 65+).
+
+### APRA's own totals and population
+
+**Membership Trends June 2026_0.xlsx → `MembershipData`:** twelve tables side by side, found by
+the name in row 1. `HTOnly` and `HTandGTCombined` (2007 to 2026) hold hospital cover on its own
+and combined with extras, by Coverage (Policies, Insured persons), ExclusionaryPolicy,
+ExcessPolicy and PolicyCategory: APRA's own totals, which `checks.py` compares against.
+`HistoricalPolicies&Persons` looks like the obvious source but only runs 1995 to 2007.
+`PopulationState` holds state population from 1990. MonthEnd values in these tables carry
+trailing spaces.
+
+### Two things APRA's own notes explain
+
+- **The ACT sits inside NSW until September 2009.** "ACT figures were included with NSW until
+  30/09/2009" (Membership Trends, Notes on Statistics). APRA warns that the NSW series breaks
+  between September and December 2009. The population table lists the ACT throughout.
+- **APRA's tables disagree slightly with each other.** Summed, the cover-type sheet differs from
+  APRA's totals in 4 of 606 state-quarters, by at most 12 policies (0.011%); the age table in 9,
+  by at most 6 people. `checks.py` allows 0.05%.

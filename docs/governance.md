@@ -29,7 +29,7 @@ Write it as the pipeline is built, not afterwards. Written afterwards it is alwa
 | ----- | ---------- |
 | Row count | A quarter's load has fewer rows than the previous one |
 | Nulls | A column that should never be empty is empty |
-| Totals add up | Tier counts do not sum to total policies; age bands do not sum to total members |
+| Totals add up | Cover types do not sum to APRA's own count of hospital policies, or age bands to its count of insured persons, in any state-quarter (beyond 0.05%) |
 | Date continuity | A quarter is missing from the series |
 | Range sanity | A coverage rate outside 0–100%, a negative count |
 
@@ -70,7 +70,7 @@ differently, or count a different population. Work out which it is and write the
 
 ```
 2026-11-02  Loaded Sep 2026 quarter.  412,880 rows.  All checks passed.
-            Reconciliation: Gold share 29.1% vs 29.3% published (within tolerance).
+            Reconciliation: all published figures within tolerance.
 2026-08-14  Loaded Jun 2026 quarter.  410,114 rows.  Age-band check FAILED —
             APRA split the 85+ band into 85-89 and 90+. Loader updated, reloaded.
 ```

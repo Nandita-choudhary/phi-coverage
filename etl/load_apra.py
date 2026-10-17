@@ -11,6 +11,10 @@ table answers one of the project's two questions:
     insured_by_age.csv      2. Is the pool getting older?
                                People with hospital cover by age band, gender, state, quarter.
 
+Two more tables support them: published_totals.csv, APRA's own totals of hospital policies and
+insured persons, which checks.py compares the first two against; and population.csv, for
+coverage rates.
+
 APRA builds these sheets for people to read, not machines. So the loader finds every header by
 its names, never by a fixed row number, and it stops with an error rather than skip a row it
 cannot read. Every row carries the file and sheet it came from, so any number can be traced
@@ -36,6 +40,13 @@ COVER_SHEET = "HTPoliciesXTypeofCover"
 AGE_FILE = "Quarterly Private Health Insurance Membership Trends *.xlsx"
 AGE_SHEET = "MembershipByAgeData"
 AGE_TABLE = "AgeCohort_HT"          # hospital cover; the sheet holds five tables side by side
+TOTALS_SHEET = "MembershipData"     # also in the Membership Trends file
+# APRA's own count of hospital cover, from tables other than the two above: hospital cover sold
+# on its own, and combined with extras. checks.py compares totals against these. (The sheet's
+# "HistoricalPolicies&Persons" table looks like the obvious source, but it stops in 2007.)
+TOTALS_TABLES = ("HTOnly", "HTandGTCombined")
+POPULATION_TABLE = "PopulationState"          # state population, for coverage rates
+FIRST_QUARTER = date(2007, 6, 30)   # the cover-type and age series start here, so all tables do
 
 # The categories APRA uses today. Anything new means APRA changed the file: stop and look.
 POLICY_COVER = {"Full cover", "Reduced cover and some lifetime exclusions",
@@ -103,6 +114,17 @@ def rows_under(block: pd.DataFrame, header_row: int) -> pd.DataFrame:
     return rows
 
 
+def table_in_sheet(raw: pd.DataFrame, table: str, names: list[str]) -> pd.DataFrame:
+    """One table out of a sheet that holds several side by side, found by the name above it."""
+    spots = [c for c in range(raw.shape[1]) for r in range(5) if str(raw.iat[r, c]).strip() == table]
+    if len(spots) != 1:
+        raise LoadError(f"Expected one '{table}' table, found {len(spots)}.")
+    block = raw.iloc[:, spots[0]:spots[0] + len(names)]
+    body = rows_under(block, find_header(block, names))
+    body.columns = names
+    return body
+
+
 def only(values: pd.Series, allowed: set, what: str) -> pd.Series:
     unknown = set(values.unique()) - allowed
     if unknown:
@@ -153,13 +175,8 @@ def load_age() -> pd.DataFrame:
     """Question 2: people with hospital cover by five-year age band and gender."""
     path = latest_file(AGE_FILE)
     raw = pd.read_excel(path, sheet_name=AGE_SHEET, header=None)
-    spots = [c for c in range(raw.shape[1]) for r in range(5) if str(raw.iat[r, c]).strip() == AGE_TABLE]
-    if len(spots) != 1:
-        raise LoadError(f"Expected one '{AGE_TABLE}' table in {AGE_SHEET}, found {len(spots)}.")
-    names = ["Year", "MonthEnd", "State", "Gender", "Age", "InsuredPersons"]
-    block = raw.iloc[:, spots[0]:spots[0] + len(names)]
-    body = rows_under(block, find_header(block, names))
-    body.columns = names
+    body = table_in_sheet(raw, AGE_TABLE, ["Year", "MonthEnd", "State", "Gender", "Age",
+                                           "InsuredPersons"])
     ages = only(counts(body.Age, "Age"), AGE_STARTS, "Age")
     return pd.DataFrame({
         "quarter_end": quarter_end(body.Year, only(body.MonthEnd, set(QUARTER_MONTHS), "MonthEnd")),
@@ -173,11 +190,62 @@ def load_age() -> pd.DataFrame:
     })
 
 
+def from_first_quarter(body: pd.DataFrame) -> pd.DataFrame:
+    """Add quarter_end and keep June 2007 on. These tables pad MonthEnd with spaces ('Mar   ')."""
+    months = only(body.MonthEnd.astype(str).str.strip(), set(QUARTER_MONTHS), "MonthEnd")
+    body = body.assign(quarter_end=quarter_end(body.Year, months))
+    return body[body.quarter_end >= FIRST_QUARTER]
+
+
+def load_totals_and_population() -> tuple[pd.DataFrame, pd.DataFrame]:
+    """APRA's own published totals, for checks.py to compare against, and state population."""
+    path = latest_file(AGE_FILE)
+    raw = pd.read_excel(path, sheet_name=TOTALS_SHEET, header=None)
+    names = ["Year", "MonthEnd", "State", "Coverage", "ExclusionaryPolicy", "ExcessPolicy",
+             "PolicyCategory", "Value"]
+    parts = []
+    for table in TOTALS_TABLES:
+        b = from_first_quarter(table_in_sheet(raw, table, names))
+        parts.append(pd.DataFrame({
+            "quarter_end": b.quarter_end,
+            "state": only(b.State, STATES, "State"),
+            "coverage": only(b.Coverage.astype(str).str.strip(), {"Policies", "Insured persons"},
+                             "Coverage"),
+            "value": counts(b.Value, f"{table} Value"),
+        }))
+    wide = pd.concat(parts).pivot_table(index=["quarter_end", "state"], columns="coverage",
+                                        values="value", aggfunc="sum").reset_index()
+    totals = pd.DataFrame({
+        "quarter_end": wide.quarter_end,
+        "state": wide.state,
+        "hospital_policies": wide["Policies"].astype("int64"),
+        "hospital_insured_persons": wide["Insured persons"].astype("int64"),
+        "source_file": path.name,
+        "source_sheet": f"{TOTALS_SHEET} ({' + '.join(TOTALS_TABLES)})",
+    })
+    p = from_first_quarter(table_in_sheet(raw, POPULATION_TABLE,
+                                          ["Year", "MonthEnd", "StateShortName", "Population"]))
+    population = pd.DataFrame({
+        "quarter_end": p.quarter_end,
+        "state": only(p.StateShortName, STATES, "StateShortName"),
+        "population": counts(p.Population, "Population"),
+        "source_file": path.name,
+        "source_sheet": f"{TOTALS_SHEET} ({POPULATION_TABLE})",
+    })
+    return totals, population
+
+
 def main() -> None:
     try:
-        tables = {"policies_by_cover": load_cover(), "insured_by_age": load_age()}
+        totals, population = load_totals_and_population()
+        tables = {"policies_by_cover": load_cover(), "insured_by_age": load_age(),
+                  "published_totals": totals, "population": population}
     except LoadError as problem:
         sys.exit(f"LOAD STOPPED: {problem}")
+
+    empty = [name for name, df in tables.items() if df.empty]
+    if empty:
+        sys.exit(f"LOAD STOPPED: {', '.join(empty)} came out empty. Check the sheet and FIRST_QUARTER.")
 
     CLEAN.mkdir(parents=True, exist_ok=True)
     for name, df in tables.items():
