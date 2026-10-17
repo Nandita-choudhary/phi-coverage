@@ -55,13 +55,28 @@ missing until September 2009 because APRA counted it inside NSW until then.
 
 ## population · for coverage rates
 
-One row per quarter and state. 616 rows: 77 quarters, all 8 states, ACT listed throughout. For
-coverage before December 2009, add the ACT's population to NSW's, because APRA's membership
-figures for NSW include the ACT until then.
+One row per quarter and state. 606 rows: 77 quarters, June 2007 to June 2026. As in the
+membership tables, NSW includes the ACT until September 2009: APRA's population table shows the
+ACT as 0 until then, and the loader drops those rows.
 
 | Column | Type | Definition | Source file | Source sheet |
 | ------ | ---- | ---------- | ----------- | ------------ |
 | `quarter_end` | date | Last day of the quarter | Quarterly Private Health Insurance Membership Trends [quarter].xlsx | `MembershipData`, table `PopulationState` |
 | `state` | text | APRA's StateShortName: NSW, VIC, QLD, WA, SA, TAS, ACT or NT | as above | as above |
 | `population` | integer | State population, from ABS figures as APRA publishes them | as above | as above |
+| `source_file`, `source_sheet` | text | Where the row came from | — | — |
+
+## population_by_age · for coverage by age
+
+One row per June, gender and five-year age band. 759 rows: every June from 2007 to 2025, 2
+genders, 20 bands. One row is missing in APRA's own table: women aged 95 and over in June 2018.
+It is left unfilled.
+
+| Column | Type | Definition | Source file | Source sheet |
+| ------ | ---- | ---------- | ----------- | ------------ |
+| `quarter_end` | date | 30 June of the year | Annual private health insurance membership and benefits statistics - [year].xlsx | `Australian population`, table `PopulationAge` |
+| `gender` | text | M or F | as above | as above |
+| `age_band_start` | integer | First age in the band: 0, 5 … 95 | as above | as above |
+| `age_band` | text | 0-4 … 90-94, then 95+ | derived | from `age_band_start` |
+| `population` | integer | Australia's population in that band (its Value column) | as above | as above |
 | `source_file`, `source_sheet` | text | Where the row came from | — | — |

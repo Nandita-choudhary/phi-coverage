@@ -59,7 +59,7 @@ published what, and a table of which claims are allowed.
 | ---- | ---- | ------ |
 | 0 | Questions chosen, prior work surveyed, docs written | Done; questions revised 17 Oct |
 | 1 | Files downloaded · Azure SQL created | Files downloaded 17 Oct; Azure SQL not yet |
-| 2–3 | Map the spreadsheets · clean · quality checks · reconciliation | **In progress:** mapped 17 Oct |
+| 2–3 | Map the spreadsheets · clean · quality checks · reconciliation | Loaded, checked and reconciled 17 Oct; the 2019 checks remain |
 | 4 | T-SQL views and stored proc · data dictionary · GitHub Actions schedule | Pending |
 | 5 | Power BI report against Azure SQL (EC2) | Pending |
 | 6 | Write up findings · README (publishing is Nandita's) | Pending |
@@ -83,6 +83,12 @@ is this project's whole argument.
   each starting on a different row; hospital cover is the first, `AgeCohort_HT`: Year,
   MonthEnd, State, Gender, Age, InsuredPersons. Age is the start of a five-year band, 0 to 95
   (20 bands). 8 states, both genders, 77 quarters from June 2007 to June 2026.
+
+- **Population by age:** annual file → `Australian population`, table `PopulationAge`: each
+  June from 1990, by gender and five-year band. One gap in APRA's table: women 95+, June 2018.
+- **Reconciliation:** all five published figures match (`docs/reconciliation.md`). The ACCC's
+  "exclusions" means APRA's two lifetime-exclusion categories: 43.84% in June 2018 against the
+  ACCC's 44%. "Not full cover" (58.3%) is a wider measure, so never call it "with exclusions".
 
 First look, June quarters, Australia-wide, recomputed from the raw sheets on 17 Oct:
 
@@ -118,8 +124,8 @@ First look, June quarters, Australia-wide, recomputed from the raw sheets on 17 
   sandboxes block it. GitHub Actions runners can reach it too, which is why the scheduled
   refresh works there.
 - **The ACT sits inside NSW until September 2009** (APRA's notes). NSW's series breaks then.
-  For long state comparisons, combine NSW and ACT or start in December 2009; for coverage
-  before then, add the ACT's population to NSW's.
+  For long state comparisons, combine NSW and ACT or start in December 2009. APRA's population
+  table does the same (the ACT shows 0 until then), so NSW's coverage rate stays consistent.
 - **APRA's sheets have different header depths.** `HTPoliciesXTypeofCover` has two header rows;
   each table inside `MembershipByAgeData` starts on its own row. Find the header by its names,
   never by a fixed row number.

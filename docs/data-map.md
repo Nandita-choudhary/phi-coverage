@@ -332,7 +332,16 @@ trailing spaces.
 
 - **The ACT sits inside NSW until September 2009.** "ACT figures were included with NSW until
   30/09/2009" (Membership Trends, Notes on Statistics). APRA warns that the NSW series breaks
-  between September and December 2009. The population table lists the ACT throughout.
+  between September and December 2009. APRA's population table does the same: the ACT shows
+  0 until then and NSW includes it, so `load_apra.py` drops those zero rows.
 - **APRA's tables disagree slightly with each other.** Summed, the cover-type sheet differs from
   APRA's totals in 4 of 606 state-quarters, by at most 12 policies (0.011%); the age table in 9,
   by at most 6 people. `checks.py` allows 0.05%.
+
+### Population by age
+
+**Annual … membership and benefits statistics - 2024-2025 (2).xlsx → `Australian population`:**
+three tables side by side. Use the one named `PopulationAge` (columns U–Y: Year, MonthEnd,
+Gender, Age, Value): whole numbers, each June from 1990, by gender and five-year band. The
+unnamed table at columns G–M holds fractional estimates by age and is not used. One gap: no
+women aged 95+ in June 2018.

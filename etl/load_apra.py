@@ -11,9 +11,9 @@ table answers one of the project's two questions:
     insured_by_age.csv      2. Is the pool getting older?
                                People with hospital cover by age band, gender, state, quarter.
 
-Two more tables support them: published_totals.csv, APRA's own totals of hospital policies and
-insured persons, which checks.py compares the first two against; and population.csv, for
-coverage rates.
+Three more tables support them: published_totals.csv, APRA's own totals of hospital policies
+and insured persons, which checks.py compares the first two against; population.csv, by state
+and quarter; and population_by_age.csv, by age band each June, for coverage rates by age.
 
 APRA builds these sheets for people to read, not machines. So the loader finds every header by
 its names, never by a fixed row number, and it stops with an error rather than skip a row it
@@ -47,6 +47,10 @@ TOTALS_SHEET = "MembershipData"     # also in the Membership Trends file
 TOTALS_TABLES = ("HTOnly", "HTandGTCombined")
 POPULATION_TABLE = "PopulationState"          # state population, for coverage rates
 FIRST_QUARTER = date(2007, 6, 30)   # the cover-type and age series start here, so all tables do
+ACT_IN_NSW_UNTIL = date(2009, 9, 30)  # APRA's notes: the ACT is counted inside NSW until then
+ANNUAL_FILE = "Annual private health insurance membership and benefits statistics - *.xlsx"
+POP_AGE_SHEET = "Australian population"
+POP_AGE_TABLE = "PopulationAge"     # population by gender and five-year age band, each June
 
 # The categories APRA uses today. Anything new means APRA changed the file: stop and look.
 POLICY_COVER = {"Full cover", "Reduced cover and some lifetime exclusions",
@@ -225,21 +229,52 @@ def load_totals_and_population() -> tuple[pd.DataFrame, pd.DataFrame]:
     })
     p = from_first_quarter(table_in_sheet(raw, POPULATION_TABLE,
                                           ["Year", "MonthEnd", "StateShortName", "Population"]))
+    # Like the membership tables, APRA's population counts the ACT inside NSW until Sep 2009:
+    # the ACT shows 0 and NSW includes it. Those zero rows are dropped; any other zero stops.
+    p = p.assign(Population=counts(p.Population, "Population"))
+    act_in_nsw = (p.StateShortName == "ACT") & (p.quarter_end <= ACT_IN_NSW_UNTIL) & (p.Population == 0)
+    if ((p.Population == 0) & ~act_in_nsw).any():
+        raise LoadError("A population of zero outside the ACT-inside-NSW years.")
+    p = p[~act_in_nsw]
     population = pd.DataFrame({
         "quarter_end": p.quarter_end,
         "state": only(p.StateShortName, STATES, "StateShortName"),
-        "population": counts(p.Population, "Population"),
+        "population": p.Population,
         "source_file": path.name,
         "source_sheet": f"{TOTALS_SHEET} ({POPULATION_TABLE})",
     })
     return totals, population
 
 
+def load_population_by_age() -> pd.DataFrame:
+    """Australia's population by gender and five-year age band each June, from APRA's annual
+    file. Same shape as insured_by_age, so coverage can be worked out by age and gender. (The
+    sheet also holds an unnamed table of fractional estimates by age; this is not that one.)"""
+    files = list(RAW.glob(ANNUAL_FILE))
+    if len(files) != 1:
+        raise LoadError(f"Expected one annual file matching '{ANNUAL_FILE}', found {len(files)}.")
+    path = files[0]
+    raw = pd.read_excel(path, sheet_name=POP_AGE_SHEET, header=None)
+    b = from_first_quarter(table_in_sheet(raw, POP_AGE_TABLE,
+                                          ["Year", "MonthEnd", "Gender", "Age", "Value"]))
+    starts = only(counts(b.Age, "Age"), AGE_STARTS, "Age")
+    return pd.DataFrame({
+        "quarter_end": b.quarter_end,
+        "gender": only(b.Gender, GENDERS, "Gender"),
+        "age_band_start": starts,
+        "age_band": ["95+" if a == 95 else f"{a}-{a + 4}" for a in starts],
+        "population": counts(b.Value, "Value"),
+        "source_file": path.name,
+        "source_sheet": f"{POP_AGE_SHEET} ({POP_AGE_TABLE})",
+    })
+
+
 def main() -> None:
     try:
         totals, population = load_totals_and_population()
         tables = {"policies_by_cover": load_cover(), "insured_by_age": load_age(),
-                  "published_totals": totals, "population": population}
+                  "published_totals": totals, "population": population,
+                  "population_by_age": load_population_by_age()}
     except LoadError as problem:
         sys.exit(f"LOAD STOPPED: {problem}")
 
