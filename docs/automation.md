@@ -24,8 +24,9 @@ So the downloader has to find the current link rather than be told it:
 1. Fetch the [quarterly statistics page](https://www.apra.gov.au/quarterly-private-health-insurance-statistics)
 2. Parse it for links ending `.xlsx`
 3. Match the ones whose text or filename contains the dataset names
-4. Compare against what is already in `data/raw/` — if the newest link is already downloaded,
-   stop and exit cleanly, having done nothing
+4. Compare against `data/downloads.json`, the committed record of what was last downloaded —
+   if the newest link is already recorded, stop and exit cleanly, having done nothing. (A
+   record, not a look in `data/raw/`: the runner starts with an empty `data/raw/` every time.)
 5. Otherwise download it, record the URL and the date in the change log, and run the pipeline
 
 Step 4 matters: the job runs on a schedule, but APRA publishes when it publishes. Most runs
@@ -38,10 +39,10 @@ hardcoded script, so it is worth doing properly rather than skipping.
 
 **GitHub Actions**, free for public repositories.
 
-One useful thing to know: the sandbox Claude runs in, and the desktop workspace on the Mac, are
-both behind a network allowlist that blocks apra.gov.au — which is why the files had to be
-downloaded by hand to begin with. **GitHub Actions runners have open internet**, so the automated
-download genuinely works there even though it cannot work here.
+`etl/download.py` does steps 1 to 5. Some cloud sandboxes block apra.gov.au, but the Mac
+reaches it (tested 17 Oct 2026), so the downloader was tested there before going into the
+workflow. **GitHub Actions runners have open internet**, so the scheduled download works there
+too.
 
 ```yaml
 # .github/workflows/quarterly-refresh.yml

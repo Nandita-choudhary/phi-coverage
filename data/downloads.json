@@ -1,0 +1,30 @@
+{
+  "membership_and_benefits": {
+    "file": "Quarterly Private Health Insurance Membership and Benefits June 2026.xlsx",
+    "url": "https://www.apra.gov.au/system/files/2026-08/Quarterly%20Private%20Health%20Insurance%20Membership%20and%20Benefits%20June%202026.xlsx",
+    "recorded_on": "2026-10-17",
+    "bytes": 16831587,
+    "sha256": "667ded886df37a93975a80716839b700da5b32b7a219a9043a0cfc9655da9064"
+  },
+  "membership_trends": {
+    "file": "Quarterly Private Health Insurance Membership Trends June 2026_0.xlsx",
+    "url": "https://www.apra.gov.au/system/files/2026-08/Quarterly%20Private%20Health%20Insurance%20Membership%20Trends%20June%202026_0.xlsx",
+    "recorded_on": "2026-10-17",
+    "bytes": 13037200,
+    "sha256": "ce5684bf1e7807f6f534eabc894cb84a808700b49de76ab3f479fac7561eb54a"
+  },
+  "membership_coverage": {
+    "file": "Quarterly Private Health Insurance Membership Coverage June 2026.xlsx",
+    "url": "https://www.apra.gov.au/system/files/2026-08/Quarterly%20Private%20Health%20Insurance%20Membership%20Coverage%20June%202026.xlsx",
+    "recorded_on": "2026-10-17",
+    "bytes": 11789080,
+    "sha256": "59eeb7d9f8d07605f1869355b1aa5f7906b79285e9b77960ae943c2cd17b6c25"
+  },
+  "annual_membership": {
+    "file": "Annual private health insurance membership and benefits statistics - 2024-2025 (2).xlsx",
+    "url": "https://www.apra.gov.au/system/files/2026-01/Annual%20private%20health%20insurance%20membership%20and%20benefits%20statistics%20-%202024-2025%20%282%29.xlsx",
+    "recorded_on": "2026-10-17",
+    "bytes": 17969390,
+    "sha256": "403423a8d3548ec3353ec39993ba945ea753943800d6d7f1a9ae8f833165f28b"
+  }
+}

@@ -74,20 +74,26 @@ class LoadError(Exception):
     """The file is not shaped the way the loader expects. Stop rather than guess."""
 
 
+def period_of(name: str) -> tuple[int, int]:
+    """The (year, month) a file covers, read from its name: "... June 2026_0.xlsx" is a quarter,
+    "... - 2024-2025 (2).xlsx" a financial year ending in June. download.py uses this too."""
+    quarter = re.search(r"(March|June|September|December) (\d{4})", name)
+    if quarter:
+        months = {"March": 3, "June": 6, "September": 9, "December": 12}
+        return int(quarter.group(2)), months[quarter.group(1)]
+    year = re.search(r"\d{4}-(\d{4})", name)
+    if year:
+        return int(year.group(1)), 6
+    raise LoadError(f"Cannot read the period from the file name '{name}'.")
+
+
 def latest_file(pattern: str) -> Path:
-    """The newest quarter's file for this pattern, judged by the quarter in its name."""
-    months = ["March", "June", "September", "December"]
-
-    def quarter(path: Path) -> tuple[int, int]:
-        found = re.search(r"(March|June|September|December) (\d{4})", path.name)
-        if not found:
-            raise LoadError(f"Cannot read the quarter from the file name '{path.name}'.")
-        return int(found.group(2)), months.index(found.group(1))
-
+    """The newest file for this pattern, judged by the period in its name, because APRA's names
+    change every release and old ones may still be in data/raw."""
     files = list(RAW.glob(pattern))
     if not files:
         raise LoadError(f"No file in data/raw matches '{pattern}'. Download it first.")
-    return max(files, key=quarter)
+    return max(files, key=lambda path: period_of(path.name))
 
 
 def find_header(block: pd.DataFrame, names: list[str]) -> int:
@@ -250,10 +256,7 @@ def load_population_by_age() -> pd.DataFrame:
     """Australia's population by gender and five-year age band each June, from APRA's annual
     file. Same shape as insured_by_age, so coverage can be worked out by age and gender. (The
     sheet also holds an unnamed table of fractional estimates by age; this is not that one.)"""
-    files = list(RAW.glob(ANNUAL_FILE))
-    if len(files) != 1:
-        raise LoadError(f"Expected one annual file matching '{ANNUAL_FILE}', found {len(files)}.")
-    path = files[0]
+    path = latest_file(ANNUAL_FILE)
     raw = pd.read_excel(path, sheet_name=POP_AGE_SHEET, header=None)
     b = from_first_quarter(table_in_sheet(raw, POP_AGE_TABLE,
                                           ["Year", "MonthEnd", "Gender", "Age", "Value"]))

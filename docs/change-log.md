@@ -4,6 +4,11 @@ One entry per load, newest first. The interesting entries are the failures and t
 changes: they show the checks catch real things.
 
 ```
+2026-10-17  Recorded files already in data/raw (downloaded by hand): Quarterly Private
+            Health Insurance Membership and Benefits June 2026.xlsx; Quarterly Private
+            Health Insurance Membership Trends June 2026_0.xlsx; Quarterly Private Health
+            Insurance Membership Coverage June 2026.xlsx; Annual private health insurance
+            membership and benefits statistics - 2024-2025 (2).xlsx.
 2026-10-17  Reloaded Jun 2026 quarter.  33,483 rows in 5 tables.  All 7 checks passed.
             Reconciliation: all 5 published figures matched (docs/reconciliation.md).
             Row-count baseline reset on purpose: population now drops APRA's zero ACT rows

@@ -60,7 +60,7 @@ published what, and a table of which claims are allowed.
 | 0 | Questions chosen, prior work surveyed, docs written | Done; questions revised 17 Oct |
 | 1 | Files downloaded · Azure SQL created | Files downloaded 17 Oct; Azure SQL not yet |
 | 2–3 | Map the spreadsheets · clean · quality checks · reconciliation | Done 17 Oct: loaded, checked, reconciled, series breaks mapped |
-| 4 | T-SQL views and stored proc · data dictionary · GitHub Actions schedule | Pending |
+| 4 | T-SQL views and stored proc · data dictionary · GitHub Actions schedule | Downloader built 17 Oct; Azure SQL not yet created |
 | 5 | Power BI report against Azure SQL (EC2) | Pending |
 | 6 | Write up findings · README (publishing is Nandita's) | Pending |
 
@@ -132,9 +132,9 @@ First look, June quarters, Australia-wide, recomputed from the raw sheets on 17 
   each table inside `MembershipByAgeData` starts on its own row. Find the header by its names,
   never by a fixed row number.
 - **APRA's download URLs change every quarter** — both the folder (publication month) and the
-  filename (quarter), sometimes with a `_0` suffix. The downloader must discover the current
-  link from the page. A hardcoded URL will silently reload the same file forever and report
-  success, which is worse than no automation at all.
+  filename (quarter), sometimes with a `_0` suffix. `etl/download.py` discovers the current
+  links from APRA's pages and compares them with `data/downloads.json`; never hard-code a URL,
+  or the job will silently reload the same file forever and report success.
 
 ## The stack, and why
 

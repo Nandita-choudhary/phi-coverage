@@ -131,6 +131,7 @@ you. That choice is one-way, so make it at creation.
 
 ```bash
 pip install -r requirements.txt
+python etl/download.py         # fetch APRA's newest files into data/raw/
 python etl/explore.py          # map the spreadsheets — run this first
 python etl/load_apra.py        # raw → tidy tables
 python etl/checks.py           # quality checks; non-zero exit stops the pipeline

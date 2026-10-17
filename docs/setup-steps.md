@@ -28,9 +28,9 @@ of the subscription. This project's data is a few hundred thousand rows; it will
 - [ ] Install Azure Data Studio (Mac-native, free) to write T-SQL against it
 - [ ] Put the connection string in `.env` — never in a committed file
 
-**Download the data.** APRA's files cannot be fetched by script from the Claude sandbox or the
-desktop workspace; both are behind a network allowlist that blocks apra.gov.au. Download them in
-your own browser, into `data/raw/`:
+**Download the data.** Run `python etl/download.py`: it finds the current files on APRA's
+pages and downloads them into `data/raw/`, recording each one in `data/downloads.json`. If your
+network blocks apra.gov.au, as some cloud sandboxes do, download them in a browser instead:
 
 - [ ] [Quarterly Membership and Benefits](https://www.apra.gov.au/quarterly-private-health-insurance-statistics) (~16 MB)
 - [ ] Quarterly Membership Trends (~12 MB), from the same page
