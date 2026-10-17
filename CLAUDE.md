@@ -59,7 +59,7 @@ published what, and a table of which claims are allowed.
 | ---- | ---- | ------ |
 | 0 | Questions chosen, prior work surveyed, docs written | Done; questions revised 17 Oct |
 | 1 | Files downloaded · Azure SQL created | Files downloaded 17 Oct; Azure SQL not yet |
-| 2–3 | Map the spreadsheets · clean · quality checks · reconciliation | Loaded, checked and reconciled 17 Oct; the 2019 checks remain |
+| 2–3 | Map the spreadsheets · clean · quality checks · reconciliation | Done 17 Oct: loaded, checked, reconciled, series breaks mapped |
 | 4 | T-SQL views and stored proc · data dictionary · GitHub Actions schedule | Pending |
 | 5 | Power BI report against Azure SQL (EC2) | Pending |
 | 6 | Write up findings · README (publishing is Nandita's) | Pending |
@@ -97,20 +97,22 @@ First look, June quarters, Australia-wide, recomputed from the raw sheets on 17 
 | 2007 | 4,368,148 | 63.6% | 5.2% | 9,144,641 | 13.3% |
 | 2026 | 6,268,336 | 26.8% | 29.4% | 12,823,752 | 20.9% |
 
-## Check before publishing any of that
+## What the series can claim (checked 17 Oct 2026; evidence in `docs/series-breaks.md`)
 
-- **The excess series breaks by rule in April 2019.** From 1 April 2019 insurers could offer
-  excesses up to 750 dollars single and 1,500 family, up from 500 and 1,000 (Department of
-  Health). The jump in "over 500" (0.7% in June 2018, 29.4% in June 2026) is real behaviour that
-  the rule change allowed. Mark it on every chart.
-- **Whether the cover-type series breaks around 2019.** June figures show no step (41.7%, 41.3%,
-  40.2% for 2018 to 2020), then a fall to 26.8%. Read APRA's notes and the glossary, check the
-  quarterly series, and say in the README whether it is continuous. If there is a break, show
-  the two periods separately.
-- **Why 5.2% of policies had an excess over 500 dollars in June 2007,** when the cap applied then
-  too. Find out before using the early years.
-- **An older pool may only mirror an older Australia.** Compare the insured age mix with the
-  population's (the `Population` sheets) before saying the pool is ageing.
+- **Full cover is the downgrading measure.** 63.6% of hospital policies in June 2007, 26.8% in
+  June 2026: a gradual fall, not broken by the April 2019 reforms. Re-check the latest
+  quarter's 1.7-point drop when the next release lands.
+- **Never trend the split between lifetime exclusions and reduced cover without exclusions.**
+  Policies move between them in one-quarter steps of up to 11.9 points (September 2018), mostly
+  unexplained by APRA. Use the split only at a single point in time.
+- **Excess:** the nil-excess share is continuous. "Over 500" breaks in September 2010
+  (unexplained), then climbs after the 1 April 2019 rule change raised the maximum excess to 750
+  dollars single. Mark the rule change on every chart.
+- **The pool is ageing faster than Australia:** the 65+ share of insured people went from 13.3%
+  to 20.7% (June 2007 to June 2025), against 13.1% to 17.4% for the whole population. Do not
+  claim why without published support.
+- **Re-run `etl/breaks.py` each release.** A new jump needs an explanation, or it is treated as
+  a break and no trend is drawn through it.
 
 ## Things that are easy to get wrong
 
