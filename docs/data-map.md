@@ -301,6 +301,8 @@ reading the sheets, and they win where the two disagree.
   750 dollars (single) on 1 April 2019, so this series breaks by rule there.
 - Check figures, June quarters, Australia: 4,368,148 hospital policies in 2007 (63.6% full
   cover); 6,268,336 in 2026 (26.8% full cover).
+- Known quirk: in the December 2021 quarter, every state's "Full cover, Nil" count ends in .1
+  (197,506.1 in NSW). `load_apra.py` rounds those eight values and announces it on every run.
 
 ### Question 2: is the pool getting older?
 
