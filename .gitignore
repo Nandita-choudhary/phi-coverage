@@ -1,0 +1,27 @@
+# Secrets
+.env
+.env.*
+# ...except the template, which holds only placeholders
+!.env.example
+
+# APRA source spreadsheets — ~45MB, download links are in the README
+data/raw/*.xlsx
+data/raw/*.pdf
+
+# Pipeline output — rebuilt by the scripts
+data/clean/*.csv
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# Power BI local cache
+powerbi/**/.pbi/localSettings.json
+powerbi/**/.pbi/cache.abf
+*.pbix
+
+# OS
+.DS_Store

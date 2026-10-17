@@ -1,0 +1,103 @@
+# Automation
+
+The claim to be able to make at the end: **"this updates itself every quarter."** That sentence
+is only worth saying if it is true, so this page is about making it true rather than approximately
+true.
+
+---
+
+## The obstacle nobody mentions
+
+APRA's download URLs change every release. The June 2026 membership file lives at:
+
+```
+.../system/files/2026-08/Quarterly Private Health Insurance Membership and Benefits June 2026.xlsx
+```
+
+Both the folder (`2026-08`, the publication month) and the filename (`June 2026`, the quarter)
+move each time, and there is sometimes a `_0` suffix. **A hardcoded URL breaks on the very next
+release** — which means a scheduled job pointed at one would quietly keep reloading the same old
+file and reporting success. Worse than no automation.
+
+So the downloader has to find the current link rather than be told it:
+
+1. Fetch the [quarterly statistics page](https://www.apra.gov.au/quarterly-private-health-insurance-statistics)
+2. Parse it for links ending `.xlsx`
+3. Match the ones whose text or filename contains the dataset names
+4. Compare against what is already in `data/raw/` — if the newest link is already downloaded,
+   stop and exit cleanly, having done nothing
+5. Otherwise download it, record the URL and the date in the change log, and run the pipeline
+
+Step 4 matters: the job runs on a schedule, but APRA publishes when it publishes. Most runs
+should find nothing new and do nothing. **A run that finds nothing is a success, not a failure.**
+
+This discovery step is also the bit that makes the project genuinely more interesting than a
+hardcoded script, so it is worth doing properly rather than skipping.
+
+## Where it runs
+
+**GitHub Actions**, free for public repositories.
+
+One useful thing to know: the sandbox Claude runs in, and the desktop workspace on the Mac, are
+both behind a network allowlist that blocks apra.gov.au — which is why the files had to be
+downloaded by hand to begin with. **GitHub Actions runners have open internet**, so the automated
+download genuinely works there even though it cannot work here.
+
+```yaml
+# .github/workflows/quarterly-refresh.yml
+name: Quarterly refresh
+on:
+  schedule:
+    - cron: '17 20 2 2,5,8,11 *'   # a few days after APRA's usual publication months
+  workflow_dispatch:                # and a button, for testing
+```
+
+APRA publishes roughly quarterly but not on a fixed date, so the schedule is a poll, not an
+appointment. Running monthly and exiting early when there is nothing new is also reasonable and
+simpler to reason about.
+
+## The shape of a run
+
+```
+1. discover    find the newest file links on APRA's page
+2. compare     already have them? exit 0, log "no new release"
+3. download    into data/raw/
+4. clean       raw → tidy tables
+5. check       quality checks — any failure stops here
+6. reconcile   against published figures — outside tolerance stops here
+7. load        into Azure SQL
+8. log         append to docs/change-log.md and commit it back to the repo
+```
+
+Steps 5 and 6 are what make this a pipeline rather than a cron job. **The failure path is the
+feature**: it stops, it says why, and it leaves the database as it was.
+
+## Secrets
+
+The Azure connection string goes in **GitHub repository secrets**, never in the YAML and never
+in a committed file:
+
+```yaml
+env:
+  AZURE_SQL_CONNECTION: ${{ secrets.AZURE_SQL_CONNECTION }}
+```
+
+Same rule as `.env` locally. A connection string in git history is a connection string you have
+to rotate.
+
+## Proving it works
+
+A workflow that has never run is a YAML file, not automation. Before calling this done:
+
+- [ ] Trigger it by hand (`workflow_dispatch`) and watch it succeed
+- [ ] Break something on purpose — point a check at a wrong total — and watch it fail and stop
+- [ ] Screenshot the green run and the red one; both go in the README
+
+The red one is the more persuasive screenshot. Anyone can make a script run once.
+
+## The honest limit
+
+Until a real new quarter lands and the job picks it up unattended, what exists is a *scheduled*
+pipeline rather than a *proven* one. Say it that way until it has actually caught a release, then
+update the README. It costs nothing to be accurate and it is the kind of precision interviewers
+notice.
