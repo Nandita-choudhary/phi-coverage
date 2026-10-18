@@ -4,7 +4,23 @@
 `phi` schema, with keys and checks (`sql/schema.sql`). Power BI reads views only
 (`sql/views.sql`): `dim_date`, `dim_state`, `dim_age_band`, `dim_cover`, `dim_excess`, the
 `fact_*` views, and the measure views `v_cover_mix`, `v_hospital_coverage`, `v_coverage_by_age`
-and `v_age_mix`.
+and `v_age_mix`. `dim_gender` (F, M) lets one slicer filter insured people and population by age
+together, and `reconciliation_panel` feeds the report's validation panel.
+
+## reconciliation · the five published figures, checked
+
+Written by `etl/validate.py` to `data/clean/reconciliation.csv` and loaded as
+`phi.reconciliation`. One row per published figure; 5 rows.
+
+| Column | Type | Definition |
+| ------ | ---- | ---------- |
+| `measure` | text | What was published, and for when |
+| `published_pct`, `published_display` | number, text | The published figure, and as published (44%) |
+| `ours_pct`, `ours_display` | number, text | Ours, rebuilt from APRA's raw files |
+| `matches` | true/false | Ours rounds to the published figure at its published precision |
+| `source` | text | Who published it |
+| `note` | text | How the two measures relate |
+| `checked_on` | date | When `validate.py` last ran |
 
 Every column in every tidy table that `etl/load_apra.py` writes to `data/clean/`. The last two
 columns are the lineage: any number in the dashboard traces back to a cell APRA published.

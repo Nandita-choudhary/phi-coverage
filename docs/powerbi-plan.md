@@ -1,5 +1,11 @@
 # Dashboard plan
 
+> **Superseded on 18 Oct 2026 by [`powerbi-build-guide.md`](powerbi-build-guide.md).** The
+> data map settled the open questions: there is no tier split, so the downgrading page uses
+> cover type and excess; the pages follow the two main questions in order (downgrading, then
+> the ageing pool); and the validation panel sits on page 1. This file is kept as the plan of
+> record.
+
 > **Provisional.** The exact visuals depend on what dimensions APRA's files actually carry, which
 > step 2 of the setup decides. This is the intended shape; revise it once the data map exists.
 

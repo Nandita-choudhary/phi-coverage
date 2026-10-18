@@ -23,6 +23,7 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parent.parent
 CLEAN = ROOT / "data" / "clean"
 OUT = ROOT / "docs" / "reconciliation.md"
+TABLE = CLEAN / "reconciliation.csv"     # the same table as data, for Azure and Power BI
 TABLES = {name: pd.read_csv(CLEAN / f"{name}.csv", parse_dates=["quarter_end"])
           for name in ["policies_by_cover", "insured_by_age", "population", "population_by_age"]}
 LIFETIME_EXCLUSIONS = ["Reduced cover and some lifetime exclusions",
@@ -84,11 +85,15 @@ FIGURES = [
 
 
 def main() -> None:
-    rows, misses = [], 0
+    rows, data, misses = [], [], 0
     for measure, published, decimals, source, ours_fn, note in FIGURES:
         ours = ours_fn()
         match = abs(ours - published) <= 0.5 * 10 ** -decimals + 1e-9
         misses += not match
+        data.append({"measure": measure, "published_pct": published,
+                     "published_display": f"{published:.{decimals}f}%", "ours_pct": round(ours, 4),
+                     "ours_display": f"{ours:.{decimals + 2}f}%", "matches": match,
+                     "source": source, "note": note, "checked_on": date.today().isoformat()})
         rows.append((measure, f"{published:.{decimals}f}%", source, f"{ours:.{decimals + 2}f}%",
                      f"{ours - published:+.{decimals + 2}f}", "Yes" if match else "**No**", note))
         print(f"{'MATCH' if match else 'MISS '}  {measure:<58} published {published:.{decimals}f}%"
@@ -106,6 +111,7 @@ def main() -> None:
     lines += [f"| {m} | {p} | {s} | {o} | {d} | {ok} |" for m, p, s, o, d, ok, _ in rows]
     lines += ["", "## Notes", ""] + [f"- **{m}:** {n}" for m, *_, n in rows] + [""]
     OUT.write_text("\n".join(lines))
+    pd.DataFrame(data).to_csv(TABLE, index=False)
     print(f"\nWrote {OUT.relative_to(ROOT) if ROOT in OUT.parents else OUT}")
 
     if misses:

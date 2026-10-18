@@ -53,6 +53,12 @@ CROSS APPLY (SELECT CASE WHEN b.age_band_start < 25 THEN '0-24'  WHEN b.age_band
                          WHEN b.age_band_start < 80 THEN 5 ELSE 6 END AS age_group_order) AS g;
 GO
 
+-- Both genders, so one slicer filters the insured counts and the population together.
+CREATE OR ALTER VIEW phi.dim_gender AS
+SELECT gender, gender_name
+FROM (VALUES ('F', 'Female'), ('M', 'Male')) AS g (gender, gender_name);
+GO
+
 -- APRA's four cover types. "Not full cover" can be trended; the split between the two kinds
 -- of exclusion cannot (unexplained reclassifications: see docs/series-breaks.md).
 CREATE OR ALTER VIEW phi.dim_cover AS
@@ -83,6 +89,12 @@ SELECT quarter_end, state, population FROM phi.population;
 GO
 CREATE OR ALTER VIEW phi.fact_population_by_age AS
 SELECT quarter_end, gender, age_band_start, population FROM phi.population_by_age;
+GO
+
+-- The validation panel: each published figure against ours. Not joined to anything.
+CREATE OR ALTER VIEW phi.reconciliation_panel AS
+SELECT measure, published_display, ours_display, matches, source, note, checked_on
+FROM phi.reconciliation;
 GO
 
 -- -------------------------------------------------------------------- measure views -----

@@ -41,6 +41,8 @@ COLUMNS = {   # each tidy table, with its columns in the order the database expe
     "population": ["quarter_end", "state", "population", "source_file", "source_sheet"],
     "population_by_age": ["quarter_end", "gender", "age_band_start", "age_band", "population",
                           "source_file", "source_sheet"],
+    "reconciliation": ["measure", "published_pct", "published_display", "ours_pct",
+                       "ours_display", "matches", "source", "note", "checked_on"],
 }
 MAX_PARAMETERS = 2100     # SQL Server's limit on parameters in a single statement
 WAKE_TRIES, WAKE_WAIT = 8, 20   # a paused free database takes a minute or two to resume

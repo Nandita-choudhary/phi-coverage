@@ -19,6 +19,7 @@ BEGIN
        OR NOT EXISTS (SELECT 1 FROM stage.published_totals)
        OR NOT EXISTS (SELECT 1 FROM stage.population)
        OR NOT EXISTS (SELECT 1 FROM stage.population_by_age)
+       OR NOT EXISTS (SELECT 1 FROM stage.reconciliation)
         THROW 50001, 'A stage table is empty, so nothing was loaded.', 1;
 
     BEGIN TRANSACTION;
@@ -50,11 +51,17 @@ BEGIN
         SELECT quarter_end, gender, age_band_start, age_band, population, source_file, source_sheet
         FROM stage.population_by_age;
 
+        TRUNCATE TABLE phi.reconciliation;
+        INSERT INTO phi.reconciliation
+        SELECT measure, published_pct, published_display, ours_pct, ours_display, matches,
+               source, note, checked_on
+        FROM stage.reconciliation;
+
         INSERT INTO phi.load_log (latest_quarter, rows_loaded, note)
         SELECT (SELECT MAX(quarter_end) FROM phi.policies_by_cover),
                (SELECT COUNT(*) FROM phi.policies_by_cover) + (SELECT COUNT(*) FROM phi.insured_by_age)
              + (SELECT COUNT(*) FROM phi.published_totals) + (SELECT COUNT(*) FROM phi.population)
-             + (SELECT COUNT(*) FROM phi.population_by_age),
+             + (SELECT COUNT(*) FROM phi.population_by_age) + (SELECT COUNT(*) FROM phi.reconciliation),
                @note;
 
     COMMIT TRANSACTION;

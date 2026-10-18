@@ -15,9 +15,9 @@ IF SCHEMA_ID('phi') IS NULL EXEC('CREATE SCHEMA phi');
 GO
 
 DROP TABLE IF EXISTS stage.policies_by_cover, stage.insured_by_age, stage.published_totals,
-                     stage.population, stage.population_by_age;
+                     stage.population, stage.population_by_age, stage.reconciliation;
 DROP TABLE IF EXISTS phi.policies_by_cover, phi.insured_by_age, phi.published_totals,
-                     phi.population, phi.population_by_age, phi.load_log;
+                     phi.population, phi.population_by_age, phi.reconciliation, phi.load_log;
 GO
 
 -- ---------------------------------------------------------------- stage: as landed ------
@@ -39,6 +39,10 @@ CREATE TABLE stage.population (
 CREATE TABLE stage.population_by_age (
     quarter_end DATE, gender CHAR(1), age_band_start TINYINT, age_band VARCHAR(6),
     population INT, source_file NVARCHAR(200), source_sheet NVARCHAR(120));
+CREATE TABLE stage.reconciliation (
+    measure NVARCHAR(120), published_pct DECIMAL(9, 4), published_display NVARCHAR(20),
+    ours_pct DECIMAL(9, 4), ours_display NVARCHAR(20), matches BIT, source NVARCHAR(200),
+    note NVARCHAR(400), checked_on DATE);
 GO
 
 -- ------------------------------------------------------------- phi: what gets read ------
@@ -92,6 +96,18 @@ CREATE TABLE phi.population_by_age (
     source_file    NVARCHAR(200) NOT NULL,
     source_sheet   NVARCHAR(120) NOT NULL,
     CONSTRAINT pk_population_by_age PRIMARY KEY (quarter_end, gender, age_band_start));
+
+-- validate.py's comparison with published figures, for the dashboard's validation panel.
+CREATE TABLE phi.reconciliation (
+    measure           NVARCHAR(120) NOT NULL PRIMARY KEY,
+    published_pct     DECIMAL(9, 4) NOT NULL,
+    published_display NVARCHAR(20)  NOT NULL,
+    ours_pct          DECIMAL(9, 4) NOT NULL,
+    ours_display      NVARCHAR(20)  NOT NULL,
+    matches           BIT           NOT NULL,
+    source            NVARCHAR(200) NOT NULL,
+    note              NVARCHAR(400) NOT NULL,
+    checked_on        DATE          NOT NULL);
 
 -- One row per load, written by the procedure inside the same transaction.
 CREATE TABLE phi.load_log (

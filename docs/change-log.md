@@ -4,6 +4,8 @@ One entry per load, newest first. The interesting entries are the failures and t
 changes: they show the checks catch real things.
 
 ```
+2026-10-18  Loaded into Azure SQL: 33,488 rows in 6 tables, latest quarter 2026-06-30.
+2026-10-18  Loaded into Azure SQL: 33,488 rows in 6 tables, latest quarter 2026-06-30.
 2026-10-18  Loaded into Azure SQL: 33,483 rows in 5 tables, latest quarter 2026-06-30.
 2026-10-18  Loaded into Azure SQL: 33,483 rows in 5 tables, latest quarter 2026-06-30.
 2026-10-18  Loaded into Azure SQL: 33,483 rows in 5 tables, latest quarter 2026-06-30.

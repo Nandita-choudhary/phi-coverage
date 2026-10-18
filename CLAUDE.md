@@ -61,7 +61,7 @@ published what, and a table of which claims are allowed.
 | 1 | Files downloaded · Azure SQL created | Files downloaded 17 Oct; Azure SQL not yet |
 | 2–3 | Map the spreadsheets · clean · quality checks · reconciliation | Done 17 Oct: loaded, checked, reconciled, series breaks mapped |
 | 4 | T-SQL views and stored proc · data dictionary · GitHub Actions schedule | Downloader, SQL, loader and workflow written 17 Oct; untested until Nandita creates Azure SQL and the GitHub repo |
-| 5 | Power BI report against Azure SQL (EC2) | Pending |
+| 5 | Power BI report against Azure SQL (EC2) | Build guide written 18 Oct (`docs/powerbi-build-guide.md`); EC2 build next |
 | 6 | Write up findings · README (publishing is Nandita's) | Pending |
 
 **No user stories for an insurer team.** The audience is the public, so the README tells the
@@ -128,6 +128,11 @@ First look, June quarters, Australia-wide, recomputed from the raw sheets on 17 
 - **The ACT sits inside NSW until September 2009** (APRA's notes). NSW's series breaks then.
   For long state comparisons, combine NSW and ACT or start in December 2009. APRA's population
   table does the same (the ACT shows 0 until then), so NSW's coverage rate stays consistent.
+- **Stocks, not flows.** Policies, insured people and population are counted at the end of each
+  quarter, so a figure for a period is its latest quarter, never a sum of quarters. Every count
+  measure in the build guide follows that rule.
+- **The EC2 machine needs Azure's firewall opened every session:** its address changes on every
+  start. Portal → the SQL server → Networking → Add your client IPv4 address.
 - **Azure SQL:** the driver is `pymssql` (this Mac has no Homebrew for Microsoft's ODBC
   driver). Power BI reads the `phi` views only, never `stage`. The firewall must let GitHub's
   runners in (`docs/automation.md`).
