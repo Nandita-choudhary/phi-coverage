@@ -60,14 +60,18 @@ simpler to reason about.
 ## The shape of a run
 
 ```
-1. discover    find the newest file links on APRA's page
-2. compare     already have them? exit 0, log "no new release"
-3. download    into data/raw/
-4. clean       raw → tidy tables
-5. check       quality checks — any failure stops here
-6. reconcile   against published figures — outside tolerance stops here
-7. load        into Azure SQL
-8. log         append to docs/change-log.md and commit it back to the repo
+1. discover    find the newest file links on APRA's pages            etl/download.py
+2. compare     already recorded? exit 0, "no new release"
+3. download    the new files into data/raw/, and log them
+4. restore     the unchanged files the pipeline also needs           download.py --restore
+5. clean       raw → tidy tables                                     etl/load_apra.py
+6. check       quality checks — any failure stops here               etl/checks.py
+7. reconcile   against published figures — a miss stops here         etl/validate.py
+8. breaks      refresh the series-break evidence                     etl/breaks.py
+9. load        stage, then swap into phi in one transaction          etl/to_azure.py
+10. log        commit the records and change log back to the repo
+
+The workflow is .github/workflows/quarterly-refresh.yml.
 ```
 
 Steps 5 and 6 are what make this a pipeline rather than a cron job. **The failure path is the
@@ -80,8 +84,16 @@ in a committed file:
 
 ```yaml
 env:
-  AZURE_SQL_CONNECTION: ${{ secrets.AZURE_SQL_CONNECTION }}
+  AZURE_SQL_URL: ${{ secrets.AZURE_SQL_URL }}
 ```
+
+Its form is in `.env.example`: `mssql+pymssql://user:password@server.database.windows.net:1433/db`.
+
+**The Azure SQL firewall must let the runner in.** GitHub's runners have no fixed address. The
+simplest setting is "Allow Azure services and resources to access this server", which works
+because the runners run in Azure; it also admits other Azure addresses, which is acceptable for
+a database holding public data, and worth saying in an interview. The stricter option is a
+workflow step that adds the runner's address before loading and removes it after.
 
 Same rule as `.env` locally. A connection string in git history is a connection string you have
 to rotate.

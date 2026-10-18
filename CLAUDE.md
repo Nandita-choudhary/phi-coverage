@@ -60,7 +60,7 @@ published what, and a table of which claims are allowed.
 | 0 | Questions chosen, prior work surveyed, docs written | Done; questions revised 17 Oct |
 | 1 | Files downloaded · Azure SQL created | Files downloaded 17 Oct; Azure SQL not yet |
 | 2–3 | Map the spreadsheets · clean · quality checks · reconciliation | Done 17 Oct: loaded, checked, reconciled, series breaks mapped |
-| 4 | T-SQL views and stored proc · data dictionary · GitHub Actions schedule | Downloader built 17 Oct; Azure SQL not yet created |
+| 4 | T-SQL views and stored proc · data dictionary · GitHub Actions schedule | Downloader, SQL, loader and workflow written 17 Oct; untested until Nandita creates Azure SQL and the GitHub repo |
 | 5 | Power BI report against Azure SQL (EC2) | Pending |
 | 6 | Write up findings · README (publishing is Nandita's) | Pending |
 
@@ -128,6 +128,9 @@ First look, June quarters, Australia-wide, recomputed from the raw sheets on 17 
 - **The ACT sits inside NSW until September 2009** (APRA's notes). NSW's series breaks then.
   For long state comparisons, combine NSW and ACT or start in December 2009. APRA's population
   table does the same (the ACT shows 0 until then), so NSW's coverage rate stays consistent.
+- **Azure SQL:** the driver is `pymssql` (this Mac has no Homebrew for Microsoft's ODBC
+  driver). Power BI reads the `phi` views only, never `stage`. The firewall must let GitHub's
+  runners in (`docs/automation.md`).
 - **APRA's sheets have different header depths.** `HTPoliciesXTypeofCover` has two header rows;
   each table inside `MembershipByAgeData` starts on its own row. Find the header by its names,
   never by a fixed row number.

@@ -6,10 +6,8 @@ python-dotenv>=1.0
 
 # Azure SQL
 SQLAlchemy>=2.0
-pyodbc>=5.0            # needs Microsoft's ODBC driver installed separately:
-                       #   brew tap microsoft/mssql-release
-                       #   brew install msodbcsql18
-                       # If that fights you on Mac, swap to pymssql, which needs no driver.
+pymssql>=2.3           # talks to Azure SQL with nothing else to install. (pyodbc needs
+                       # Microsoft's ODBC driver through Homebrew, which this Mac lacks.)
 
 # Downloading the quarterly release
 requests>=2.31

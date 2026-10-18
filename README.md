@@ -136,7 +136,7 @@ python etl/explore.py          # map the spreadsheets — run this first
 python etl/load_apra.py        # raw → tidy tables
 python etl/checks.py           # quality checks; non-zero exit stops the pipeline
 python etl/validate.py         # reconcile against published figures
-python etl/to_azure.py         # load into Azure SQL
+python etl/to_azure.py         # load into Azure SQL (the first time, add --init)
 ```
 
 Or let the schedule do it. Step by step, including where to download the files and how to set up

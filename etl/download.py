@@ -3,6 +3,7 @@ Find APRA's newest statistics files and download only what is new.
 
     python etl/download.py              # check APRA's pages and download anything new
     python etl/download.py --dry-run    # say what would happen, change nothing
+    python etl/download.py --restore    # fetch recorded files missing from data/raw/
 
 APRA moves its download links every release: the folder is the month of publication, the file
 name carries the quarter, and sometimes "_0" is added. So no link is hard-coded. The script
@@ -103,15 +104,40 @@ def log_change(text: str) -> None:
     CHANGE_LOG.write_text("\n".join(lines[:at] + entry + lines[at:]))
 
 
+def restore(record: dict, dry_run: bool) -> None:
+    """Fetch each recorded file that is missing locally, and check it is the same file."""
+    try:
+        for entry in record.values():
+            path = RAW / entry["file"]
+            if path.exists():
+                continue
+            print(f"{'would restore' if dry_run else 'restoring'}  {entry['file']}")
+            if not dry_run:
+                fetch(entry["url"], path)
+                if sha256(path) != entry["sha256"]:
+                    path.unlink()
+                    raise DownloadError(f"{entry['file']} differs from the recorded copy: APRA "
+                                        f"changed it without renaming it.")
+    except (requests.RequestException, DownloadError) as problem:
+        sys.exit(f"RESTORE STOPPED: {problem}")
+    print("RESTORE DONE: every recorded file is in data/raw")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Download APRA's newest files, if any.")
     parser.add_argument("--dry-run", action="store_true", help="say what would happen, change nothing")
+    parser.add_argument("--restore", action="store_true",
+                        help="download every recorded file missing from data/raw, so the pipeline "
+                             "has a full set (a fresh runner holds only the new files)")
     parser.add_argument("--page", action="append", default=[], metavar="KIND=FILE",
                         help="read a saved copy of a page instead of fetching it (for tests)")
     args = parser.parse_args()
     saved = dict(item.split("=", 1) for item in args.page)
 
     record = json.loads(RECORD.read_text()) if RECORD.exists() else {}
+    if args.restore:
+        restore(record, args.dry_run)
+        return
     links = {}
     try:
         for kind, url in PAGES.items():

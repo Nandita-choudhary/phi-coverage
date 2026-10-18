@@ -25,8 +25,10 @@ it again.
 The allowance is 100,000 vCore-seconds and 32 GB per database per month, renewing for the life
 of the subscription. This project's data is a few hundred thousand rows; it will not come close.
 
-- [ ] Install Azure Data Studio (Mac-native, free) to write T-SQL against it
-- [ ] Put the connection string in `.env` — never in a committed file
+- [ ] Install the **MSSQL extension for VS Code** to write T-SQL against it (Azure Data Studio,
+      the old choice, was retired on 28 February 2026)
+- [ ] Copy `.env.example` to `.env` and fill in `AZURE_SQL_URL` — never in a committed file
+- [ ] Create the tables, procedure and views, and load the data: `python etl/to_azure.py --init`
 
 **Download the data.** Run `python etl/download.py`: it finds the current files on APRA's
 pages and downloads them into `data/raw/`, recording each one in `data/downloads.json`. If your

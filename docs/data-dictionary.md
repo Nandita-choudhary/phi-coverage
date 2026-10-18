@@ -1,5 +1,11 @@
 # Data dictionary
 
+**In Azure SQL** the five tidy tables below become tables of the same name and columns in the
+`phi` schema, with keys and checks (`sql/schema.sql`). Power BI reads views only
+(`sql/views.sql`): `dim_date`, `dim_state`, `dim_age_band`, `dim_cover`, `dim_excess`, the
+`fact_*` views, and the measure views `v_cover_mix`, `v_hospital_coverage`, `v_coverage_by_age`
+and `v_age_mix`.
+
 Every column in every tidy table that `etl/load_apra.py` writes to `data/clean/`. The last two
 columns are the lineage: any number in the dashboard traces back to a cell APRA published.
 APRA names its files for the quarter, so the source file changes with each release; the loader

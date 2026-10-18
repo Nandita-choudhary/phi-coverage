@@ -1,0 +1,66 @@
+# Quarterly refresh: find APRA's new release, check it, reconcile it, load it.
+#
+# APRA publishes roughly every quarter but not on a fixed date, so this polls a few days after
+# its usual publication months, with a button (workflow_dispatch) for testing. Most runs find
+# nothing new and stop after the first step: that is a success, not a failure.
+#
+# Each step must pass for the next to run. A failed check, or a published figure that no longer
+# matches, stops the run before anything reaches the database.
+#
+# Needs the repository secret AZURE_SQL_URL, and an Azure SQL firewall that lets GitHub's
+# runners in (see docs/automation.md).
+name: Quarterly refresh
+
+on:
+  schedule:
+    - cron: "17 20 2 2,5,8,11 *"   # 20:17 UTC on the 2nd of February, May, August, November
+  workflow_dispatch:
+
+permissions:
+  contents: write                  # to commit the records and the change log back
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install
+        run: pip install -r requirements.txt
+
+      - name: Look for a new APRA release
+        id: download
+        run: python etl/download.py
+
+      - name: Fetch the unchanged files the pipeline also needs
+        if: steps.download.outputs.new_release == 'true'
+        run: python etl/download.py --restore
+
+      - name: Clean, check and reconcile
+        if: steps.download.outputs.new_release == 'true'
+        run: |
+          python etl/load_apra.py
+          python etl/checks.py
+          python etl/validate.py
+          python etl/breaks.py
+
+      - name: Load into Azure SQL
+        if: steps.download.outputs.new_release == 'true'
+        env:
+          AZURE_SQL_URL: ${{ secrets.AZURE_SQL_URL }}
+        run: python etl/to_azure.py
+
+      - name: Commit the records and the change log
+        if: steps.download.outputs.new_release == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/downloads.json data/last_load.json docs/change-log.md \
+                  docs/reconciliation.md docs/series-breaks.md
+          git commit -m "Quarterly refresh: load APRA's new release"
+          git push
