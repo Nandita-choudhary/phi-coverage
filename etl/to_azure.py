@@ -19,6 +19,7 @@ import argparse
 import os
 import re
 import sys
+import time
 from pathlib import Path
 
 import pandas as pd
@@ -42,6 +43,7 @@ COLUMNS = {   # each tidy table, with its columns in the order the database expe
                           "source_file", "source_sheet"],
 }
 MAX_PARAMETERS = 2100     # SQL Server's limit on parameters in a single statement
+WAKE_TRIES, WAKE_WAIT = 8, 20   # a paused free database takes a minute or two to resume
 
 
 def tidy_tables() -> dict[str, pd.DataFrame]:
@@ -68,6 +70,22 @@ def connect():
                  "or in the repository secret on GitHub.")
     from sqlalchemy import create_engine
     return create_engine(url)
+
+
+def wake(engine) -> None:
+    """The free database pauses when idle, and refuses the first connection with error 40613
+    while it resumes. Knock, wait and try again before doing any real work."""
+    for attempt in range(1, WAKE_TRIES + 1):
+        try:
+            with engine.connect() as conn:
+                conn.exec_driver_sql("SELECT 1")
+            return
+        except Exception as problem:
+            if "40613" not in str(problem) or attempt == WAKE_TRIES:
+                raise
+            print(f"the database is waking up (try {attempt} of {WAKE_TRIES}); "
+                  f"trying again in {WAKE_WAIT} seconds")
+            time.sleep(WAKE_WAIT)
 
 
 def batches(sql_text: str) -> list[str]:
@@ -117,6 +135,7 @@ def main() -> None:
 
     engine = connect()
     try:
+        wake(engine)
         if args.init:
             init(engine)
         total = load(engine, tables)
