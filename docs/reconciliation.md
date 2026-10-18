@@ -1,6 +1,6 @@
 # Reconciliation
 
-Written by `etl/validate.py` on 17 October 2026, from APRA's files starting with "Quarterly Private Health Insurance Membership and Benefits June 2026.xlsx".
+Written by `etl/validate.py` on 18 October 2026, from APRA's files starting with "Quarterly Private Health Insurance Membership and Benefits June 2026.xlsx".
 
 Every figure here was published by someone else, then rebuilt from APRA's raw spreadsheets. A figure matches when ours rounds to it at the precision it was published.
 

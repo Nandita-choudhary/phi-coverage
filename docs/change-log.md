@@ -5,6 +5,7 @@ changes: they show the checks catch real things.
 
 ```
 2026-10-18  Loaded into Azure SQL: 33,483 rows in 5 tables, latest quarter 2026-06-30.
+2026-10-18  Loaded into Azure SQL: 33,483 rows in 5 tables, latest quarter 2026-06-30.
 2026-10-17  Recorded files already in data/raw (downloaded by hand): Quarterly Private
             Health Insurance Membership and Benefits June 2026.xlsx; Quarterly Private
             Health Insurance Membership Trends June 2026_0.xlsx; Quarterly Private Health
