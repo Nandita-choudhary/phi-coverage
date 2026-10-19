@@ -3,6 +3,7 @@ table dim_age_band
 
 	column age_band_start
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 4431ab00-0d47-4e94-a462-e11c8a3dbe52
 		summarizeBy: none
@@ -15,6 +16,7 @@ table dim_age_band
 		lineageTag: e081cfe7-0e61-49a4-8ca7-82ef4406e47e
 		summarizeBy: none
 		sourceColumn: age_band
+		sortByColumn: age_band_start
 
 		annotation SummarizationSetBy = Automatic
 
@@ -23,11 +25,13 @@ table dim_age_band
 		lineageTag: ae388a9c-2cc2-4082-9088-040be6797afe
 		summarizeBy: none
 		sourceColumn: age_group
+		sortByColumn: age_group_order
 
 		annotation SummarizationSetBy = Automatic
 
 	column age_group_order
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 472e495a-bf5a-499b-818c-1d5c696b194a
 		summarizeBy: sum
@@ -52,6 +56,4 @@ table dim_age_band
 				  #"Navigation 1" = Source{[Schema = "phi", Item = "dim_age_band"]}[Data]
 				in
 				  #"Navigation 1"
-
-	changedProperty = Name
 

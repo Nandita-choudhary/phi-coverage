@@ -3,6 +3,7 @@ table fact_population
 
 	column quarter_end
 		dataType: dateTime
+		isHidden
 		formatString: Long Date
 		lineageTag: e712e8fb-443e-4ff0-bbd2-b5758285492e
 		summarizeBy: none
@@ -14,6 +15,7 @@ table fact_population
 
 	column state
 		dataType: string
+		isHidden
 		lineageTag: 7294d4fe-6f33-475b-b10e-aef3e5cfbe83
 		summarizeBy: none
 		sourceColumn: state
@@ -37,8 +39,6 @@ table fact_population
 				  #"Navigation 1" = Source{[Schema = "phi", Item = "fact_population"]}[Data]
 				in
 				  #"Navigation 1"
-
-	changedProperty = Name
 
 	annotation PBI_ResultType = Table
 

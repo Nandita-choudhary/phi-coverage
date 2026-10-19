@@ -3,6 +3,7 @@ table fact_population_by_age
 
 	column quarter_end
 		dataType: dateTime
+		isHidden
 		formatString: Long Date
 		lineageTag: dabe3bee-a6a4-418e-a243-ded85f01ede3
 		summarizeBy: none
@@ -14,6 +15,7 @@ table fact_population_by_age
 
 	column gender
 		dataType: string
+		isHidden
 		lineageTag: 597b4999-7e47-49ac-baeb-453ae799f844
 		summarizeBy: none
 		sourceColumn: gender
@@ -22,6 +24,7 @@ table fact_population_by_age
 
 	column age_band_start
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: f007a429-8c8c-4ea9-b4ec-f9e26dc5915d
 		summarizeBy: none
@@ -46,8 +49,6 @@ table fact_population_by_age
 				  #"Navigation 1" = Source{[Schema = "phi", Item = "fact_population_by_age"]}[Data]
 				in
 				  #"Navigation 1"
-
-	changedProperty = Name
 
 	annotation PBI_ResultType = Table
 

@@ -26,5 +26,3 @@ table dim_gender
 				in
 				  #"Navigation 1"
 
-	changedProperty = Name
-

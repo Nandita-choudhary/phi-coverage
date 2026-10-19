@@ -14,11 +14,13 @@ table dim_state
 		lineageTag: e55e28c4-dcd1-4500-9694-323b29a92f15
 		summarizeBy: none
 		sourceColumn: state_name
+		sortByColumn: sort_order
 
 		annotation SummarizationSetBy = Automatic
 
 	column sort_order
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 19de7c3a-686a-4826-a84b-437b5fbde651
 		summarizeBy: sum
@@ -34,6 +36,4 @@ table dim_state
 				  #"Navigation 1" = Source{[Schema = "phi", Item = "dim_state"]}[Data]
 				in
 				  #"Navigation 1"
-
-	changedProperty = Name
 

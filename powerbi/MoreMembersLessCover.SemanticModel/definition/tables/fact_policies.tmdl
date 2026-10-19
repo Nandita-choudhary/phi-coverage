@@ -3,6 +3,7 @@ table fact_policies
 
 	column quarter_end
 		dataType: dateTime
+		isHidden
 		formatString: Long Date
 		lineageTag: 2e123988-8ff6-4243-abf3-56067d0092e8
 		summarizeBy: none
@@ -14,6 +15,7 @@ table fact_policies
 
 	column state
 		dataType: string
+		isHidden
 		lineageTag: 5a7a4d91-7a22-4d9e-b629-ade9e681842e
 		summarizeBy: none
 		sourceColumn: state
@@ -22,6 +24,7 @@ table fact_policies
 
 	column policy_cover
 		dataType: string
+		isHidden
 		lineageTag: 3ccaad2e-0dc0-40ab-b0d5-47e7857d6873
 		summarizeBy: none
 		sourceColumn: policy_cover
@@ -30,6 +33,7 @@ table fact_policies
 
 	column excess
 		dataType: string
+		isHidden
 		lineageTag: 8d2ec349-0213-4dad-b2b8-8de7c9cd6619
 		summarizeBy: none
 		sourceColumn: excess
@@ -53,8 +57,6 @@ table fact_policies
 				  #"Navigation 1" = Source{[Schema = "phi", Item = "fact_policies"]}[Data]
 				in
 				  #"Navigation 1"
-
-	changedProperty = Name
 
 	annotation PBI_ResultType = Table
 

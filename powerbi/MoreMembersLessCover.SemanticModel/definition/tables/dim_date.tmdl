@@ -18,10 +18,10 @@ table dim_date
 		dataType: int64
 		formatString: 0
 		lineageTag: 736859fd-c2ee-4c8b-af55-fa40ac497b62
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: year
 
-		annotation SummarizationSetBy = Automatic
+		annotation SummarizationSetBy = User
 
 	column quarter_end
 		dataType: dateTime
@@ -39,6 +39,7 @@ table dim_date
 		lineageTag: 5c9a9266-e97b-47b4-8204-508385dddb43
 		summarizeBy: none
 		sourceColumn: quarter_label
+		sortByColumn: quarter_end
 
 		annotation SummarizationSetBy = Automatic
 
@@ -59,6 +60,4 @@ table dim_date
 				  #"Navigation 1" = Source{[Schema = "phi", Item = "dim_date"]}[Data]
 				in
 				  #"Navigation 1"
-
-	changedProperty = Name
 

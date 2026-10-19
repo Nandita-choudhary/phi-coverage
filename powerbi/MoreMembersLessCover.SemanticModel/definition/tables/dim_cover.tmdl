@@ -35,5 +35,3 @@ table dim_cover
 				in
 				  #"Navigation 1"
 
-	changedProperty = Name
-

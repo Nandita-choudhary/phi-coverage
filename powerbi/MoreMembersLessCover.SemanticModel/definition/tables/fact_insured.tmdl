@@ -3,6 +3,7 @@ table fact_insured
 
 	column quarter_end
 		dataType: dateTime
+		isHidden
 		formatString: Long Date
 		lineageTag: e543e400-4305-4b88-b307-f324fa9523a8
 		summarizeBy: none
@@ -14,6 +15,7 @@ table fact_insured
 
 	column state
 		dataType: string
+		isHidden
 		lineageTag: 20c90953-df48-4647-affd-bc013c0de98a
 		summarizeBy: none
 		sourceColumn: state
@@ -22,6 +24,7 @@ table fact_insured
 
 	column gender
 		dataType: string
+		isHidden
 		lineageTag: 51d59488-aab7-4fdf-be1b-e2b6c5cf27b8
 		summarizeBy: none
 		sourceColumn: gender
@@ -30,6 +33,7 @@ table fact_insured
 
 	column age_band_start
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 4b94ad72-0e40-4218-af9b-30f4373c0e5c
 		summarizeBy: none
@@ -54,6 +58,4 @@ table fact_insured
 				  #"Navigation 1" = Source{[Schema = "phi", Item = "fact_insured"]}[Data]
 				in
 				  #"Navigation 1"
-
-	changedProperty = Name
 

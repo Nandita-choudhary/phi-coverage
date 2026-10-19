@@ -6,11 +6,13 @@ table dim_excess
 		lineageTag: b94f40f7-5601-4cd1-9924-dde8fb558ec8
 		summarizeBy: none
 		sourceColumn: excess
+		sortByColumn: sort_order
 
 		annotation SummarizationSetBy = Automatic
 
 	column sort_order
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 7e71ffaf-b50b-4a2f-a5fe-5951aa092c07
 		summarizeBy: none
@@ -35,6 +37,4 @@ table dim_excess
 				  #"Navigation 1" = Source{[Schema = "phi", Item = "dim_excess"]}[Data]
 				in
 				  #"Navigation 1"
-
-	changedProperty = Name
 
