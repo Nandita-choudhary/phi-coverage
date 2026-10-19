@@ -1,0 +1,53 @@
+table fact_population_by_age
+	lineageTag: 3b572f8c-69d6-44d5-86bd-79e428e953d9
+
+	column quarter_end
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: dabe3bee-a6a4-418e-a243-ded85f01ede3
+		summarizeBy: none
+		sourceColumn: quarter_end
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column gender
+		dataType: string
+		lineageTag: 597b4999-7e47-49ac-baeb-453ae799f844
+		summarizeBy: none
+		sourceColumn: gender
+
+		annotation SummarizationSetBy = Automatic
+
+	column age_band_start
+		dataType: int64
+		formatString: 0
+		lineageTag: f007a429-8c8c-4ea9-b4ec-f9e26dc5915d
+		summarizeBy: none
+		sourceColumn: age_band_start
+
+		annotation SummarizationSetBy = Automatic
+
+	column population
+		dataType: int64
+		formatString: 0
+		lineageTag: cf0116e2-792e-40cc-9835-db1398004e40
+		summarizeBy: sum
+		sourceColumn: population
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_population_by_age = m
+		mode: import
+		source =
+				let
+				  Source = Sql.Database("phi-coverage-nandita.database.windows.net", "phicoverage"),
+				  #"Navigation 1" = Source{[Schema = "phi", Item = "fact_population_by_age"]}[Data]
+				in
+				  #"Navigation 1"
+
+	changedProperty = Name
+
+	annotation PBI_ResultType = Table
+

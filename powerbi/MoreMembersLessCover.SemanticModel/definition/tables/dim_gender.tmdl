@@ -1,0 +1,30 @@
+table dim_gender
+	lineageTag: 2f4cbb3c-5f73-40b1-bde2-7b3da7a5e7df
+
+	column gender
+		dataType: string
+		lineageTag: 5767c5f0-e98c-4be5-aa46-349a44943a53
+		summarizeBy: none
+		sourceColumn: gender
+
+		annotation SummarizationSetBy = Automatic
+
+	column gender_name
+		dataType: string
+		lineageTag: 5ac1eebe-9744-49da-b4e9-16fd9bf636ff
+		summarizeBy: none
+		sourceColumn: gender_name
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_gender = m
+		mode: import
+		source =
+				let
+				  Source = Sql.Database("phi-coverage-nandita.database.windows.net", "phicoverage"),
+				  #"Navigation 1" = Source{[Schema = "phi", Item = "dim_gender"]}[Data]
+				in
+				  #"Navigation 1"
+
+	changedProperty = Name
+

@@ -1,0 +1,40 @@
+table dim_excess
+	lineageTag: f4181113-b325-4ccf-834c-a62706dc50f9
+
+	column excess
+		dataType: string
+		lineageTag: b94f40f7-5601-4cd1-9924-dde8fb558ec8
+		summarizeBy: none
+		sourceColumn: excess
+
+		annotation SummarizationSetBy = Automatic
+
+	column sort_order
+		dataType: int64
+		formatString: 0
+		lineageTag: 7e71ffaf-b50b-4a2f-a5fe-5951aa092c07
+		summarizeBy: none
+		sourceColumn: sort_order
+
+		annotation SummarizationSetBy = Automatic
+
+	column has_excess
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 7fa61f2b-ea6d-43f6-84d1-79a8d2befaba
+		summarizeBy: none
+		sourceColumn: has_excess
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_excess = m
+		mode: import
+		source =
+				let
+				  Source = Sql.Database("phi-coverage-nandita.database.windows.net", "phicoverage"),
+				  #"Navigation 1" = Source{[Schema = "phi", Item = "dim_excess"]}[Data]
+				in
+				  #"Navigation 1"
+
+	changedProperty = Name
+

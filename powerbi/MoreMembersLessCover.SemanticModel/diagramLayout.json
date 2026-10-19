@@ -1,0 +1,154 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 0,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 337.02755030035905,
+            "y": -33.167892072288623
+          },
+          "nodeIndex": "dim_age_band",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1466.9636326054415,
+            "y": 568.7235063635685
+          },
+          "nodeIndex": "dim_cover",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1700.9636326054415,
+            "y": 285.36175318178425
+          },
+          "nodeIndex": "dim_date",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1201.2755182199255,
+            "y": 154.1439308406342
+          },
+          "nodeIndex": "dim_excess",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 337.01096933163757,
+            "y": 305.46638016894917
+          },
+          "nodeIndex": "dim_gender",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 911.27481784137194,
+            "y": 153.67514510447302
+          },
+          "nodeIndex": "dim_state",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 624.10926308979083,
+            "y": 92.470899898035555
+          },
+          "nodeIndex": "fact_insured",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1176.9853830563638,
+            "y": 358.12809422591943
+          },
+          "nodeIndex": "fact_policies",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 911.35682262203613,
+            "y": -50
+          },
+          "nodeIndex": "fact_population",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 50,
+            "y": 109.62069110319993
+          },
+          "nodeIndex": "fact_population_by_age",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1984.9636326054415,
+            "y": 261.36175318178425
+          },
+          "nodeIndex": "reconciliation_panel",
+          "size": {
+            "height": 248,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "All tables",
+      "zoomValue": 100,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "All tables",
+  "defaultDiagram": "All tables"
+}

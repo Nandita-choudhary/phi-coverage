@@ -1,0 +1,52 @@
+relationship AutoDetected_df239232-cf89-4067-b9b2-eb69b2a5ce54
+	fromColumn: fact_insured.age_band_start
+	toColumn: dim_age_band.age_band_start
+
+relationship AutoDetected_1de24ae3-b728-4bdd-9f70-da4c127e6a05
+	fromColumn: fact_population_by_age.age_band_start
+	toColumn: dim_age_band.age_band_start
+
+relationship AutoDetected_07f3f58a-1a0a-4b8d-a1eb-922a1d71a069
+	fromColumn: fact_policies.policy_cover
+	toColumn: dim_cover.policy_cover
+
+relationship AutoDetected_c31b7547-763d-4580-9161-5f815f241854
+	fromColumn: fact_policies.excess
+	toColumn: dim_excess.excess
+
+relationship AutoDetected_70fc6055-1c3b-4f37-9b45-ad6233d857b1
+	fromColumn: fact_insured.gender
+	toColumn: dim_gender.gender
+
+relationship AutoDetected_bce22d88-5362-48c8-bb72-87c53d9a736e
+	fromColumn: fact_population_by_age.gender
+	toColumn: dim_gender.gender
+
+relationship AutoDetected_3aba7ba6-5f04-408e-947c-56d2d44040cb
+	fromColumn: fact_insured.state
+	toColumn: dim_state.state
+
+relationship AutoDetected_cb61fc6b-226a-4443-95ce-ab004a90bf70
+	fromColumn: fact_policies.state
+	toColumn: dim_state.state
+
+relationship AutoDetected_bf83a146-ce2b-4030-bba3-e47a4cdb4c7a
+	fromColumn: fact_population.state
+	toColumn: dim_state.state
+
+relationship 4bd7ae9c-a5ba-f71e-4a48-7e17e7016bd5
+	fromColumn: fact_policies.quarter_end
+	toColumn: dim_date.date
+
+relationship 8c50545b-6201-909f-2fd8-e0119fc87d04
+	fromColumn: fact_insured.quarter_end
+	toColumn: dim_date.date
+
+relationship 9eaf563d-a8e2-1626-2f9c-98983ea96763
+	fromColumn: fact_population.quarter_end
+	toColumn: dim_date.date
+
+relationship c92699ca-1f4d-0f7a-12c0-1b829f2a269b
+	fromColumn: fact_population_by_age.quarter_end
+	toColumn: dim_date.date
+

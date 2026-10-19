@@ -1,0 +1,57 @@
+table dim_age_band
+	lineageTag: 1a5629ec-ecd4-4913-8db8-0cf8ba65711b
+
+	column age_band_start
+		dataType: int64
+		formatString: 0
+		lineageTag: 4431ab00-0d47-4e94-a462-e11c8a3dbe52
+		summarizeBy: none
+		sourceColumn: age_band_start
+
+		annotation SummarizationSetBy = Automatic
+
+	column age_band
+		dataType: string
+		lineageTag: e081cfe7-0e61-49a4-8ca7-82ef4406e47e
+		summarizeBy: none
+		sourceColumn: age_band
+
+		annotation SummarizationSetBy = Automatic
+
+	column age_group
+		dataType: string
+		lineageTag: ae388a9c-2cc2-4082-9088-040be6797afe
+		summarizeBy: none
+		sourceColumn: age_group
+
+		annotation SummarizationSetBy = Automatic
+
+	column age_group_order
+		dataType: int64
+		formatString: 0
+		lineageTag: 472e495a-bf5a-499b-818c-1d5c696b194a
+		summarizeBy: sum
+		sourceColumn: age_group_order
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_65_plus
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 25935bce-88ee-44ba-972e-0fe27d3ac4a6
+		summarizeBy: none
+		sourceColumn: is_65_plus
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_age_band = m
+		mode: import
+		source =
+				let
+				  Source = Sql.Database("phi-coverage-nandita.database.windows.net", "phicoverage"),
+				  #"Navigation 1" = Source{[Schema = "phi", Item = "dim_age_band"]}[Data]
+				in
+				  #"Navigation 1"
+
+	changedProperty = Name
+

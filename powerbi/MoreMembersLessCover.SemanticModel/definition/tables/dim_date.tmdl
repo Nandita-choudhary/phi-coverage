@@ -1,0 +1,64 @@
+table dim_date
+	lineageTag: e6a7818c-a5e9-4b87-a99b-923323643699
+	dataCategory: Time
+
+	column date
+		dataType: dateTime
+		isKey
+		formatString: Long Date
+		lineageTag: 213dc41d-48b8-41ee-a756-80231ee0826a
+		summarizeBy: none
+		sourceColumn: date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column year
+		dataType: int64
+		formatString: 0
+		lineageTag: 736859fd-c2ee-4c8b-af55-fa40ac497b62
+		summarizeBy: sum
+		sourceColumn: year
+
+		annotation SummarizationSetBy = Automatic
+
+	column quarter_end
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 07ed9baf-8b4b-4584-8f43-fdd001fbf4b6
+		summarizeBy: none
+		sourceColumn: quarter_end
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column quarter_label
+		dataType: string
+		lineageTag: 5c9a9266-e97b-47b4-8204-508385dddb43
+		summarizeBy: none
+		sourceColumn: quarter_label
+
+		annotation SummarizationSetBy = Automatic
+
+	column after_2019_excess_rule
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 1d326b0f-8a62-472c-ba4f-644c4885e493
+		summarizeBy: none
+		sourceColumn: after_2019_excess_rule
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_date = m
+		mode: import
+		source =
+				let
+				  Source = Sql.Database("phi-coverage-nandita.database.windows.net", "phicoverage"),
+				  #"Navigation 1" = Source{[Schema = "phi", Item = "dim_date"]}[Data]
+				in
+				  #"Navigation 1"
+
+	changedProperty = Name
+

@@ -1,0 +1,60 @@
+table fact_policies
+	lineageTag: 5140300a-78d0-4b66-ac7e-50b241cf96d5
+
+	column quarter_end
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 2e123988-8ff6-4243-abf3-56067d0092e8
+		summarizeBy: none
+		sourceColumn: quarter_end
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column state
+		dataType: string
+		lineageTag: 5a7a4d91-7a22-4d9e-b629-ade9e681842e
+		summarizeBy: none
+		sourceColumn: state
+
+		annotation SummarizationSetBy = Automatic
+
+	column policy_cover
+		dataType: string
+		lineageTag: 3ccaad2e-0dc0-40ab-b0d5-47e7857d6873
+		summarizeBy: none
+		sourceColumn: policy_cover
+
+		annotation SummarizationSetBy = Automatic
+
+	column excess
+		dataType: string
+		lineageTag: 8d2ec349-0213-4dad-b2b8-8de7c9cd6619
+		summarizeBy: none
+		sourceColumn: excess
+
+		annotation SummarizationSetBy = Automatic
+
+	column policies
+		dataType: int64
+		formatString: 0
+		lineageTag: 15dd81a1-6dfd-4139-a3bc-a13bc003bdca
+		summarizeBy: sum
+		sourceColumn: policies
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_policies = m
+		mode: import
+		source =
+				let
+				  Source = Sql.Database("phi-coverage-nandita.database.windows.net", "phicoverage"),
+				  #"Navigation 1" = Source{[Schema = "phi", Item = "fact_policies"]}[Data]
+				in
+				  #"Navigation 1"
+
+	changedProperty = Name
+
+	annotation PBI_ResultType = Table
+

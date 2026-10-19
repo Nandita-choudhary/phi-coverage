@@ -1,0 +1,76 @@
+table reconciliation_panel
+	lineageTag: c98b207d-7b83-4f03-b970-cfba54f20841
+
+	column measure
+		dataType: string
+		lineageTag: 760e32d7-2505-4cb1-9336-bc662639281f
+		summarizeBy: none
+		sourceColumn: measure
+
+		annotation SummarizationSetBy = Automatic
+
+	column published_display
+		dataType: string
+		lineageTag: 1f07afce-adf1-4d65-be5c-35c64714a3a2
+		summarizeBy: none
+		sourceColumn: published_display
+
+		annotation SummarizationSetBy = Automatic
+
+	column ours_display
+		dataType: string
+		lineageTag: 25f4ae2e-e9e9-4477-a7ea-f9b4821d2c6e
+		summarizeBy: none
+		sourceColumn: ours_display
+
+		annotation SummarizationSetBy = Automatic
+
+	column matches
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 2f904b36-f007-4e61-ac75-2d7ccb5939e1
+		summarizeBy: none
+		sourceColumn: matches
+
+		annotation SummarizationSetBy = Automatic
+
+	column source
+		dataType: string
+		lineageTag: 1cf30ea4-1873-487d-b8c3-9904373bbe77
+		summarizeBy: none
+		sourceColumn: source
+
+		annotation SummarizationSetBy = Automatic
+
+	column note
+		dataType: string
+		lineageTag: 4808fb9f-463e-431a-b8a8-beb5badc8d96
+		summarizeBy: none
+		sourceColumn: note
+
+		annotation SummarizationSetBy = Automatic
+
+	column checked_on
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: a5e27db5-c4bb-4445-8b68-4db10bc6a05d
+		summarizeBy: none
+		sourceColumn: checked_on
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition reconciliation_panel = m
+		mode: import
+		source =
+				let
+				  Source = Sql.Database("phi-coverage-nandita.database.windows.net", "phicoverage"),
+				  #"Navigation 1" = Source{[Schema = "phi", Item = "reconciliation_panel"]}[Data]
+				in
+				  #"Navigation 1"
+
+	changedProperty = Name
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,39 @@
+table dim_cover
+	lineageTag: 06a97e5c-616f-4bed-8e6f-2aa6d3842411
+
+	column policy_cover
+		dataType: string
+		lineageTag: 95bdcb15-76ed-4ff9-9134-3482624d07f3
+		summarizeBy: none
+		sourceColumn: policy_cover
+
+		annotation SummarizationSetBy = Automatic
+
+	column cover_group
+		dataType: string
+		lineageTag: 4d923540-2804-4b10-bfbd-a5a3011b571e
+		summarizeBy: none
+		sourceColumn: cover_group
+
+		annotation SummarizationSetBy = Automatic
+
+	column has_lifetime_exclusions
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: c8275285-a6ad-49a4-aa3c-b15610e3c226
+		summarizeBy: none
+		sourceColumn: has_lifetime_exclusions
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_cover = m
+		mode: import
+		source =
+				let
+				  Source = Sql.Database("phi-coverage-nandita.database.windows.net", "phicoverage"),
+				  #"Navigation 1" = Source{[Schema = "phi", Item = "dim_cover"]}[Data]
+				in
+				  #"Navigation 1"
+
+	changedProperty = Name
+
