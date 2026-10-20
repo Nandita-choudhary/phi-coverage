@@ -26,6 +26,7 @@ table _Measures
 			RETURN
 			    CALCULATE ( SUM ( fact_population[population] ), fact_population[quarter_end] = LastQuarter )
 		formatString: #,0
+		isHidden
 		displayFolder: Counts and coverage
 		lineageTag: 300eabdc-0e12-4e74-aaa0-b23543f23d7e
 
@@ -39,14 +40,14 @@ table _Measures
 	measure 'Insured Persons, Change on a Year Earlier' =
 			VAR LastQuarter = MAX ( fact_insured[quarter_end] )
 			VAR YearEarlier = EDATE ( LastQuarter, -12 )
-			VAR Before =
+			VAR YearEarlierValue =
 			    CALCULATE (
 			        SUM ( fact_insured[insured_persons] ),
 			        REMOVEFILTERS ( dim_date ),
 			        fact_insured[quarter_end] = YearEarlier
 			    )
 			RETURN
-			    IF ( NOT ISBLANK ( Before ), [Insured Persons] - Before )
+			    IF ( NOT ISBLANK ( YearEarlierValue ), [Insured Persons] - YearEarlierValue )
 		formatString: +#,0;-#,0
 		displayFolder: Change on a year earlier
 		lineageTag: 9856d027-2c48-4cc1-842b-365d925e3ce3
@@ -55,7 +56,7 @@ table _Measures
 	measure 'Coverage Rate, Change on a Year Earlier' =
 			VAR LastQuarter = MAX ( fact_insured[quarter_end] )
 			VAR YearEarlier = EDATE ( LastQuarter, -12 )
-			VAR Before =
+			VAR YearEarlierValue =
 			    CALCULATE (
 			        [Coverage Rate],
 			        REMOVEFILTERS ( dim_date ),
@@ -63,7 +64,7 @@ table _Measures
 			        fact_population[quarter_end] = YearEarlier
 			    )
 			RETURN
-			    IF ( NOT ISBLANK ( Before ), [Coverage Rate] - Before )
+			    IF ( NOT ISBLANK ( YearEarlierValue ), [Coverage Rate] - YearEarlierValue )
 		formatString: +0.0%;-0.0%
 		displayFolder: Change on a year earlier
 		lineageTag: e4972422-139d-47e4-9578-a4209dbd9722
@@ -159,6 +160,7 @@ table _Measures
 
 	column Placeholder
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 0fd16950-2316-4192-b068-8a4b86a265fb
 		summarizeBy: none
