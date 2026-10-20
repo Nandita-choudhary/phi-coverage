@@ -11,7 +11,7 @@ annotation __PBI_TimeIntelligenceEnabled = 0
 
 annotation PBI_QueryOrder = ["dim_age_band","dim_cover","dim_date","dim_excess","dim_gender","dim_state","fact_insured","fact_policies","fact_population","fact_population_by_age","reconciliation_panel"]
 
-annotation PBI_ProTooling = ["DevMode"]
+annotation PBI_ProTooling = ["DevMode","DaxQueryView_Desktop"]
 
 ref table dim_age_band
 ref table dim_cover
