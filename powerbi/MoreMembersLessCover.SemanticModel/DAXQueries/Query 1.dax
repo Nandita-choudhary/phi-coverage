@@ -1,0 +1,26 @@
+
+DEFINE
+    VAR Checks =
+        {
+            ( 1, "Insured Persons", FORMAT ( [Insured Persons], "#,0" ), "12,823,752" ),
+            ( 2, "Hospital Policies", FORMAT ( [Hospital Policies], "#,0" ), "6,268,336" ),
+            ( 3, "Coverage Rate", FORMAT ( [Coverage Rate], "0.0%" ), "45.8%" ),
+            ( 4, "Insured Persons, Change on a Year Earlier",
+                 FORMAT ( [Insured Persons, Change on a Year Earlier], "+#,0;-#,0" ), "+292,743" ),
+            ( 5, "Full Cover Share", FORMAT ( [Full Cover Share], "0.0%" ), "26.8%" ),
+            ( 6, "Excess Over 500 Share", FORMAT ( [Excess Over 500 Share], "0.0%" ), "29.4%" ),
+            ( 7, "Share Aged 65+, Insured", FORMAT ( [Share Aged 65+, Insured], "0.0%" ), "20.7%" ),
+            ( 8, "Share Aged 65+, Australia", FORMAT ( [Share Aged 65+, Australia], "0.0%" ), "17.4%" ),
+            ( 9, "Age Gap (points)", FORMAT ( [Age Gap (points)], "0.0" ), "3.3" ),
+            ( 10, "Data Period", [Data Period], "APRA data · June 2007 to June 2026" )
+        }
+EVALUATE
+    SELECTCOLUMNS (
+        Checks,
+        "No", [Value1],
+        "Measure", [Value2],
+        "Power BI", [Value3],
+        "Guide", [Value4],
+        "Match", IF ( [Value3] = [Value4], "yes", "NO" )
+    )
+ORDER BY [No]
