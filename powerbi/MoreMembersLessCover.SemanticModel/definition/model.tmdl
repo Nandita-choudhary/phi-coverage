@@ -24,6 +24,7 @@ ref table fact_policies
 ref table fact_population
 ref table fact_population_by_age
 ref table reconciliation_panel
+ref table _Measures
 
 ref cultureInfo en-US
 

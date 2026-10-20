@@ -1,0 +1,175 @@
+/// Holds every measure, so none of them pretend to belong to a real table. Its one column is a hidden placeholder, because a table cannot be empty.
+table _Measures
+	lineageTag: cb39666b-c58c-4eef-a010-10446e152b20
+
+	/// People with hospital cover at the end of the latest quarter in view.
+	measure 'Insured Persons' =
+			VAR LastQuarter = MAX ( fact_insured[quarter_end] )
+			RETURN
+			    CALCULATE ( SUM ( fact_insured[insured_persons] ), fact_insured[quarter_end] = LastQuarter )
+		formatString: #,0
+		displayFolder: Counts and coverage
+		lineageTag: 4f91fcd6-e5b9-4daf-8318-79eeff7d0b22
+
+	/// Hospital policies at the end of the latest quarter in view.
+	measure 'Hospital Policies' =
+			VAR LastQuarter = MAX ( fact_policies[quarter_end] )
+			RETURN
+			    CALCULATE ( SUM ( fact_policies[policies] ), fact_policies[quarter_end] = LastQuarter )
+		formatString: #,0
+		displayFolder: Counts and coverage
+		lineageTag: 5070aa08-74c1-46a5-b5e2-ef3ab0b7db99
+
+	/// State population at the end of the latest quarter in view. A hidden helper for Coverage Rate.
+	measure 'Total Population' =
+			VAR LastQuarter = MAX ( fact_population[quarter_end] )
+			RETURN
+			    CALCULATE ( SUM ( fact_population[population] ), fact_population[quarter_end] = LastQuarter )
+		formatString: #,0
+		isHidden
+		displayFolder: Counts and coverage
+		lineageTag: 300eabdc-0e12-4e74-aaa0-b23543f23d7e
+
+	/// The honest headline: the share of people with hospital cover. Population grows, so a record headcount can hide a falling share.
+	measure 'Coverage Rate' = DIVIDE ( [Insured Persons], [Total Population] )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Counts and coverage
+		lineageTag: e578ae01-64aa-4d70-b459-6f17146a839e
+
+	/// People with hospital cover, against the same quarter a year earlier. Blank when there is no year earlier to compare with, rather than a misleading zero.
+	measure 'Insured Persons, Change on a Year Earlier' =
+			VAR LastQuarter = MAX ( fact_insured[quarter_end] )
+			VAR YearEarlier = EDATE ( LastQuarter, -12 )
+			VAR Before =
+			    CALCULATE (
+			        SUM ( fact_insured[insured_persons] ),
+			        REMOVEFILTERS ( dim_date ),
+			        fact_insured[quarter_end] = YearEarlier
+			    )
+			RETURN
+			    IF ( NOT ISBLANK ( Before ), [Insured Persons] - Before )
+		formatString: +#,0;-#,0
+		displayFolder: Change on a year earlier
+		lineageTag: 9856d027-2c48-4cc1-842b-365d925e3ce3
+
+	/// The share of people with hospital cover, against the same quarter a year earlier. Blank when there is no year earlier to compare with, rather than a misleading zero.
+	measure 'Coverage Rate, Change on a Year Earlier' =
+			VAR LastQuarter = MAX ( fact_insured[quarter_end] )
+			VAR YearEarlier = EDATE ( LastQuarter, -12 )
+			VAR Before =
+			    CALCULATE (
+			        [Coverage Rate],
+			        REMOVEFILTERS ( dim_date ),
+			        fact_insured[quarter_end] = YearEarlier,
+			        fact_population[quarter_end] = YearEarlier
+			    )
+			RETURN
+			    IF ( NOT ISBLANK ( Before ), [Coverage Rate] - Before )
+		formatString: +0.0%;-0.0%
+		displayFolder: Change on a year earlier
+		lineageTag: e4972422-139d-47e4-9578-a4209dbd9722
+
+	/// Share of hospital policies with full cover: no reduced cover, no lifetime exclusions.
+	measure 'Full Cover Share' =
+			DIVIDE (
+			    CALCULATE ( [Hospital Policies], KEEPFILTERS ( dim_cover[cover_group] = "Full cover" ) ),
+			    CALCULATE ( [Hospital Policies], REMOVEFILTERS ( dim_cover ) )
+			)
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Downgrading
+		lineageTag: 730caa88-9895-412c-96b1-2aabf1e8c7f0
+
+	/// Share of hospital policies whose excess is over 500 dollars (single).
+	measure 'Excess Over 500 Share' =
+			DIVIDE (
+			    CALCULATE ( [Hospital Policies], KEEPFILTERS ( dim_excess[excess] = "Over $500 single" ) ),
+			    CALCULATE ( [Hospital Policies], REMOVEFILTERS ( dim_excess ) )
+			)
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Downgrading
+		lineageTag: ff0acdd9-b884-4ba7-85e8-918778b06372
+
+	/// Share of insured people aged 65 or over, in the latest June with population data.
+	measure 'Share Aged 65+, Insured' =
+			VAR LastJune = MAX ( fact_population_by_age[quarter_end] )
+			RETURN
+			    DIVIDE (
+			        CALCULATE ( SUM ( fact_insured[insured_persons] ), fact_insured[quarter_end] = LastJune,
+			                    KEEPFILTERS ( dim_age_band[is_65_plus] = TRUE () ) ),
+			        CALCULATE ( SUM ( fact_insured[insured_persons] ), fact_insured[quarter_end] = LastJune,
+			                    REMOVEFILTERS ( dim_age_band ) )
+			    )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: An older pool
+		lineageTag: f9a79a7d-e3fd-44b8-a763-4f35ec3e44c9
+
+	/// The same share for all Australians: the comparison that matters.
+	measure 'Share Aged 65+, Australia' =
+			VAR LastJune = MAX ( fact_population_by_age[quarter_end] )
+			RETURN
+			    DIVIDE (
+			        CALCULATE ( SUM ( fact_population_by_age[population] ),
+			                    fact_population_by_age[quarter_end] = LastJune,
+			                    KEEPFILTERS ( dim_age_band[is_65_plus] = TRUE () ) ),
+			        CALCULATE ( SUM ( fact_population_by_age[population] ),
+			                    fact_population_by_age[quarter_end] = LastJune,
+			                    REMOVEFILTERS ( dim_age_band ) )
+			    )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: An older pool
+		lineageTag: 770a39fb-9618-47fe-af2b-1e3d4f92f5ee
+
+	/// How far the insured pool's 65+ share runs ahead of the country's, in percentage points.
+	measure 'Age Gap (points)' = ( [Share Aged 65+, Insured] - [Share Aged 65+, Australia] ) * 100
+		formatString: 0.0
+		displayFolder: An older pool
+		lineageTag: eea6f061-4edf-4f08-8c9c-9b3263316f9f
+
+	/// Hospital coverage within an age band or group, each June. National only: population by age has no state, so it is blank under a state filter. Also blank where APRA's population table lacks a gender and band that the insured count includes (women 95+, June 2018), rather than a rate with a hole in its denominator.
+	measure 'Coverage Rate by Age' =
+			VAR LastJune = MAX ( fact_population_by_age[quarter_end] )
+			VAR Insured =
+			    CALCULATE ( SUM ( fact_insured[insured_persons] ), fact_insured[quarter_end] = LastJune )
+			VAR People =
+			    CALCULATE ( SUM ( fact_population_by_age[population] ),
+			                fact_population_by_age[quarter_end] = LastJune )
+			VAR InsuredPairs =
+			    CALCULATE ( COUNTROWS ( SUMMARIZE ( fact_insured, fact_insured[gender], fact_insured[age_band_start] ) ),
+			                fact_insured[quarter_end] = LastJune )
+			VAR PeoplePairs =
+			    CALCULATE ( COUNTROWS ( SUMMARIZE ( fact_population_by_age, fact_population_by_age[gender],
+			                                        fact_population_by_age[age_band_start] ) ),
+			                fact_population_by_age[quarter_end] = LastJune )
+			RETURN
+			    IF ( NOT ISFILTERED ( dim_state ) && InsuredPairs = PeoplePairs, DIVIDE ( Insured, People ) )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: An older pool
+		lineageTag: a7e63de0-afe8-4a8f-9348-2bcad6b27b2a
+
+	/// For every page's header: updates itself when a new release loads.
+	measure 'Data Period' =
+			"APRA data · " & FORMAT ( MIN ( fact_insured[quarter_end] ), "mmmm yyyy" ) & " to "
+			    & FORMAT ( MAX ( fact_insured[quarter_end] ), "mmmm yyyy" )
+		displayFolder: Labels
+		lineageTag: d42401c9-76ac-4832-8cfb-a5e3f0cb8b15
+
+	/// The June that page 3's cards describe.
+	measure 'Population Year' = FORMAT ( MAX ( fact_population_by_age[quarter_end] ), "mmmm yyyy" )
+		displayFolder: Labels
+		lineageTag: 76dcbb70-d452-4aff-8bf8-6c5cb3689fdd
+
+	column Placeholder
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 0fd16950-2316-4192-b068-8a4b86a265fb
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Placeholder]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition _Measures = calculated
+		mode: import
+		source = ROW ( "Placeholder", 0 )
+
