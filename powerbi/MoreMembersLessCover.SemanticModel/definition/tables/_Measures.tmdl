@@ -158,6 +158,11 @@ table _Measures
 		displayFolder: Labels
 		lineageTag: 76dcbb70-d452-4aff-8bf8-6c5cb3689fdd
 
+	/// Yes or No for page 1's reconciliation table: whether ours rounds to the published figure. The SQL view stores it as true or false.
+	measure 'Reconciliation Match' = IF ( HASONEVALUE ( reconciliation_panel[matches] ), IF ( SELECTEDVALUE ( reconciliation_panel[matches] ), "Yes", "No" ) )
+		displayFolder: Labels
+		lineageTag: 33499bab-8a54-4a12-a93e-93081b6d7303
+
 	column Placeholder
 		dataType: int64
 		isHidden
