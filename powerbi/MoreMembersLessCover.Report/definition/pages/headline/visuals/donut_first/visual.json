@@ -3,11 +3,11 @@
   "name": "donut_first",
   "position": {
     "x": 908,
-    "y": 390,
+    "y": 402,
     "z": 31000,
     "height": 176,
     "width": 168,
-    "tabOrder": 21000
+    "tabOrder": 20000
   },
   "visual": {
     "visualType": "donutChart",

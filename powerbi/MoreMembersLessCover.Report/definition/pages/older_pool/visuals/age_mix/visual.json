@@ -705,8 +705,13 @@
             },
             "text": {
               "expr": {
-                "Literal": {
-                  "Value": "'Every age group under 65 shrank as a share of the insured; 65 and over grew from 13.3% to 20.7%'"
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Title, Age Mix"
                 }
               }
             },
@@ -764,8 +769,13 @@
             },
             "text": {
               "expr": {
-                "Literal": {
-                  "Value": "'Share of people in each age group, June 2007 and June 2025: people with hospital cover against all Australians.'"
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Subtitle, Age Mix"
                 }
               }
             },
@@ -822,8 +832,13 @@
           "properties": {
             "altText": {
               "expr": {
-                "Literal": {
-                  "Value": "'Every age group under 65 shrank as a share of the insured; 65 and over grew from 13.3% to 20.7%. Share of people in each age group, June 2007 and June 2025: people with hospital cover against all Australians.'"
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Title, Age Mix"
                 }
               }
             }

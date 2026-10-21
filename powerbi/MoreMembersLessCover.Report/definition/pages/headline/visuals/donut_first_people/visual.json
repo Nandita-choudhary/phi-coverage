@@ -3,11 +3,11 @@
   "name": "donut_first_people",
   "position": {
     "x": 912,
-    "y": 486,
+    "y": 498,
     "z": 33000,
     "height": 18,
     "width": 160,
-    "tabOrder": 25000
+    "tabOrder": 22000
   },
   "visual": {
     "visualType": "cardVisual",

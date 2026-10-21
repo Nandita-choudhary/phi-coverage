@@ -19,75 +19,18 @@
               {
                 "textRuns": [
                   {
-                    "value": "Yes. By June 2025, people aged 65 and over made up ",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "12pt",
-                      "color": "#F1F5F9"
-                    }
-                  },
-                  {
-                    "value": "20.7%",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontWeight": "bold",
-                      "fontSize": "12pt",
-                      "color": "#F1F5F9"
-                    }
-                  },
-                  {
-                    "value": " of the insured, up from ",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "12pt",
-                      "color": "#F1F5F9"
-                    }
-                  },
-                  {
-                    "value": "13.3%",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontWeight": "bold",
-                      "fontSize": "12pt",
-                      "color": "#F1F5F9"
-                    }
-                  },
-                  {
-                    "value": " in June 2007. Across Australia the share rose less, from ",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "12pt",
-                      "color": "#F1F5F9"
-                    }
-                  },
-                  {
-                    "value": "13.1%",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontWeight": "bold",
-                      "fontSize": "12pt",
-                      "color": "#F1F5F9"
-                    }
-                  },
-                  {
-                    "value": " to ",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "12pt",
-                      "color": "#F1F5F9"
-                    }
-                  },
-                  {
-                    "value": "17.4%",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontWeight": "bold",
-                      "fontSize": "12pt",
-                      "color": "#F1F5F9"
-                    }
-                  },
-                  {
-                    "value": ".",
+                    "value": {
+                      "expr": {
+                        "Measure": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "_Measures"
+                            }
+                          },
+                          "Property": "Takeaway, Older Pool"
+                        }
+                      }
+                    },
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "12pt",
@@ -219,8 +162,13 @@
           "properties": {
             "altText": {
               "expr": {
-                "Literal": {
-                  "Value": "'Yes. By June 2025, people aged 65 and over made up 20.7% of the insured, up from 13.3% in June 2007. Across Australia the share rose less, from 13.1% to 17.4%.'"
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Takeaway, Older Pool"
                 }
               }
             }

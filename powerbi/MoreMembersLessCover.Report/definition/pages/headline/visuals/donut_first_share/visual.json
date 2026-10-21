@@ -3,11 +3,11 @@
   "name": "donut_first_share",
   "position": {
     "x": 922,
-    "y": 450,
+    "y": 462,
     "z": 32000,
     "height": 34,
     "width": 140,
-    "tabOrder": 23000
+    "tabOrder": 21000
   },
   "visual": {
     "visualType": "cardVisual",

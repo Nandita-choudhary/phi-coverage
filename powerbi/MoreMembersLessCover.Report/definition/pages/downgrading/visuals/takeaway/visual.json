@@ -19,92 +19,18 @@
               {
                 "textRuns": [
                   {
-                    "value": "In aggregate, yes. Policies grew ",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "12pt",
-                      "color": "#F1F5F9"
-                    }
-                  },
-                  {
-                    "value": "43.5%",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontWeight": "bold",
-                      "fontSize": "12pt",
-                      "color": "#F1F5F9"
-                    }
-                  },
-                  {
-                    "value": " since 2007, but only ",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "12pt",
-                      "color": "#F1F5F9"
-                    }
-                  },
-                  {
-                    "value": "26.8%",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontWeight": "bold",
-                      "fontSize": "12pt",
-                      "color": "#F1F5F9"
-                    }
-                  },
-                  {
-                    "value": " now give full cover, down from ",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "12pt",
-                      "color": "#F1F5F9"
-                    }
-                  },
-                  {
-                    "value": "63.6%",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontWeight": "bold",
-                      "fontSize": "12pt",
-                      "color": "#F1F5F9"
-                    }
-                  },
-                  {
-                    "value": ". And ",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "12pt",
-                      "color": "#F1F5F9"
-                    }
-                  },
-                  {
-                    "value": "29.4%",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontWeight": "bold",
-                      "fontSize": "12pt",
-                      "color": "#F1F5F9"
-                    }
-                  },
-                  {
-                    "value": " carry an excess over 500 dollars, up from ",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "12pt",
-                      "color": "#F1F5F9"
-                    }
-                  },
-                  {
-                    "value": "0.5%",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontWeight": "bold",
-                      "fontSize": "12pt",
-                      "color": "#F1F5F9"
-                    }
-                  },
-                  {
-                    "value": " before the April 2019 rule change.",
+                    "value": {
+                      "expr": {
+                        "Measure": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "_Measures"
+                            }
+                          },
+                          "Property": "Takeaway, Downgrading"
+                        }
+                      }
+                    },
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "12pt",
@@ -236,8 +162,13 @@
           "properties": {
             "altText": {
               "expr": {
-                "Literal": {
-                  "Value": "'In aggregate, yes. Policies grew 43.5% since 2007, but only 26.8% now give full cover, down from 63.6%. And 29.4% carry an excess over 500 dollars, up from 0.5% before the April 2019 rule change.'"
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Takeaway, Downgrading"
                 }
               }
             }

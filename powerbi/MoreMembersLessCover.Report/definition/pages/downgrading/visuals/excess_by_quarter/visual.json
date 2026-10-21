@@ -697,8 +697,13 @@
             },
             "text": {
               "expr": {
-                "Literal": {
-                  "Value": "'Since the April 2019 rule change, policies with an excess over 500 dollars went from 0.5% to 29.4%'"
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Title, Excess"
                 }
               }
             },
@@ -814,8 +819,13 @@
           "properties": {
             "altText": {
               "expr": {
-                "Literal": {
-                  "Value": "'Since the April 2019 rule change, policies with an excess over 500 dollars went from 0.5% to 29.4%. Share of hospital policies with an excess over 500 dollars (single), from September 2010.'"
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Title, Excess"
                 }
               }
             }

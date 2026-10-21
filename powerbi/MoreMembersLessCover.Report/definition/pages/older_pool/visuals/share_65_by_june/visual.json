@@ -43,11 +43,11 @@
                       "Entity": "_Measures"
                     }
                   },
-                  "Property": "Age Gap Series (points)"
+                  "Property": "Age Gap (points)"
                 }
               },
-              "queryRef": "_Measures.Age Gap Series (points)",
-              "nativeQueryRef": "Age Gap Series (points)",
+              "queryRef": "_Measures.Age Gap (points)",
+              "nativeQueryRef": "Age Gap (points)",
               "displayName": "Gap, percentage points"
             }
           ]
@@ -250,8 +250,13 @@
             },
             "end": {
               "expr": {
-                "Literal": {
-                  "Value": "10D"
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Age Gap, Axis Max"
                 }
               }
             },
@@ -296,15 +301,25 @@
             },
             "secStart": {
               "expr": {
-                "Literal": {
-                  "Value": "0.1D"
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Share Aged 65+, Axis Min"
                 }
               }
             },
             "secEnd": {
               "expr": {
-                "Literal": {
-                  "Value": "0.25D"
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Share Aged 65+, Axis Max"
                 }
               }
             },
@@ -401,7 +416,7 @@
             }
           },
           "selector": {
-            "metadata": "_Measures.Age Gap Series (points)"
+            "metadata": "_Measures.Age Gap (points)"
           }
         },
         {
@@ -842,7 +857,7 @@
             }
           },
           "selector": {
-            "metadata": "_Measures.Age Gap Series (points)"
+            "metadata": "_Measures.Age Gap (points)"
           }
         },
         {
@@ -862,7 +877,7 @@
                       "Entity": "_Measures"
                     }
                   },
-                  "Property": "Age Gap Series Key Label"
+                  "Property": "Age Gap Key Label"
                 }
               }
             },
@@ -882,7 +897,7 @@
                 }
               }
             ],
-            "metadata": "_Measures.Age Gap Series (points)"
+            "metadata": "_Measures.Age Gap (points)"
           }
         }
       ],
@@ -1005,7 +1020,7 @@
             }
           },
           "selector": {
-            "metadata": "_Measures.Age Gap Series (points)"
+            "metadata": "_Measures.Age Gap (points)"
           }
         },
         {
@@ -1222,8 +1237,13 @@
             },
             "text": {
               "expr": {
-                "Literal": {
-                  "Value": "'Insured people are ageing faster than Australia: aged 65+ rose from 13.3% to 20.7% of the insured, against 13.1% to 17.4% of everyone'"
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Title, Ageing"
                 }
               }
             },
@@ -1339,8 +1359,13 @@
           "properties": {
             "altText": {
               "expr": {
-                "Literal": {
-                  "Value": "'Insured people are ageing faster than Australia: aged 65+ rose from 13.3% to 20.7% of the insured, against 13.1% to 17.4% of everyone. Share of people aged 65 or over, each June (lines, left axis), and the gap between them in percentage points (columns, right axis).'"
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Title, Ageing"
                 }
               }
             }

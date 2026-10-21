@@ -19,7 +19,18 @@
               {
                 "textRuns": [
                   {
-                    "value": "Full cover means no exclusions and no reduced cover. APRA counts the mix of policies at each quarter end, not who switched, so thinner cover can come from members downgrading or from new members buying less. In the excess chart, quarters before September 2010 are left out: the share drops 4.1 points that quarter, and APRA's notes do not explain why.",
+                    "value": {
+                      "expr": {
+                        "Measure": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "_Measures"
+                            }
+                          },
+                          "Property": "Footnote, Downgrading"
+                        }
+                      }
+                    },
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "8.5pt",
@@ -151,8 +162,13 @@
           "properties": {
             "altText": {
               "expr": {
-                "Literal": {
-                  "Value": "'Full cover means no exclusions and no reduced cover. APRA counts the mix of policies at each quarter end, not who switched, so thinner cover can come from members downgrading or from new members buying less. In the excess chart, quarters before September 2010 are left out: the share drops 4.1 points that quarter, and APRA''s notes do not explain why.'"
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Footnote, Downgrading"
                 }
               }
             }

@@ -545,8 +545,13 @@
             },
             "text": {
               "expr": {
-                "Literal": {
-                  "Value": "'Full cover is rarest in WA and most common in Tasmania: 3.7 points below and 11.9 above the national 26.8%'"
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Title, State Gap"
                 }
               }
             },
@@ -662,8 +667,13 @@
           "properties": {
             "altText": {
               "expr": {
-                "Literal": {
-                  "Value": "'Full cover is rarest in WA and most common in Tasmania: 3.7 points below and 11.9 above the national 26.8%. Share of hospital policies with full cover, latest quarter, each state against Australia as a whole.'"
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Title, State Gap"
                 }
               }
             }

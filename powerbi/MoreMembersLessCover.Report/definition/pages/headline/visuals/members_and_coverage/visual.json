@@ -228,8 +228,13 @@
             },
             "end": {
               "expr": {
-                "Literal": {
-                  "Value": "20000000D"
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Insured Persons, Axis Max"
                 }
               }
             },
@@ -281,15 +286,25 @@
             },
             "secStart": {
               "expr": {
-                "Literal": {
-                  "Value": "0.4D"
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Coverage Rate, Axis Min"
                 }
               }
             },
             "secEnd": {
               "expr": {
-                "Literal": {
-                  "Value": "0.5D"
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Coverage Rate, Axis Max"
                 }
               }
             },
@@ -984,8 +999,13 @@
             },
             "text": {
               "expr": {
-                "Literal": {
-                  "Value": "'A record 12.8 million people have hospital cover, but the share of Australians covered is still below its 2015 peak'"
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Title, Members and Coverage"
                 }
               }
             },
@@ -1043,8 +1063,13 @@
             },
             "text": {
               "expr": {
-                "Literal": {
-                  "Value": "'People with hospital cover at each June (columns, left axis) and the share of the population they make up (line, right axis, 40% to 50%).'"
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Subtitle, Members and Coverage"
                 }
               }
             },
@@ -1101,8 +1126,13 @@
           "properties": {
             "altText": {
               "expr": {
-                "Literal": {
-                  "Value": "'A record 12.8 million people have hospital cover, but the share of Australians covered is still below its 2015 peak. People with hospital cover at each June (columns, left axis) and the share of the population they make up (line, right axis, 40% to 50%).'"
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Title, Members and Coverage"
                 }
               }
             }

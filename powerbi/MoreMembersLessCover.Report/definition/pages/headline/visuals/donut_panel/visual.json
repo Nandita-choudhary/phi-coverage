@@ -19,7 +19,18 @@
               {
                 "textRuns": [
                   {
-                    "value": "The slice of Australians covered barely moved, while the people in it grew",
+                    "value": {
+                      "expr": {
+                        "Measure": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "_Measures"
+                            }
+                          },
+                          "Property": "Title, Donuts"
+                        }
+                      }
+                    },
                     "textStyle": {
                       "fontFamily": "Segoe UI Semibold",
                       "fontSize": "12pt",
@@ -194,8 +205,13 @@
           "properties": {
             "altText": {
               "expr": {
-                "Literal": {
-                  "Value": "'The slice of Australians covered barely moved, while the people in it grew. Two donuts: share of Australians covered in the first and latest quarters.'"
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Title, Donuts"
                 }
               }
             }

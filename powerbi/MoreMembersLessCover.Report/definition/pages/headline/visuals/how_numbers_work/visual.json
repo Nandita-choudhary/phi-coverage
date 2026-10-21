@@ -85,7 +85,18 @@
               {
                 "textRuns": [
                   {
-                    "value": "Every figure traces back to a cell in APRA's spreadsheets. The five published figures on the right were rebuilt from them and match at the precision they were published.",
+                    "value": {
+                      "expr": {
+                        "Measure": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "_Measures"
+                            }
+                          },
+                          "Property": "Text, Reconciliation Note"
+                        }
+                      }
+                    },
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "10pt",
@@ -261,7 +272,7 @@
             "altText": {
               "expr": {
                 "Literal": {
-                  "Value": "'How the numbers work. Coverage is people with hospital cover divided by Australia''s population. People, policies and population are counted at the end of each quarter, so a period''s figure is its latest quarter, never a sum. Every figure traces back to a cell in APRA''s spreadsheets. The five published figures on the right were rebuilt from them and match at the precision they were published.'"
+                  "Value": "'How the numbers work: what coverage means, how quarters are counted, and how the figures were checked against published ones.'"
                 }
               }
             }

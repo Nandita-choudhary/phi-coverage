@@ -19,7 +19,18 @@
               {
                 "textRuns": [
                   {
-                    "value": "Source: APRA quarterly private health insurance statistics, June 2026 release, and annual membership and benefits statistics 2024–25. Population: ABS, as published by APRA. Titles and takeaways describe the June 2026 release.",
+                    "value": {
+                      "expr": {
+                        "Measure": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "_Measures"
+                            }
+                          },
+                          "Property": "Footer Source"
+                        }
+                      }
+                    },
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "8.5pt",
@@ -151,8 +162,13 @@
           "properties": {
             "altText": {
               "expr": {
-                "Literal": {
-                  "Value": "'Source: APRA quarterly private health insurance statistics, June 2026 release, and annual membership and benefits statistics 2024–25. Population: ABS, as published by APRA. Titles and takeaways describe the June 2026 release.'"
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Footer Source"
                 }
               }
             }

@@ -49,6 +49,21 @@
               "queryRef": "_Measures.Full Cover Share",
               "nativeQueryRef": "Full Cover Share",
               "displayName": "With full cover"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Full Cover Share, April 2019 Reforms"
+                }
+              },
+              "queryRef": "_Measures.Full Cover Share, April 2019 Reforms",
+              "nativeQueryRef": "Full Cover Share, April 2019 Reforms",
+              "displayName": "April 2019 reforms"
             }
           ]
         }
@@ -201,8 +216,13 @@
             },
             "end": {
               "expr": {
-                "Literal": {
-                  "Value": "0.8D"
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Full Cover Share, Axis Max"
                 }
               }
             }
@@ -258,6 +278,31 @@
           "selector": {
             "metadata": "_Measures.Full Cover Share"
           }
+        },
+        {
+          "properties": {
+            "fill": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#EB6834'"
+                    }
+                  }
+                }
+              }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "85D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "_Measures.Full Cover Share, April 2019 Reforms"
+          }
         }
       ],
       "lineStyles": [
@@ -291,6 +336,59 @@
                 }
               }
             }
+          }
+        },
+        {
+          "properties": {
+            "strokeShow": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "areaShow": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "showMarker": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "markerShape": {
+              "expr": {
+                "Literal": {
+                  "Value": "'circle'"
+                }
+              }
+            },
+            "markerSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "5D"
+                }
+              }
+            },
+            "markerColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#EB6834'"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "_Measures.Full Cover Share, April 2019 Reforms"
           }
         }
       ],
@@ -419,7 +517,7 @@
                       "Entity": "_Measures"
                     }
                   },
-                  "Property": "Full Cover Share Key Label"
+                  "Property": "Full Cover Share, Chart Label"
                 }
               }
             },
@@ -440,6 +538,20 @@
               }
             ],
             "metadata": "_Measures.Full Cover Share"
+          }
+        },
+        {
+          "properties": {
+            "showSeries": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "_Measures.Full Cover Share, April 2019 Reforms"
           }
         }
       ]
@@ -573,8 +685,13 @@
             },
             "text": {
               "expr": {
-                "Literal": {
-                  "Value": "'Policies grew 43.5% since 2007, but only 26.8% now give full cover, down from 63.6%'"
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Title, Full Cover"
                 }
               }
             },
@@ -690,8 +807,13 @@
           "properties": {
             "altText": {
               "expr": {
-                "Literal": {
-                  "Value": "'Policies grew 43.5% since 2007, but only 26.8% now give full cover, down from 63.6%. Share of hospital policies with full cover, at the end of each quarter.'"
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Title, Full Cover"
                 }
               }
             }

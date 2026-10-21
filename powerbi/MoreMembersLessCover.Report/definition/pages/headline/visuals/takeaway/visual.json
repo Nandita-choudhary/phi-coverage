@@ -19,58 +19,18 @@
               {
                 "textRuns": [
                   {
-                    "value": "Not quite. A record ",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "12pt",
-                      "color": "#F1F5F9"
-                    }
-                  },
-                  {
-                    "value": "12.8 million",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontWeight": "bold",
-                      "fontSize": "12pt",
-                      "color": "#F1F5F9"
-                    }
-                  },
-                  {
-                    "value": " people hold hospital cover, but since 2015 Australia's population has grown faster than membership. The share covered, ",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "12pt",
-                      "color": "#F1F5F9"
-                    }
-                  },
-                  {
-                    "value": "45.8%",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontWeight": "bold",
-                      "fontSize": "12pt",
-                      "color": "#F1F5F9"
-                    }
-                  },
-                  {
-                    "value": ", is still below its June 2015 peak of ",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "12pt",
-                      "color": "#F1F5F9"
-                    }
-                  },
-                  {
-                    "value": "47.4%",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontWeight": "bold",
-                      "fontSize": "12pt",
-                      "color": "#F1F5F9"
-                    }
-                  },
-                  {
-                    "value": ".",
+                    "value": {
+                      "expr": {
+                        "Measure": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "_Measures"
+                            }
+                          },
+                          "Property": "Takeaway, Headline"
+                        }
+                      }
+                    },
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "12pt",
@@ -202,8 +162,13 @@
           "properties": {
             "altText": {
               "expr": {
-                "Literal": {
-                  "Value": "'Not quite. A record 12.8 million people hold hospital cover, but since 2015 Australia''s population has grown faster than membership. The share covered, 45.8%, is still below its June 2015 peak of 47.4%.'"
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Takeaway, Headline"
                 }
               }
             }

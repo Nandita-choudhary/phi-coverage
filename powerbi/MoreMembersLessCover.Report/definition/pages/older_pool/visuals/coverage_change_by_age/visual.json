@@ -67,7 +67,7 @@
               },
               "queryRef": "_Measures.Coverage by Age, First June",
               "nativeQueryRef": "Coverage by Age, First June",
-              "displayName": "Coverage, June 2007"
+              "displayName": "Coverage, first June"
             },
             {
               "field": {
@@ -82,7 +82,7 @@
               },
               "queryRef": "_Measures.Coverage by Age, Latest June",
               "nativeQueryRef": "Coverage by Age, Latest June",
-              "displayName": "Coverage, June 2025"
+              "displayName": "Coverage, latest June"
             }
           ]
         }
@@ -547,8 +547,13 @@
             },
             "text": {
               "expr": {
-                "Literal": {
-                  "Value": "'Coverage rose most among 80- to 89-year-olds, up 18 to 19 points since 2007, and fell among 25- to 34- and 50- to 64-year-olds'"
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Title, Change by Age"
                 }
               }
             },
@@ -606,8 +611,13 @@
             },
             "text": {
               "expr": {
-                "Literal": {
-                  "Value": "'Change in the share of each age band with hospital cover, June 2007 to June 2025, percentage points. National figures.'"
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Subtitle, Change by Age"
                 }
               }
             },
@@ -664,8 +674,13 @@
           "properties": {
             "altText": {
               "expr": {
-                "Literal": {
-                  "Value": "'Coverage rose most among 80- to 89-year-olds, up 18 to 19 points since 2007, and fell among 25- to 34- and 50- to 64-year-olds. Change in the share of each age band with hospital cover, June 2007 to June 2025, percentage points. National figures.'"
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Title, Change by Age"
                 }
               }
             }

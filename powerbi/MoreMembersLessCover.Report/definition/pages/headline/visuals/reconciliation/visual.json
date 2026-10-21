@@ -497,8 +497,13 @@
             },
             "text": {
               "expr": {
-                "Literal": {
-                  "Value": "'5 of 5 published figures reproduced from APRA''s raw data'"
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Title, Reconciliation"
                 }
               }
             },
@@ -575,8 +580,13 @@
           "properties": {
             "altText": {
               "expr": {
-                "Literal": {
-                  "Value": "'5 of 5 published figures reproduced from APRA''s raw data'"
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Title, Reconciliation"
                 }
               }
             }
