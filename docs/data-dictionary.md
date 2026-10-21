@@ -43,7 +43,7 @@ to June 2026, 8 states.
 | `source_sheet` | text | The sheet the row came from | — | — |
 
 **Known quirk:** in the December 2021 quarter, every state's "Full cover, Nil" count ends in .1
-in APRA's file (197,506.1 in NSW). The loader rounds those eight values and says so on every
+in APRA's file (a NSW count ending in .1). The loader rounds those eight values and says so on every
 run; any other fractional count stops the load.
 
 ## insured_by_age · question 2: is the pool getting older?

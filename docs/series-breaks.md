@@ -7,14 +7,15 @@ points or more in one quarter, about three times the typical move.
 ## Question 1: are people downgrading instead of leaving?
 
 - **Full cover: claimable across the whole series.** The share of hospital policies with full
-  cover fell from 63.6% in June 2007 to 26.8% in June 2026, while policies grew 43.5%. The fall
-  is gradual: four one-quarter jumps add up to a net 3.6 of its 36.8 points, and APRA's notes
-  explain one of them (September 2014). The April 2019 reforms did not break it: 40.8% in March
-  2019, 41.3% in June 2019. The latest quarter's 1.7-point drop is unusually large, so check it
-  again when the next release lands.
+  cover fell from 63.6% in June 2007 to 26.8% in June 2026, a fall of 36.8 points, while
+  policies grew 43.5%. The fall is gradual: the one-quarter jumps in the table below account
+  for a small part of it, and APRA's notes explain one of them (September 2014). The April
+  2019 reforms did not break it: 40.8% in March 2019, 41.3% in June 2019. The latest quarter's
+  drop of 1.7 points is unusually large, so check it again when the next release lands.
 - **Lifetime exclusions against reduced cover without exclusions: do not trend the split.**
   Policies move between these two categories in large one-quarter steps (June 2010, September
-  2014, and the largest, 11.9 points, in September 2018), mostly unexplained by APRA's notes.
+  2014, and the largest in September 2018: see the table below), mostly unexplained by APRA's
+  notes.
   Their sum, "not full cover", is steady; the split between them is not. Use the split only at a
   single point in time, as in the ACCC reconciliation for June 2018.
 - **Excess: the nil-excess share is continuous,** 25.3% in June 2007 to 10.9% in June 2026.
@@ -28,9 +29,10 @@ points or more in one quarter, about three times the typical move.
 
 - **Yes, and faster than Australia.** In June 2007, 13.3% of insured people were 65 or over,
   against 13.1% of all Australians. By June 2025 it was 20.7% against 17.4%. The country's 65+
-  share rose 4.3 points; the insured pool's rose 7.4.
-- **Who carries the record:** hospital coverage rose most among the oldest, by about 18 to 19
-  points at ages 80 to 89, and fell among people aged 25 to 34 and 50 to 64.
+  share rose 4.3 points; the insured pool's rose 7.4 points.
+- **Who carries the record:** hospital coverage rose most among the oldest, by 17.9 points at
+  ages 80 to 84 and 18.9 points at 85 to 89. It fell in six of the twenty age bands: 0 to 4,
+  25 to 29, 30 to 34, 50 to 54, 55 to 59 and 60 to 64.
 - **Do not claim why** (for example a cohort effect from Lifetime Health Cover in 2000) unless
   published work supports it, and cite it if so.
 

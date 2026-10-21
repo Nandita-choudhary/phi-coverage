@@ -55,6 +55,8 @@ jobs:
           python etl/checks.py
           python etl/validate.py
           python etl/breaks.py
+          python etl/findings.py
+          python etl/check_docs.py
 
       - name: Load into Azure SQL
         if: steps.download.outputs.new_release == 'true' || inputs.run_anyway
@@ -67,8 +69,8 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/downloads.json data/last_load.json docs/change-log.md \
-                  docs/reconciliation.md docs/series-breaks.md
+          git add data/downloads.json data/last_load.json data/findings.json docs/change-log.md \
+                  docs/reconciliation.md docs/series-breaks.md docs/findings.md README.md
           if [ "${{ inputs.run_anyway }}" = "true" ]; then
             message="Manual run: reload and re-check the current release"
           else
