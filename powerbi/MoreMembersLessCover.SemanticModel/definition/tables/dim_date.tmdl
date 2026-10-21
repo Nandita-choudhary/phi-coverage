@@ -25,7 +25,7 @@ table dim_date
 
 	column quarter_end
 		dataType: dateTime
-		formatString: Long Date
+		formatString: mmmm yyyy
 		lineageTag: 07ed9baf-8b4b-4584-8f43-fdd001fbf4b6
 		summarizeBy: none
 		sourceColumn: quarter_end

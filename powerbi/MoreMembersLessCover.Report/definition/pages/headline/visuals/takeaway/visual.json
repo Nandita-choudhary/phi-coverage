@@ -1,0 +1,216 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "name": "takeaway",
+  "position": {
+    "x": 24,
+    "y": 112,
+    "z": 5000,
+    "height": 48,
+    "width": 1232,
+    "tabOrder": 4000
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Not quite. A record ",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "12pt",
+                      "color": "#F1F5F9"
+                    }
+                  },
+                  {
+                    "value": "12.8 million",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontWeight": "bold",
+                      "fontSize": "12pt",
+                      "color": "#F1F5F9"
+                    }
+                  },
+                  {
+                    "value": " people hold hospital cover, but since 2015 Australia's population has grown faster than membership. The share covered, ",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "12pt",
+                      "color": "#F1F5F9"
+                    }
+                  },
+                  {
+                    "value": "45.8%",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontWeight": "bold",
+                      "fontSize": "12pt",
+                      "color": "#F1F5F9"
+                    }
+                  },
+                  {
+                    "value": ", is still below its June 2015 peak of ",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "12pt",
+                      "color": "#F1F5F9"
+                    }
+                  },
+                  {
+                    "value": "47.4%",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontWeight": "bold",
+                      "fontSize": "12pt",
+                      "color": "#F1F5F9"
+                    }
+                  },
+                  {
+                    "value": ".",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "12pt",
+                      "color": "#F1F5F9"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "dropShadow": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "padding": [
+        {
+          "properties": {
+            "top": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            },
+            "bottom": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            },
+            "left": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            },
+            "right": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "visualHeader": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "general": [
+        {
+          "properties": {
+            "altText": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Not quite. A record 12.8 million people hold hospital cover, but since 2015 Australia''s population has grown faster than membership. The share covered, 45.8%, is still below its June 2015 peak of 47.4%.'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

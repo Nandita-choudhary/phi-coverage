@@ -12,7 +12,32 @@ DEFINE
             ( 7, "Share Aged 65+, Insured", FORMAT ( [Share Aged 65+, Insured], "0.0%" ), "20.7%" ),
             ( 8, "Share Aged 65+, Australia", FORMAT ( [Share Aged 65+, Australia], "0.0%" ), "17.4%" ),
             ( 9, "Age Gap (points)", FORMAT ( [Age Gap (points)], "0.0" ), "3.3" ),
-            ( 10, "Data Period", [Data Period], "APRA data · June 2007 to June 2026" )
+            ( 10, "Data Period", [Data Period], "APRA data · June 2007 to June 2026" ),
+            ( 11, "Insured Persons Context", [Insured Persons Context], "Up 40.2% since June 2007" ),
+            ( 12, "Insured Persons Change Context", [Insured Persons Change Context], "Up 2.3% on June 2025" ),
+            ( 13, "Coverage Rate Context", [Coverage Rate Context], "Peak 47.4% in June 2015" ),
+            ( 14, "Hospital Policies Context", [Hospital Policies Context], "Up 43.5% since June 2007" ),
+            ( 15, "Full Cover Share Context", [Full Cover Share Context], "Down from 63.6% in June 2007" ),
+            ( 16, "Excess Over 500 Share Context", [Excess Over 500 Share Context], "Up from 0.5% in March 2019" ),
+            ( 17, "Share Aged 65+, Insured Context", [Share Aged 65+, Insured Context], "Up from 13.3% in June 2007" ),
+            ( 18, "Share Aged 65+, Australia Context", [Share Aged 65+, Australia Context], "Up from 13.1% in June 2007" ),
+            ( 19, "Age Gap Context", [Age Gap Context], "Up from 0.2 points in June 2007" ),
+            ( 20, "Share Aged 65+, Insured Label", [Share Aged 65+, Insured Label], "Insured people aged 65+ · June 2025" ),
+            ( 21, "Share Aged 65+, Australia Label", [Share Aged 65+, Australia Label], "All Australians aged 65+ · June 2025" ),
+            ( 22, "Age Gap Label", [Age Gap Label], "Gap, percentage points · June 2025" ),
+            ( 23, "Coverage Rate Peak", FORMAT ( [Coverage Rate Peak], "0.0%" ), "47.4%" ),
+            ( 24, "Coverage Rate Peak Label", [Coverage Rate Peak Label], "June 2015 peak 47.4%" ),
+            ( 25, "Full Cover Share, Australia", FORMAT ( [Full Cover Share, Australia], "0.0%" ), "26.8%" ),
+            ( 26, "Full Cover Share, Australia Label", [Full Cover Share, Australia Label], "Australia 26.8%" ),
+            ( 27, "Insured Persons Key Label", CONCATENATEX ( FILTER ( ADDCOLUMNS ( VALUES ( dim_date[quarter_end] ), "@L", [Insured Persons Key Label] ), NOT ISBLANK ( [@L] ) ), FORMAT ( dim_date[quarter_end], "mmmm yyyy" ) & " " & [@L], "; ", dim_date[quarter_end], ASC ), "June 2007 9.1M; June 2026 12.8M" ),
+            ( 28, "Coverage Rate Key Label", CONCATENATEX ( FILTER ( ADDCOLUMNS ( VALUES ( dim_date[quarter_end] ), "@L", [Coverage Rate Key Label] ), NOT ISBLANK ( [@L] ) ), FORMAT ( dim_date[quarter_end], "mmmm yyyy" ) & " " & [@L], "; ", dim_date[quarter_end], ASC ), "June 2020 43.7%; June 2026 45.8%" ),
+            ( 29, "Full Cover Share Key Label", CONCATENATEX ( FILTER ( ADDCOLUMNS ( VALUES ( dim_date[quarter_end] ), "@L", [Full Cover Share Key Label] ), NOT ISBLANK ( [@L] ) ), FORMAT ( dim_date[quarter_end], "mmmm yyyy" ) & " " & [@L], "; ", dim_date[quarter_end], ASC ), "June 2007 63.6%; June 2026 26.8%" ),
+            ( 30, "Excess Over 500 Share Key Label", CONCATENATEX ( FILTER ( ADDCOLUMNS ( VALUES ( dim_date[quarter_end] ), "@L", [Excess Over 500 Share Key Label] ), NOT ISBLANK ( [@L] ) ), FORMAT ( dim_date[quarter_end], "mmmm yyyy" ) & " " & [@L], "; ", dim_date[quarter_end], ASC ), "March 2019 0.5%; June 2026 29.4%" ),
+            ( 31, "Share Aged 65+, Insured Key Label", CONCATENATEX ( FILTER ( ADDCOLUMNS ( VALUES ( dim_date[quarter_end] ), "@L", [Share Aged 65+, Insured Key Label] ), NOT ISBLANK ( [@L] ) ), FORMAT ( dim_date[quarter_end], "mmmm yyyy" ) & " " & [@L], "; ", dim_date[quarter_end], ASC ), "June 2007 13.3%; June 2025 20.7%" ),
+            ( 32, "Share Aged 65+, Australia Key Label", CONCATENATEX ( FILTER ( ADDCOLUMNS ( VALUES ( dim_date[quarter_end] ), "@L", [Share Aged 65+, Australia Key Label] ), NOT ISBLANK ( [@L] ) ), FORMAT ( dim_date[quarter_end], "mmmm yyyy" ) & " " & [@L], "; ", dim_date[quarter_end], ASC ), "June 2007 13.1%; June 2025 17.4%" ),
+            ( 33, "Coverage Change by Age (points)", CONCATENATEX ( ADDCOLUMNS ( VALUES ( dim_age_band[age_band] ), "@C", FORMAT ( [Coverage Change by Age (points)], "+0.0;-0.0;0.0" ) ), dim_age_band[age_band] & " " & [@C], "; ", CALCULATE ( MIN ( dim_age_band[age_band_start] ) ), ASC ), "0-4 -1.7; 5-9 +4.4; 10-14 +4.9; 15-19 +1.5; 20-24 +0.2; 25-29 -2.7; 30-34 -3.6; 35-39 +1.1; 40-44 +3.7; 45-49 +2.4; 50-54 -3.9; 55-59 -5.3; 60-64 -4.9; 65-69 +2.3; 70-74 +9.0; 75-79 +9.2; 80-84 +17.9; 85-89 +18.9; 90-94 +14.2; 95+ +6.4" ),
+            ( 34, "Reconciliation Source", CONCATENATEX ( VALUES ( reconciliation_panel[measure] ), [Reconciliation Source], "; ", [Reconciliation Source], ASC ), "ACCC; ACCC; APRA; CHOICE; CHOICE" ),
+            ( 35, "Reconciliation Match", FORMAT ( COUNTROWS ( FILTER ( VALUES ( reconciliation_panel[measure] ), [Reconciliation Match] = "✓ Yes" ) ), "0" ) & " of 5", "5 of 5" )
         }
 EVALUATE
     SELECTCOLUMNS (

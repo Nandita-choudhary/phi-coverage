@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "page_navigator",
   "position": {
-    "x": 760,
-    "y": 10,
-    "z": 3000,
-    "height": 30,
-    "width": 496,
-    "tabOrder": 3000
+    "x": 848,
+    "y": 24,
+    "z": 2000,
+    "height": 32,
+    "width": 408,
+    "tabOrder": 2000
   },
   "visual": {
     "visualType": "pageNavigator",
@@ -27,7 +27,7 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#FFFFFF'"
+                      "Value": "'downgrading'"
                     }
                   }
                 }
@@ -36,7 +36,7 @@
             "transparency": {
               "expr": {
                 "Literal": {
-                  "Value": "88D"
+                  "Value": "100D"
                 }
               }
             }
@@ -59,7 +59,7 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#FFFFFF'"
+                      "Value": "'#131C2E'"
                     }
                   }
                 }
@@ -68,7 +68,7 @@
             "transparency": {
               "expr": {
                 "Literal": {
-                  "Value": "75D"
+                  "Value": "0D"
                 }
               }
             }
@@ -91,7 +91,7 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#2A78D6'"
+                      "Value": "'#F1F5F9'"
                     }
                   }
                 }
@@ -125,7 +125,7 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#FFFFFF'"
+                      "Value": "'#CBD5E1'"
                     }
                   }
                 }
@@ -135,6 +135,13 @@
               "expr": {
                 "Literal": {
                   "Value": "10D"
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Segoe UI'"
                 }
               }
             }
@@ -157,7 +164,7 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#FFFFFF'"
+                      "Value": "'downgrading'"
                     }
                   }
                 }
@@ -170,10 +177,10 @@
                 }
               }
             },
-            "bold": {
+            "fontFamily": {
               "expr": {
                 "Literal": {
-                  "Value": "true"
+                  "Value": "'Segoe UI Semibold'"
                 }
               }
             }
@@ -189,16 +196,109 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "true"
+                }
+              }
+            },
+            "lineColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#24324A'"
+                    }
+                  }
+                }
+              }
+            },
+            "weight": {
+              "expr": {
+                "Literal": {
+                  "Value": "1D"
+                }
+              }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
                 }
               }
             }
+          },
+          "selector": {
+            "id": "default"
+          }
+        },
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "lineColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#F1F5F9'"
+                    }
+                  }
+                }
+              }
+            },
+            "weight": {
+              "expr": {
+                "Literal": {
+                  "Value": "1D"
+                }
+              }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "id": "selected"
           }
         }
       ]
     },
     "visualContainerObjects": {
       "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "dropShadow": [
         {
           "properties": {
             "show": {
@@ -259,6 +359,19 @@
         }
       ],
       "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "visualHeader": [
         {
           "properties": {
             "show": {

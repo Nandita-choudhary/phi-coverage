@@ -21,6 +21,19 @@
     }
   },
   "objects": {
+    "outspacePane": [
+      {
+        "properties": {
+          "expanded": {
+            "expr": {
+              "Literal": {
+                "Value": "false"
+              }
+            }
+          }
+        }
+      }
+    ],
     "section": [
       {
         "properties": {

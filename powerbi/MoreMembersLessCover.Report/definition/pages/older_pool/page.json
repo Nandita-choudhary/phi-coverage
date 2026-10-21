@@ -3,7 +3,7 @@
   "name": "older_pool",
   "displayName": "An older pool",
   "displayOption": "FitToPage",
-  "height": 720,
+  "height": 904,
   "width": 1280,
   "objects": {
     "background": [
@@ -14,7 +14,7 @@
               "color": {
                 "expr": {
                   "Literal": {
-                    "Value": "'#F4F3EF'"
+                    "Value": "'#0B1220'"
                   }
                 }
               }
@@ -38,7 +38,7 @@
               "color": {
                 "expr": {
                   "Literal": {
-                    "Value": "'#F4F3EF'"
+                    "Value": "'#0B1220'"
                   }
                 }
               }

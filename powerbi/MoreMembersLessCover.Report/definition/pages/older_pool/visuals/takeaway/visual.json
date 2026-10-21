@@ -1,0 +1,233 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "name": "takeaway",
+  "position": {
+    "x": 24,
+    "y": 112,
+    "z": 5000,
+    "height": 48,
+    "width": 1232,
+    "tabOrder": 4000
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Yes. By June 2025, people aged 65 and over made up ",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "12pt",
+                      "color": "#F1F5F9"
+                    }
+                  },
+                  {
+                    "value": "20.7%",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontWeight": "bold",
+                      "fontSize": "12pt",
+                      "color": "#F1F5F9"
+                    }
+                  },
+                  {
+                    "value": " of the insured, up from ",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "12pt",
+                      "color": "#F1F5F9"
+                    }
+                  },
+                  {
+                    "value": "13.3%",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontWeight": "bold",
+                      "fontSize": "12pt",
+                      "color": "#F1F5F9"
+                    }
+                  },
+                  {
+                    "value": " in June 2007. Across Australia the share rose less, from ",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "12pt",
+                      "color": "#F1F5F9"
+                    }
+                  },
+                  {
+                    "value": "13.1%",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontWeight": "bold",
+                      "fontSize": "12pt",
+                      "color": "#F1F5F9"
+                    }
+                  },
+                  {
+                    "value": " to ",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "12pt",
+                      "color": "#F1F5F9"
+                    }
+                  },
+                  {
+                    "value": "17.4%",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontWeight": "bold",
+                      "fontSize": "12pt",
+                      "color": "#F1F5F9"
+                    }
+                  },
+                  {
+                    "value": ".",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "12pt",
+                      "color": "#F1F5F9"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "dropShadow": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "padding": [
+        {
+          "properties": {
+            "top": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            },
+            "bottom": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            },
+            "left": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            },
+            "right": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "visualHeader": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "general": [
+        {
+          "properties": {
+            "altText": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Yes. By June 2025, people aged 65 and over made up 20.7% of the insured, up from 13.3% in June 2007. Across Australia the share rose less, from 13.1% to 17.4%.'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

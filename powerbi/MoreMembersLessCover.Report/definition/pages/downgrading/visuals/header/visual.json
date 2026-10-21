@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "header",
   "position": {
-    "x": 0,
-    "y": 0,
-    "z": 2000,
-    "height": 72,
-    "width": 740,
-    "tabOrder": 2000
+    "x": 24,
+    "y": 24,
+    "z": 1000,
+    "height": 64,
+    "width": 720,
+    "tabOrder": 1000
   },
   "visual": {
     "visualType": "textbox",
@@ -19,10 +19,11 @@
               {
                 "textRuns": [
                   {
-                    "value": "Downgrading",
+                    "value": "2 OF 3 · DOWNGRADING",
                     "textStyle": {
-                      "fontSize": "11pt",
-                      "color": "#C8D2DE"
+                      "fontFamily": "Segoe UI Semibold",
+                      "fontSize": "9pt",
+                      "color": "#94A3B8"
                     }
                   }
                 ]
@@ -32,9 +33,9 @@
                   {
                     "value": "Are people downgrading instead of leaving?",
                     "textStyle": {
-                      "fontWeight": "bold",
-                      "fontSize": "20pt",
-                      "color": "#FFFFFF"
+                      "fontFamily": "Segoe UI Semibold",
+                      "fontSize": "22pt",
+                      "color": "#F1F5F9"
                     }
                   }
                 ]
@@ -58,34 +59,60 @@
           }
         }
       ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "dropShadow": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
       "padding": [
         {
           "properties": {
             "top": {
               "expr": {
                 "Literal": {
-                  "Value": "8D"
+                  "Value": "0D"
                 }
               }
             },
             "bottom": {
               "expr": {
                 "Literal": {
-                  "Value": "8D"
+                  "Value": "0D"
                 }
               }
             },
             "left": {
               "expr": {
                 "Literal": {
-                  "Value": "24D"
+                  "Value": "0D"
                 }
               }
             },
             "right": {
               "expr": {
                 "Literal": {
-                  "Value": "8D"
+                  "Value": "0D"
                 }
               }
             }
@@ -118,13 +145,26 @@
           }
         }
       ],
+      "visualHeader": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
       "general": [
         {
           "properties": {
             "altText": {
               "expr": {
                 "Literal": {
-                  "Value": "'Downgrading. Are people downgrading instead of leaving?'"
+                  "Value": "'2 OF 3 · DOWNGRADING. Are people downgrading instead of leaving?'"
                 }
               }
             }
