@@ -102,6 +102,12 @@ table _Measures
 		displayFolder: An older pool
 		lineageTag: 770a39fb-9618-47fe-af2b-1e3d4f92f5ee
 
+	/// How far the insured pool's 65+ share runs ahead of the country's, in percentage points.
+	measure 'Age Gap (points)' = ( [Share Aged 65+, Insured] - [Share Aged 65+, Australia] ) * 100
+		formatString: 0.0
+		displayFolder: An older pool
+		lineageTag: eea6f061-4edf-4f08-8c9c-9b3263316f9f
+
 	/// Gap between the insured pool's 65+ share and Australia's at each June, in percentage points: the columns of the 65+ chart.
 	measure 'Age Gap Series (points)' = ( [Share Aged 65+, Insured] - [Share Aged 65+, Australia] ) * 100
 		formatString: 0.0
@@ -135,6 +141,11 @@ table _Measures
 			    & FORMAT ( MAX ( fact_insured[quarter_end] ), "mmmm yyyy" )
 		displayFolder: Labels
 		lineageTag: d42401c9-76ac-4832-8cfb-a5e3f0cb8b15
+
+	/// The June that page 3's cards describe.
+	measure 'Population Year' = FORMAT ( MAX ( fact_population_by_age[quarter_end] ), "mmmm yyyy" )
+		displayFolder: Labels
+		lineageTag: 76dcbb70-d452-4aff-8bf8-6c5cb3689fdd
 
 	/// A tick and Yes, or No, for the reconciliation table: whether ours rounds to the published figure. The SQL view stores it as true or false.
 	measure 'Reconciliation Match' = IF ( HASONEVALUE ( reconciliation_panel[matches] ), IF ( SELECTEDVALUE ( reconciliation_panel[matches] ), "✓ Yes", "No" ) )
@@ -235,6 +246,66 @@ table _Measures
 		displayFolder: Context lines
 		lineageTag: 90fd876d-2c76-4f0f-8bfc-452bc7879a0c
 
+	/// KPI context line: the insured 65+ share in the first June with population by age.
+	measure 'Share Aged 65+, Insured Context' =
+			VAR FirstJune = CALCULATE ( MIN ( fact_population_by_age[quarter_end] ), REMOVEFILTERS ( dim_date ) )
+			VAR AtFirst =
+			    CALCULATE ( [Share Aged 65+, Insured], REMOVEFILTERS ( dim_date ), fact_population_by_age[quarter_end] = FirstJune )
+			VAR Latest = [Share Aged 65+, Insured]
+			RETURN
+			    IF (
+			        NOT ISBLANK ( AtFirst ) && NOT ISBLANK ( Latest ),
+			        IF ( Latest < AtFirst, "Down from ", "Up from " ) & FORMAT ( AtFirst, "0.0%" ) & " in "
+			            & FORMAT ( FirstJune, "mmmm yyyy" )
+			    )
+		displayFolder: Context lines
+		lineageTag: ac942234-5324-462e-acec-2389714f54f2
+
+	/// KPI context line: the 65+ share of all Australians in the first June with population by age.
+	measure 'Share Aged 65+, Australia Context' =
+			VAR FirstJune = CALCULATE ( MIN ( fact_population_by_age[quarter_end] ), REMOVEFILTERS ( dim_date ) )
+			VAR AtFirst =
+			    CALCULATE ( [Share Aged 65+, Australia], REMOVEFILTERS ( dim_date ), fact_population_by_age[quarter_end] = FirstJune )
+			VAR Latest = [Share Aged 65+, Australia]
+			RETURN
+			    IF (
+			        NOT ISBLANK ( AtFirst ) && NOT ISBLANK ( Latest ),
+			        IF ( Latest < AtFirst, "Down from ", "Up from " ) & FORMAT ( AtFirst, "0.0%" ) & " in "
+			            & FORMAT ( FirstJune, "mmmm yyyy" )
+			    )
+		displayFolder: Context lines
+		lineageTag: a5e0596e-9442-498a-ba43-9fe69da7b7b1
+
+	/// KPI context line: the gap between the insured and Australian 65+ shares in the first June, in points.
+	measure 'Age Gap Context' =
+			VAR FirstJune = CALCULATE ( MIN ( fact_population_by_age[quarter_end] ), REMOVEFILTERS ( dim_date ) )
+			VAR AtFirst =
+			    CALCULATE ( [Age Gap (points)], REMOVEFILTERS ( dim_date ), fact_population_by_age[quarter_end] = FirstJune )
+			VAR Latest = [Age Gap (points)]
+			RETURN
+			    IF (
+			        NOT ISBLANK ( AtFirst ) && NOT ISBLANK ( Latest ),
+			        IF ( Latest < AtFirst, "Down from ", "Up from " ) & FORMAT ( AtFirst, "0.0" ) & " points in "
+			            & FORMAT ( FirstJune, "mmmm yyyy" )
+			    )
+		displayFolder: Context lines
+		lineageTag: e7863432-81f5-46a9-8732-b50c7608635b
+
+	/// KPI label for page 3, ending in the June it describes.
+	measure 'Share Aged 65+, Insured Label' = "Insured people aged 65+ · " & [Population Year]
+		displayFolder: KPI labels
+		lineageTag: 9f567d5c-3ccb-43db-8efe-6760e1753133
+
+	/// KPI label for page 3, ending in the June it describes.
+	measure 'Share Aged 65+, Australia Label' = "All Australians aged 65+ · " & [Population Year]
+		displayFolder: KPI labels
+		lineageTag: 16768cff-7ec1-41db-afcd-04bb189aca5c
+
+	/// KPI label for page 3, ending in the June it describes.
+	measure 'Age Gap Label' = "Gap, percentage points · " & [Population Year]
+		displayFolder: KPI labels
+		lineageTag: fc764cd3-5234-4e56-80db-05d73eb7b2a3
+
 	/// Data label for the full cover line: the first and latest quarters only.
 	measure 'Full Cover Share Key Label' =
 			VAR ThisQuarter = SELECTEDVALUE ( dim_date[quarter_end] )
@@ -276,6 +347,25 @@ table _Measures
 			    IF ( ThisQuarter = FirstJune || ThisQuarter = LatestJune, FORMAT ( [Share Aged 65+, Australia], "0.0%" ) )
 		displayFolder: Key points
 		lineageTag: 12a35086-1016-4e4e-a1ac-f2db0245f96f
+
+	/// Data label for the Australia 65+ line on the combo: the first June with population by age only, placed under the line.
+	measure 'Share Aged 65+, Australia, First Label' =
+			VAR ThisQuarter = SELECTEDVALUE ( dim_date[quarter_end] )
+			VAR FirstJune = CALCULATE ( MIN ( fact_population_by_age[quarter_end] ), REMOVEFILTERS ( dim_date ) )
+			RETURN
+			    IF ( ThisQuarter = FirstJune, FORMAT ( [Share Aged 65+, Australia], "0.0%" ) )
+		displayFolder: Key points
+		lineageTag: 56f68cee-765e-4137-b62b-ad9fb885f70e
+
+	/// The Australia 65+ share at the latest June only, drawn invisibly, so that June's label can sit above the line.
+	measure 'Share Aged 65+, Australia, Latest Point' =
+			VAR ThisQuarter = SELECTEDVALUE ( dim_date[quarter_end] )
+			VAR LatestJune = CALCULATE ( MAX ( fact_population_by_age[quarter_end] ), REMOVEFILTERS ( dim_date ) )
+			RETURN
+			    IF ( ThisQuarter = LatestJune, [Share Aged 65+, Australia] )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Key points
+		lineageTag: d20c1e5a-cbc6-4b4d-ab6c-611b4a7ece36
 
 	/// Data label for the gap columns: the latest June with population by age only (at June 2007 the 0.2 label has no room beside 13.1%).
 	measure 'Age Gap Series Key Label' =

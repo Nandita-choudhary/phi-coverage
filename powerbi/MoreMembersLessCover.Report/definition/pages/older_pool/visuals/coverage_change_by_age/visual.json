@@ -3,11 +3,11 @@
   "name": "coverage_change_by_age",
   "position": {
     "x": 560,
-    "y": 480,
-    "z": 11000,
-    "height": 312,
+    "y": 548,
+    "z": 26000,
+    "height": 264,
     "width": 696,
-    "tabOrder": 7000
+    "tabOrder": 16000
   },
   "visual": {
     "visualType": "clusteredColumnChart",

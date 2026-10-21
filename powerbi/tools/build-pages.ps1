@@ -253,7 +253,8 @@ function CardText([string]$measure, [string]$display, [double]$pt, [string]$colo
 # ---- the frame every page shares
 $NavAlt = 'Page navigation: The headline, Downgrading, An older pool'
 $Source = "Source: APRA quarterly private health insurance statistics, June 2026 release, and annual membership and benefits statistics 2024${EnDash}25. Population: ABS, as published by APRA. Titles and takeaways describe the June 2026 release."
-function AddFrame([string]$page, [string]$eyebrow, [string]$question, [string]$takeaway, [string]$footnote) {
+# $footerShift moves the footnote, source and repository down (page 3 needs the room).
+function AddFrame([string]$page, [string]$eyebrow, [string]$question, [string]$takeaway, [string]$footnote, [int]$footerShift = 0) {
     $header = @(
         (Para @( (Run $eyebrow 9 $Text2 $false $Semi) )),
         (Para @( (Run $question 22 $Text $false $Semi) ))
@@ -289,10 +290,10 @@ function AddFrame([string]$page, [string]$eyebrow, [string]$question, [string]$t
 
     # Footer: footnote, then the source with the repository right-aligned on its last line.
     if ($footnote) {
-        AddVisual $page 'footnote' $M 808 ($W - 2 * $M) 32 (TextVisual @( (Para @( (Run $footnote 8.5 $Text2 $false $Font) )) ) (FlatObjects '' @(0, 0, 0, 0) $footnote))
+        AddVisual $page 'footnote' $M (808 + $footerShift) ($W - 2 * $M) 32 (TextVisual @( (Para @( (Run $footnote 8.5 $Text2 $false $Font) )) ) (FlatObjects '' @(0, 0, 0, 0) $footnote))
     }
-    AddVisual $page 'source' $M 848 968 32 (TextVisual @( (Para @( (Run $Source 8.5 $Text2 $false $Font) )) ) (FlatObjects '' @(0, 0, 0, 0) $Source))
-    AddVisual $page 'repository' 1008 864 248 16 (TextVisual @( (Para @( (Run 'github.com/Nandita-choudhary/phi-coverage' 8.5 $Text2 $false $Font) ) 'right') ) (FlatObjects '' @(0, 0, 0, 0) 'github.com/Nandita-choudhary/phi-coverage'))
+    AddVisual $page 'source' $M (848 + $footerShift) 968 32 (TextVisual @( (Para @( (Run $Source 8.5 $Text2 $false $Font) )) ) (FlatObjects '' @(0, 0, 0, 0) $Source))
+    AddVisual $page 'repository' 1008 (864 + $footerShift) 248 16 (TextVisual @( (Para @( (Run 'github.com/Nandita-choudhary/phi-coverage' 8.5 $Text2 $false $Font) ) 'right') ) (FlatObjects '' @(0, 0, 0, 0) 'github.com/Nandita-choudhary/phi-coverage'))
 }
 
 # ---- KPI tile: label on top, then the value, then a context line, with a 4 px accent strip
@@ -631,8 +632,12 @@ NewPage 'older_pool' 'An older pool'
 $pg = 'older_pool'
 AddFrame $pg ("3 OF 3 $Dot AN OLDER POOL") 'Is the pool getting older?' `
     'Yes. By June 2025, people aged 65 and over made up **20.7%** of the insured, up from **13.3%** in June 2007. Across Australia the share rose less, from **13.1%** to **17.4%**.' `
-    "These figures are for Australia as a whole: APRA's population by age has no state breakdown. In June 2018 its population table lacks women aged 95+, so Australia's 65+ share is slightly understated that year."
-# No KPI tiles on this page: the combo takes their place, and its labels carry the same numbers.
+    "These figures are for Australia as a whole: APRA's population by age has no state breakdown. In June 2018 its population table lacks women aged 95+, so Australia's 65+ share is slightly understated that year." 16
+AddKpi $pg 'kpi_insured_65'   24  400 'Insured people aged 65+' 'Share Aged 65+, Insured Label' 'Share Aged 65+, Insured' 'Share Aged 65+, Insured Context' $Orange 'Share of people with hospital cover who are aged 65 or over, in the latest June with population figures by age.'
+AddKpi $pg 'kpi_australia_65' 440 400 'All Australians aged 65+' 'Share Aged 65+, Australia Label' 'Share Aged 65+, Australia' 'Share Aged 65+, Australia Context' $Grey 'Share of all Australians aged 65 or over, in the same June.'
+AddKpi $pg 'kpi_gap'          856 400 'Gap, percentage points' 'Age Gap Label' 'Age Gap (points)' 'Age Gap Context' $Orange "How many percentage points the insured pool's 65+ share runs ahead of Australia's, in the same June."
+
+# Page 3 fits three charts under the tiles with 8 px gaps (16 elsewhere) and its footer 16 px lower.
 
 # 65+ combo: the two shares as lines on the left axis (10% to 25%), the gap between them as columns on the right
 # axis (0 to 10 points). Power BI puts columns on the primary axis; switchAxisPosition moves it to the right.
@@ -640,20 +645,24 @@ $ageTitle = 'Insured people are ageing faster than Australia: aged 65+ rose from
 $ageSub = 'Share of people aged 65 or over, each June (lines, left axis), and the gap between them in percentage points (columns, right axis).'
 $gapSeries = 'Age Gap Series (points)'
 $ageLines = @(
-    # The two lines start 0.2 points apart: insured labels above their line, Australia's below.
+    # The two lines start 0.2 points apart: insured labels above their line, Australia's first label below.
     @{ Measure = 'Share Aged 65+, Insured'; Label = 'Insured people'; Color = $Orange; KeyLabel = 'Share Aged 65+, Insured Key Label'; NameColor = $Orange; LabelPosition = 'Above' },
-    @{ Measure = 'Share Aged 65+, Australia'; Label = 'All Australians'; Color = $Grey; KeyLabel = 'Share Aged 65+, Australia Key Label'; NameColor = $Text2; LabelPosition = 'Under' }
+    @{ Measure = 'Share Aged 65+, Australia'; Label = 'All Australians'; Color = $Grey; KeyLabel = 'Share Aged 65+, Australia, First Label'; NameColor = $Text2; LabelPosition = 'Under' }
 )
+# Australia's latest label sits above its line (below, it would touch the last column): it rides on a hidden
+# copy of that one point, labelled above.
+$ageCarrier = 'Share Aged 65+, Australia, Latest Point'
 $ageLabels = @( (BaseLabels @{ labelDensity = (LD 100) }) )
 foreach ($s in $ageLines) { $ageLabels += (KeyLabels $s.Measure $s.KeyLabel $s.LabelPosition) }
-# The gap label (latest June only) sits inside its column, clear of the 17.4% label under the grey line.
+$ageLabels += (KeyLabels $ageCarrier 'Share Aged 65+, Australia Key Label' 'Above')
+# The gap label (latest June only) sits inside its column.
 $ageLabels += (KeyLabels $gapSeries 'Age Gap Series Key Label' 'InsideEnd')
-# Names at the line ends, as on the line charts; none for the columns.
+# Names at the line ends, with no leader lines; none for the columns or the hidden point.
 $ageNames = @( (P ([ordered]@{ show = (LB $true); textSize = (LD 9); seriesFontFamily = (LStr $Font); enableBackground = (LB $false)
-                                seriesMatchColor = (LB $false); seriesColor = (Fill $Text2)
-                                leaderLines = (LB $true); leaderLinePattern = (LStr 'solid'); leaderLineColor = (Fill $Grey); maximumOffset = (LD 40) })) )
+                                seriesMatchColor = (LB $false); seriesColor = (Fill $Text2); leaderLines = (LB $false) })) )
 foreach ($s in $ageLines) { $ageNames += (P ([ordered]@{ seriesMatchColor = (LB $false); seriesColor = (Fill $s.NameColor) }) (Meta $s.Measure)) }
 $ageNames += (P ([ordered]@{ show = (LB $false) }) (Meta $gapSeries))
+$ageNames += (P ([ordered]@{ show = (LB $false) }) (Meta $ageCarrier))
 # Narrow gaps between the columns, so the latest one is wide enough to hold its label inside.
 $ageAxis = CatAxis $false
 $ageAxis.properties['innerPadding'] = (LL 20)
@@ -663,15 +672,16 @@ $ageCombo = [ordered]@{
         queryState = [ordered]@{
             Category = [ordered]@{ projections = @( (Proj $Year 'June') ) }
             Y  = [ordered]@{ projections = @( (Proj (Mea $gapSeries) 'Gap, percentage points') ) }
-            Y2 = [ordered]@{ projections = @( $ageLines | ForEach-Object { Proj (Mea $_.Measure) $_.Label } ) }
+            Y2 = [ordered]@{ projections = @( $ageLines | ForEach-Object { Proj (Mea $_.Measure) $_.Label } ) + @( (Proj (Mea $ageCarrier) 'All Australians, latest June') ) }
         }
         sortDefinition = (SortBy $Year 'Ascending')
     }
     objects = [ordered]@{
         categoryAxis = @( $ageAxis )
+        # 8 pt axis title, so it fits the plot height in full.
         valueAxis = @( (ValAxis ([ordered]@{
             start = (LD 0); end = (LD 10); switchAxisPosition = (LB $true)
-            showAxisTitle = (LB $true); titleText = (LStr 'Gap, percentage points'); titleColor = (Fill $Text2); titleFontSize = (LD 9)
+            showAxisTitle = (LB $true); titleText = (LStr 'Gap, percentage points'); titleColor = (Fill $Text2); titleFontSize = (LD 8)
             secShow = (LB $true); secStart = (LD 0.1); secEnd = (LD 0.25); secLabelColor = (Fill $Text2); secFontSize = (LD 9); secLabelPrecision = (LL 0)
             secShowAxisTitle = (LB $false)
         })) )
@@ -680,8 +690,11 @@ $ageCombo = [ordered]@{
         dataPoint = @(
             (P ([ordered]@{ defaultColor = (Fill $Orange); fillTransparency = (LD 50) })),
             (P ([ordered]@{ fill = (Fill $Orange); fillTransparency = (LD 50) }) (Meta $gapSeries))
-        ) + @( $ageLines | ForEach-Object { P ([ordered]@{ fill = (Fill $_.Color) }) (Meta $_.Measure) } )
-        lineStyles = @( (P ([ordered]@{ strokeWidth = (LD 2.5); showMarker = (LB $false) })) )
+        ) + @( $ageLines | ForEach-Object { P ([ordered]@{ fill = (Fill $_.Color) }) (Meta $_.Measure) } ) + @( (P ([ordered]@{ fill = (Fill $Grey) }) (Meta $ageCarrier)) )
+        lineStyles = @(
+            (P ([ordered]@{ strokeWidth = (LD 2.5); showMarker = (LB $false) })),
+            (P ([ordered]@{ strokeShow = (LB $false); showMarker = (LB $false) }) (Meta $ageCarrier))
+        )
         labels = $ageLabels
         seriesLabels = $ageNames
         y1AxisReferenceLine = @( (ZeroLine) )
@@ -689,8 +702,8 @@ $ageCombo = [ordered]@{
     visualContainerObjects = (PanelObjects $ageTitle $ageSub "$ageTitle. $ageSub")
     drillFilterOtherVisuals = $true
 }
-# Full width where the KPI tiles would be, 288 tall, so the labels at each end have room.
-AddVisual $pg 'share_65_by_june' 24 176 1232 288 $ageCombo (Filters @( (JunesOnly) ))
+# 252 tall: about 130 px of plot, enough for the right axis title in full and for 13.1% to clear the baseline.
+AddVisual $pg 'share_65_by_june' 24 288 1232 252 $ageCombo (Filters @( (JunesOnly) ))
 
 # Age mix: four 100% bars (insured and all Australians, first and latest June), four age groups.
 $group = Col 'dim_age_band' 'age_group4'
@@ -711,7 +724,8 @@ $mix = [ordered]@{
     }
     objects = [ordered]@{
         categoryAxis = @( $mixAxis )
-        valueAxis = @( (ValAxis) )
+        # No 0%/50%/100% labels: every segment carries its share, and the chart needs the height.
+        valueAxis = @( (ValAxis ([ordered]@{ show = (LB $false) })) )
         legend = @( (P ([ordered]@{ show = (LB $true); position = (LStr 'Top'); showTitle = (LB $false); labelColor = (Fill $Text2); fontSize = (LD 9) })) )
         # A blue ramp that gets lighter with age, 65 and over in orange; a 1 px panel-coloured border between segments.
         dataPoint = @(
@@ -732,11 +746,11 @@ $mix = [ordered]@{
     drillFilterOtherVisuals = $true
 }
 # 520 wide, so the smallest segment (13.1%) has room for its label.
-AddVisual $pg 'age_mix' 24 480 520 312 $mix
+AddVisual $pg 'age_mix' 24 548 520 264 $mix
 
 # Change by age: twenty bands as diverging columns. Horizontal bars would need 20 px per band, over 400 px
 # of plot, more than the page has.
-AddVisual $pg 'coverage_change_by_age' 560 480 696 312 (DivergingVisual 'clusteredColumnChart' (Col 'dim_age_band' 'age_band') 'Age' 'Coverage Change by Age (points)' 'Change, points' 'Coverage Change by Age, Colour' @(
+AddVisual $pg 'coverage_change_by_age' 560 548 696 264 (DivergingVisual 'clusteredColumnChart' (Col 'dim_age_band' 'age_band') 'Age' 'Coverage Change by Age (points)' 'Change, points' 'Coverage Change by Age, Colour' @(
         @{ Measure = 'Coverage by Age, First June'; Label = 'Coverage, June 2007' },
         @{ Measure = 'Coverage by Age, Latest June'; Label = 'Coverage, June 2025' }
     ) 'Coverage rose most among 80- to 89-year-olds, up 18 to 19 points since 2007, and fell among 25- to 34- and 50- to 64-year-olds' `
