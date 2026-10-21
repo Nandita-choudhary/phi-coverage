@@ -268,6 +268,16 @@ measures, so they move with each release. The report is saved as a Power BI proj
 (`powerbi/MoreMembersLessCover.pbip`), plain text under version control, and reads only the
 `phi` views in Azure SQL.
 
+![Page 1, the headline: membership is at a record, but the share of Australians covered is below its peak](docs/img/report-page-1.png)
+
+![Page 2, downgrading: full cover has fallen and excesses have risen since the 2019 reforms](docs/img/report-page-2.png)
+
+![Page 3, an older pool: the insured are ageing faster than Australia](docs/img/report-page-3.png)
+
+The pages above are rendered from [the PDF export](docs/more-members-less-cover.pdf) by
+`etl/render_report.py`, so they match the committed report; the PDF is exported from Power BI
+Desktop at actual size.
+
 ---
 
 ## How it is built
