@@ -2,14 +2,13 @@
 
 **Australian private health insurance membership is at a record high. So is the system healthy?**
 
-This project rebuilds the answer from APRA's own published data — the regulator's quarterly
-private health insurance statistics — and asks what the headline number hides: *who* is insured,
+This project rebuilds the answer from APRA's own published data, the regulator's quarterly
+private health insurance statistics, and asks what the headline number hides: *who* is insured,
 and *what* they are actually covered for.
 
 > **Status: built.** Every figure below is generated from APRA's data by `etl/findings.py`, which
 > also writes [`docs/findings.md`](docs/findings.md): every figure with its unit and its period.
-
-**[→ Open the live dashboard]()** · *(link added after publishing)*
+> A check fails the build if a number anywhere in this repo was typed instead.
 
 ---
 
@@ -19,20 +18,22 @@ Membership has reached a record. Two things could still be going wrong underneat
 shows up in a headcount:
 
 1. **Are people downgrading instead of leaving?** Under cost pressure people do not always
-   cancel. They move to policies with reduced cover, exclusions and a higher excess. Same
-   member, thinner product — and a headcount cannot see it.
+   cancel. They move to policies with reduced cover, exclusions and a higher excess: the same
+   member, a thinner product, and a headcount cannot see it.
 2. **Is the pool getting older?** If the young thin out while the old keep joining, the risk
-   pool worsens even as the total grows. Premiums follow the pool, not the headcount.
+   pool worsens even as the total grows.
 
-Either would mean the record membership figure is telling a flattering story about a market that
-is getting worse.
+Either would mean the record membership figure tells a flattering story about a market that is
+getting worse. The report is written for the general public, the complete story behind a
+headline number. [`docs/user-stories.md`](docs/user-stories.md) names the professional audience
+the same measures serve, and which questions the data cannot answer for them.
 
 ## What is already known
 
 This market is heavily analysed. The ACCC reports on it to the Senate every year; the Actuaries
 Institute publishes on it; CHOICE and APRA publish regular statistics. **Nothing here is a
-discovery, and the project does not claim one.** See [`docs/prior-work.md`](docs/prior-work.md)
-for who has published what.
+discovery, and the project does not claim one.** [`docs/prior-work.md`](docs/prior-work.md)
+lists who has published what, and exactly what this project claims.
 
 The published figures this project set out to reproduce, against what it got when it rebuilt
 them from APRA's raw files:
@@ -50,21 +51,14 @@ them from APRA's raw files:
 So the expected answer is **more members, thinner cover**. The job of this project is not to
 announce that. It is to verify it independently and add what the published work leaves out.
 
-### What the raw data actually holds
+### What the raw data holds
 
-APRA does **not** publish the Gold / Silver / Bronze / Basic tiers — the only "Gold" in the
-files is the veterans' DVA Gold Card, which is something else entirely. What it does publish is
-better for this question: **cover type and excess level, quarterly, by state, back to 2007**.
-Tiers only exist from 2019, so this is nineteen years instead of seven, and it is the ACCC's own
-pair of measures.
-
-That series is what the project rebuilds; the figures are in the next section.
-
-**Two caveats before any of that is published as a finding.** APRA splits *reduced cover* from
-*lifetime exclusions* as separate categories, so "not full cover" is not necessarily the same
-measure as the ACCC's "carried exclusions" — reconciling the two is part of the work, not an
-afterthought. And the April 2019 reforms restructured these products, so the series may break
-around then.
+APRA does **not** publish the Gold, Silver, Bronze and Basic tiers; the only "Gold" in the files
+is the veterans' DVA Gold Card, which is something else entirely. What it does publish is better
+for this question: **cover type and excess level, quarterly, by state, back to 2007**. Tiers only
+exist from 2019, so this is nineteen years instead of seven, and it is the ACCC's own pair of
+measures. For the second question it publishes insured people by five-year age band each quarter,
+and Australia's population by age each June.
 
 ## What the data shows
 
@@ -164,25 +158,53 @@ Kind: *stock*: a quantity counted at the end of the quarter named, such as peopl
 Every figure above, with its unit and period, is in [`docs/findings.md`](docs/findings.md). The
 source is `data/findings.json`, written by `etl/findings.py`; nothing in these tables is typed.
 
+## What the data cannot say
+
+- **Who downgraded.** APRA counts the mix of policies at each quarter end, not who moved. Thinner
+  cover in aggregate can come from existing members trading down or from new members buying
+  less, and the data cannot separate the two.
+- **"Exclusions" and "not full cover" are different measures.** The ACCC's share of policies
+  with exclusions is APRA's two lifetime-exclusion categories; "not full cover" also counts
+  reduced cover without exclusions, and is never called "exclusions" here.
+- **Two series breaks, both marked on every chart.** The share of policies with an excess over
+  500 dollars steps down in September 2010 for no reason APRA's notes give, so that series is
+  used from then on; and from 1 April 2019 the maximum excess rose from 500 to 750 dollars, which
+  is what the later climb reflects. The split between lifetime exclusions and reduced cover moves
+  in unexplained one-quarter steps and is never trended. [`docs/series-breaks.md`](docs/series-breaks.md)
+  holds the evidence.
+- **Age is national and annual.** Population by age has no state breakdown and is published for
+  each June only, so the ageing figures stop at the latest June and are never split by state. In
+  June 2018 APRA's table lacks women aged 95 and over; that cell is left blank, not estimated.
+- **Why** the pool is ageing is not claimed. Published work would have to support any cause.
+
 ## What this project adds
 
-**1. Verification.** Rebuild the published measures from APRA's raw files and put the result next
-to the regulator's own figure. If they match, the pipeline is demonstrably correct — checked
-against an authority rather than against itself.
+**1. Verification.** The published measures, rebuilt from APRA's raw files and put next to the
+publisher's own figure. They match, so the pipeline is demonstrably right, checked against an
+authority rather than against itself.
 
-**2. The breakdown nobody publishes.** The existing analysis is national and annual, in PDFs. This
-adds *age* and *state*: is the shift young people buying cheap cover, or older people trading
-down? Does Western Australia look like New South Wales?
+**2. The breakdown nobody publishes.** The existing analysis is national and annual, in PDFs.
+This adds *state* and *five-year age band*, quarterly, and is deliberately small.
 
-That second part is the only genuinely open question here, and it is deliberately small.
+**3. It runs itself.** APRA publishes quarterly. The pipeline discovers the new release, loads it,
+checks it, reconciles it against published figures and refuses to proceed if anything fails:
+[automation](docs/automation.md), [governance](docs/governance.md). It has run green on `main`
+and stopped red on a deliberately wrong figure; it has not yet caught a new APRA release
+unattended, and the change log will say when it does.
 
-**3. It runs itself.** APRA publishes quarterly. The pipeline discovers the new release, loads
-it, checks it, reconciles it against published totals and refuses to proceed if anything is out
-of tolerance — [automation](docs/automation.md), [governance](docs/governance.md).
+**4. It was built for someone.** Requirements written as user stories for a named audience before
+anything was built, with the stories the data cannot support struck and the reason given:
+[`docs/user-stories.md`](docs/user-stories.md). Built independently, with no external reviewer,
+and the docs say so rather than implying otherwise.
 
-**4. It was built for someone.** Requirements written as user stories for a named audience
-before anything was built — [`docs/user-stories.md`](docs/user-stories.md). Built
-independently, with no external reviewer, and the docs say so rather than implying otherwise.
+## The report
+
+Three Power BI pages: a headline page that makes the optimistic case first, then one page per
+question. Each page states its answer, shows the headline figures with what they are compared
+against, and carries its sources and caveats on the page. The titles, takeaways and labels are
+measures, so they move with each release. The report is saved as a Power BI project
+(`powerbi/MoreMembersLessCover.pbip`), plain text under version control, and reads only the
+`phi` views in Azure SQL.
 
 ---
 
@@ -197,7 +219,7 @@ APRA page  →  discover new release  →  download  →  clean  →  CHECK  →
                   every quarter)                          fail = stop, nothing loads
                                                                 ↓
                                               Azure SQL  →  T-SQL views  →  Power BI
-                                               (free tier)                (scheduled refresh)
+                                              (free offer)                (scheduled refresh)
 
                         all of it on a schedule, in GitHub Actions
 ```
@@ -205,33 +227,39 @@ APRA page  →  discover new release  →  download  →  clean  →  CHECK  →
 | Layer | What | Why this one |
 | ----- | ---- | ------------ |
 | `data/raw/` | APRA's spreadsheets, exactly as downloaded, never edited | Every figure has to trace back to a published cell |
-| `etl/load_apra.py` | Raw spreadsheets → tidy tables | The messy part: multi-row headers, merged cells, footnotes in data rows |
+| `etl/load_apra.py` | Raw spreadsheets to tidy tables | The messy part: multi-row headers, merged cells, footnotes in data rows |
 | `etl/checks.py` | Quality checks that stop the load on failure | [governance](docs/governance.md) |
-| `etl/validate.py` | Our figures vs published figures | The proof the pipeline is right |
-| `sql/` | Azure SQL schema, T-SQL views and a stored procedure | Microsoft stack, which is what Australian job ads mostly ask for |
+| `etl/validate.py` | Our figures against published figures | The proof the pipeline is right |
+| `etl/findings.py`, `etl/check_docs.py` | Every headline figure written once; the docs checked against it | No number is typed twice, or typed at all |
+| `sql/` | Azure SQL schema, T-SQL views and a stored procedure | The stack most Australian employers run |
 | `.github/workflows/` | Quarterly scheduled refresh | [automation](docs/automation.md) |
 | `powerbi/` | The report, `.pbip`, connected to Azure SQL | Version-controlled as plain text |
 
 Real public data, so there is no generator and nothing to simulate. The difficulty is APRA's
 spreadsheet layout instead, which is closer to real analyst work than clean generated data ever is.
 
-**Azure SQL is on the free offer** — 100,000 vCore-seconds and 32 GB per month, renewing for the
-life of the subscription. Set "behaviour when free limit reached" to **auto-pause**, not
-"continue for charges": on auto-pause the database simply stops until next month and cannot bill
-you. That choice is one-way, so make it at creation.
+Azure SQL runs on the free offer (100,000 vCore-seconds and 32 GB a month) set to pause when the
+limit is reached, so it cannot bill; the loader waits for the database to wake. If the database
+is retired later, the published report keeps its last data and this README will call it a
+snapshot.
 
 ## Running it
 
+From a clean clone, with Python 3.9 or later:
+
 ```bash
+python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
-python etl/download.py         # fetch APRA's newest files into data/raw/
-python etl/explore.py          # map the spreadsheets — run this first
-python etl/load_apra.py        # raw → tidy tables
+python etl/download.py         # pick up a new APRA release, if there is one
+python etl/download.py --restore   # fetch the recorded files missing from data/raw/
+python etl/explore.py          # optional: map the spreadsheets
+python etl/load_apra.py        # raw spreadsheets to tidy tables
 python etl/checks.py           # quality checks; non-zero exit stops the pipeline
 python etl/validate.py         # reconcile against published figures
 python etl/breaks.py           # map where the series break
 python etl/findings.py         # write every headline figure once, with unit and period
-python etl/to_azure.py         # load into Azure SQL (the first time, add --init)
+python etl/check_docs.py       # fail if any number in the docs was typed
+python etl/to_azure.py --init  # load Azure SQL; needs AZURE_SQL_URL in .env (see .env.example)
 ```
 
 Or let the schedule do it: [automation](docs/automation.md).
@@ -242,16 +270,18 @@ Or let the schedule do it: [automation](docs/automation.md).
 
 - **The data is real and public.** No simulation anywhere in this project.
 - **Findings are stated as what the data shows**, with the APRA file and table they came from.
+- **No number is typed.** Every figure is generated from the data, and a check fails the build
+  if one is not.
 - **Prior work is credited.** Where a finding reproduces a published one, the README says so and
   links it. The contribution is the verification and the breakdown, not the finding.
 - **Where the data cannot answer something, the README says so** rather than estimating.
 
 ## Sources
 
-- [APRA — Quarterly private health insurance statistics](https://www.apra.gov.au/quarterly-private-health-insurance-statistics)
-- [ACCC — private health insurance report to the Senate](https://www.accc.gov.au/media-release/australians-exiting-private-health-insurance-as-price-rises-bite)
-- [CHOICE — private health insurance statistics](https://www.choice.com.au/money/insurance/health/articles/private-health-insurance-statistics-in-australia)
-- [Actuaries Institute — Is the Gold Hospital category ill?](https://www.actuaries.asn.au/research-analysis/is-the-gold-hospital-private-health-insurance-category-ill)
+- [APRA, quarterly private health insurance statistics](https://www.apra.gov.au/quarterly-private-health-insurance-statistics)
+- [ACCC, private health insurance report to the Senate](https://www.accc.gov.au/media-release/australians-exiting-private-health-insurance-as-price-rises-bite)
+- [CHOICE, private health insurance statistics](https://www.choice.com.au/money/insurance/health/articles/private-health-insurance-statistics-in-australia)
+- [Actuaries Institute, Is the Gold Hospital category ill?](https://www.actuaries.asn.au/research-analysis/is-the-gold-hospital-private-health-insurance-category-ill)
 
 ---
 
