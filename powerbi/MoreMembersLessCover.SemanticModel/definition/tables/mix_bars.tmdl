@@ -1,0 +1,59 @@
+/// The four bars of the age-mix chart: insured people and all Australians, at the first and latest Junes with population by age.
+table mix_bars
+	lineageTag: 2f2b167c-57fc-42a7-80ae-de9c373f91e7
+
+	column bar
+		dataType: string
+		lineageTag: 1d9de3fe-37e7-495c-a417-90a95ca331bd
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [bar]
+		sortByColumn: bar_order
+
+		annotation SummarizationSetBy = Automatic
+
+	column bar_order
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 019058be-5e31-481a-8db6-aab3b14d067b
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [bar_order]
+
+		annotation SummarizationSetBy = Automatic
+
+	column base
+		dataType: string
+		isHidden
+		lineageTag: cd355cad-8e79-47d9-93a4-5ef382a05a7a
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [base]
+
+		annotation SummarizationSetBy = Automatic
+
+	column june
+		dataType: dateTime
+		isHidden
+		formatString: mmmm yyyy
+		lineageTag: 033e27a7-dec1-4c6c-80ed-20055afe510f
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [june]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition mix_bars = calculated
+		mode: import
+		source =
+				VAR FirstJune = MIN ( fact_population_by_age[quarter_end] )
+				VAR LatestJune = MAX ( fact_population_by_age[quarter_end] )
+				RETURN
+				    UNION (
+				        ROW ( "bar", "Insured, " & FORMAT ( FirstJune, "mmmm yyyy" ), "bar_order", 1, "base", "Insured", "june", FirstJune ),
+				        ROW ( "bar", "Insured, " & FORMAT ( LatestJune, "mmmm yyyy" ), "bar_order", 2, "base", "Insured", "june", LatestJune ),
+				        ROW ( "bar", "Australians, " & FORMAT ( FirstJune, "mmmm yyyy" ), "bar_order", 3, "base", "Australians", "june", FirstJune ),
+				        ROW ( "bar", "Australians, " & FORMAT ( LatestJune, "mmmm yyyy" ), "bar_order", 4, "base", "Australians", "june", LatestJune )
+				    )
+

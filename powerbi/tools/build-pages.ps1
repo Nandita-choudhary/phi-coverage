@@ -6,7 +6,7 @@
 $ErrorActionPreference = 'Stop'
 $utf8 = New-Object System.Text.UTF8Encoding($false)
 
-# Writes the report's three pages as PBIR files: the dark design of the section 7 brief. Builds every
+# Writes the report's three pages as PBIR files: the dark design of the section 7 briefs. Builds every
 # file in memory, checks each one parses and every field it uses exists in the model, and only then
 # replaces the three page folders. Plain ASCII on purpose: special characters come from [char] codes,
 # so Windows PowerShell reads this file correctly without a byte-order mark.
@@ -57,6 +57,7 @@ function Src([string]$e) { [ordered]@{ SourceRef = [ordered]@{ Entity = $e } } }
 function Col([string]$e, [string]$p) { [ordered]@{ Column = [ordered]@{ Expression = (Src $e); Property = $p } } }
 function Mea([string]$p) { [ordered]@{ Measure = [ordered]@{ Expression = (Src '_Measures'); Property = $p } } }
 function MeaExpr([string]$p) { [ordered]@{ expr = (Mea $p) } }
+function MeaFill([string]$p) { [ordered]@{ solid = [ordered]@{ color = (MeaExpr $p) } } }
 function Proj($field, [string]$display) {
     $kind = @($field.Keys)[0]
     $e = $field[$kind]['Expression']['SourceRef']['Entity']
@@ -76,10 +77,11 @@ function EachPoint([string]$measure) {
     [ordered]@{ data = @( [ordered]@{ dataViewWildcard = [ordered]@{ matchingOption = 1 } } ); metadata = "_Measures.$measure" }
 }
 
-# ================================================================ design tokens (the brief)
-$Page = '#0B1220'; $Panel = '#131C2E'; $Line = '#24324A'
-$Text = '#F1F5F9'; $Text2 = '#94A3B8'; $NavText = '#CBD5E1'
+# ================================================================ design tokens (the briefs)
+$Page = '#0B1220'; $Panel = '#131C2E'; $Line = '#24324A'; $Grid = '#2E3D58'; $Rule = '#334155'
+$Text = '#F1F5F9'; $Text2 = '#94A3B8'; $NavText = '#CBD5E1'; $ZeroLine = '#94A3B8'
 $Orange = '#EB6834'; $Blue = '#4C9BEF'; $Grey = '#64748B'
+$AgeBlue1 = '#1E3A5F'; $AgeBlue2 = '#2C5C94'; $AgeBlue3 = '#3B82C4'
 $Font = 'Segoe UI'; $Semi = 'Segoe UI Semibold'
 $W = 1280; $H = 904; $M = 24; $G = 16; $Pad = 16
 
@@ -100,9 +102,9 @@ function ChartSub([string]$t) {
     P ([ordered]@{ show = (LB $true); text = (LStr $t); fontFamily = (LStr $Font); fontSize = (LD 9.5)
                    fontColor = (Fill $Text2); titleWrap = (LB $true) })
 }
-# A panel: the brief's #131C2E fill, 1 px #24324A border, radius 12, no shadow, 16 px padding.
+# A panel: #131C2E fill, 1 px #24324A border, radius 12, no shadow, 16 px padding.
 function PanelObjects([string]$title, [string]$sub, [string]$alt) {
-    $o = [ordered]@{
+    [ordered]@{
         background   = @( (Bg $Panel) )
         border       = @( (Edge $Line 12) )
         dropShadow   = @( (Hidden) )
@@ -112,7 +114,6 @@ function PanelObjects([string]$title, [string]$sub, [string]$alt) {
         visualHeader = @( (Hidden) )
         general      = @( (AltText $alt) )
     }
-    $o
 }
 # No panel: transparent, no border, no padding unless asked.
 function FlatObjects([string]$bgHex, [int[]]$pad, [string]$alt) {
@@ -139,6 +140,8 @@ function TooltipHeader {
 
 # ================================================================ pages and visuals
 $visualSchema = 'https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json'
+# What Power BI writes on save for a chart with a category axis: the category field marked active, schema 2.13.0.
+$categorySchema = 'https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json'
 $pageSchema   = 'https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json'
 $pagesSchema  = 'https://developer.microsoft.com/json-schemas/fabric/item/report/definition/pagesMetadata/1.1.0/schema.json'
 $pages = [ordered]@{}
@@ -148,11 +151,17 @@ function NewPage([string]$name, [string]$display) {
     $pages[$name] = [ordered]@{ Display = $display; Visuals = (New-Object System.Collections.Generic.List[object]) }
     $script:z = 0
 }
-# Decorative visuals (panels, strips, divider) are drawn behind and come last in the tab order.
+# Decorative visuals (panels, strips, the rule) are drawn behind and come last in the tab order.
 function AddVisual([string]$page, [string]$name, [int]$x, [int]$y, [int]$w, [int]$h, $visual, $filterConfig = $null, [switch]$Decorative) {
     $script:z += 1000
+    $schema = $visualSchema
+    if ($visual.Contains('query') -and $visual.query.queryState.Contains('Category')) {
+        $c = $visual.query.queryState.Category.projections[0]
+        $visual.query.queryState.Category.projections[0] = [ordered]@{ field = $c.field; queryRef = $c.queryRef; nativeQueryRef = $c.nativeQueryRef; active = $true; displayName = $c.displayName }
+        $schema = $categorySchema
+    }
     $o = [ordered]@{
-        '$schema' = $visualSchema
+        '$schema' = $schema
         name      = $name
         position  = [ordered]@{ x = $x; y = $y; z = $script:z; height = $h; width = $w; tabOrder = 0 }
         visual    = $visual
@@ -191,14 +200,24 @@ function TextVisual($paragraphs, $containerObjects) {
         drillFilterOtherVisuals = $true
     }
 }
-# A block of colour: panels, accent strips and the divider are text boxes with a fill.
+# A block of colour: panels and accent strips are text boxes with a fill.
 function AddBlock([string]$page, [string]$name, [int]$x, [int]$y, [int]$w, [int]$h, [string]$fill, [string]$border, [int]$radius) {
     $objs = FlatObjects $fill @(0, 0, 0, 0) 'Decorative'
     if ($border) { $objs['border'] = @( (Edge $border $radius) ) }
     AddVisual $page $name $x $y $w $h (TextVisual @( (Spacer 1) ) $objs) -Decorative
 }
+# A 1 px rule: a text box with no text at all, so it has nothing to scroll.
+function AddRule([string]$page, [string]$name, [int]$x, [int]$y, [int]$w, [string]$fill) {
+    $visual = [ordered]@{
+        visualType = 'textbox'
+        objects = [ordered]@{ general = @( (P ([ordered]@{ paragraphs = @() })) ) }
+        visualContainerObjects = (FlatObjects $fill @(0, 0, 0, 0) 'Decorative rule')
+        drillFilterOtherVisuals = $true
+    }
+    AddVisual $page $name $x $y $w 1 $visual -Decorative
+}
 
-# ---- the new card visual as a left-aligned line of text driven by a measure
+# ---- the new card visual as a line of text driven by a measure
 function Off2 { @( (P ([ordered]@{ show = (LB $false) })), (P ([ordered]@{ show = (LB $false) }) ([ordered]@{ id = 'default' })) ) }
 function CardText([string]$measure, [string]$display, [double]$pt, [string]$color, [string]$family, [string]$align, [string]$alt, [string]$tip = '') {
     $container = FlatObjects '' @(0, 0, 0, 0) $alt
@@ -247,11 +266,13 @@ function AddFrame([string]$page, [string]$eyebrow, [string]$question, [string]$t
             fill = @(
                 (P ([ordered]@{ show = (LB $true); fillColor = (Fill $Page); transparency = (LD 100) }) ([ordered]@{ id = 'default' })),
                 (P ([ordered]@{ show = (LB $true); fillColor = (Fill $Panel); transparency = (LD 0) }) ([ordered]@{ id = 'hover' })),
-                (P ([ordered]@{ show = (LB $true); fillColor = (Fill $Text); transparency = (LD 0) }) ([ordered]@{ id = 'selected' }))
+                # Selected: slate with a light outline. Power BI draws the selected text in the theme's "background"
+                # colour (light, see theme.json), so a light fill would hide it.
+                (P ([ordered]@{ show = (LB $true); fillColor = (Fill $Rule); transparency = (LD 0) }) ([ordered]@{ id = 'selected' }))
             )
             text = @(
                 (P ([ordered]@{ show = (LB $true); fontColor = (Fill $NavText); fontSize = (LD 10); fontFamily = (LStr $Font) }) ([ordered]@{ id = 'default' })),
-                (P ([ordered]@{ show = (LB $true); fontColor = (Fill $Page); fontSize = (LD 10); fontFamily = (LStr $Semi) }) ([ordered]@{ id = 'selected' }))
+                (P ([ordered]@{ show = (LB $true); fontColor = (Fill $Text); fontSize = (LD 10); fontFamily = (LStr $Semi) }) ([ordered]@{ id = 'selected' }))
             )
             outline = @(
                 (P ([ordered]@{ show = (LB $true); lineColor = (Fill $Line); weight = (LD 1); transparency = (LD 0) }) ([ordered]@{ id = 'default' })),
@@ -263,12 +284,12 @@ function AddFrame([string]$page, [string]$eyebrow, [string]$question, [string]$t
     }
     AddVisual $page 'page_navigator' 848 $M 408 32 $nav
     AddVisual $page 'data_period' 848 60 408 20 (CardText 'Data Period' 'Data period' 9 $Text2 $Font 'right' 'The period the APRA data on this report covers')
-    AddBlock $page 'divider' $M 96 ($W - 2 * $M) 1 $Line '' 0
+    AddRule $page 'divider' $M 96 ($W - 2 * $M) $Rule
     AddVisual $page 'takeaway' $M 112 ($W - 2 * $M) 48 (TextVisual @( (Para @( RichRuns $takeaway 12 $Text )) ) (FlatObjects '' @(0, 0, 0, 0) ($takeaway -replace '\*\*', '')))
 
     # Footer: footnote, then the source with the repository right-aligned on its last line.
     if ($footnote) {
-        AddVisual $page 'footnote' $M 812 ($W - 2 * $M) 32 (TextVisual @( (Para @( (Run $footnote 8.5 $Text2 $false $Font) )) ) (FlatObjects '' @(0, 0, 0, 0) $footnote))
+        AddVisual $page 'footnote' $M 808 ($W - 2 * $M) 32 (TextVisual @( (Para @( (Run $footnote 8.5 $Text2 $false $Font) )) ) (FlatObjects '' @(0, 0, 0, 0) $footnote))
     }
     AddVisual $page 'source' $M 848 968 32 (TextVisual @( (Para @( (Run $Source 8.5 $Text2 $false $Font) )) ) (FlatObjects '' @(0, 0, 0, 0) $Source))
     AddVisual $page 'repository' 1008 864 248 16 (TextVisual @( (Para @( (Run 'github.com/Nandita-choudhary/phi-coverage' 8.5 $Text2 $false $Font) ) 'right') ) (FlatObjects '' @(0, 0, 0, 0) 'github.com/Nandita-choudhary/phi-coverage'))
@@ -290,51 +311,112 @@ function AddKpi([string]$page, [string]$name, [int]$x, [int]$w, [string]$label, 
 }
 
 # ---- text panel: heading, then paragraphs; each paragraph is a list of runs
-function AddTextPanel([string]$page, [string]$name, [int]$x, [int]$y, [int]$w, [int]$h, [string]$heading, $paragraphs, [string]$alt) {
+# -tight: spacers only after the heading and before the last paragraph (a spacer is about 15 px whatever its size).
+function AddTextPanel([string]$page, [string]$name, [int]$x, [int]$y, [int]$w, [int]$h, [string]$heading, $paragraphs, [string]$alt, [switch]$tight) {
     $paras = @( (Para @( (Run $heading 12 $Text $false $Semi) )) )
-    foreach ($runs in $paragraphs) { $paras += (Spacer 5); $paras += (Para @($runs)) }
+    $n = 0
+    foreach ($runs in $paragraphs) {
+        $n++
+        if (-not $tight -or $n -eq 1 -or $n -eq @($paragraphs).Count) { $paras += (Spacer 4) }
+        $paras += (Para @($runs))
+    }
     $objs = FlatObjects $Panel @($Pad, $Pad, $Pad, $Pad) $alt
     $objs['border'] = @( (Edge $Line 12) )
     AddVisual $page $name $x $y $w $h (TextVisual $paras $objs)
 }
 
-# ---- charts
+# ---- chart pieces
 $Quarter = Col 'dim_date' 'quarter_end'
-function AxisObjects([bool]$scalar, [bool]$valueAxis, [bool]$millions) {
-    $cat = [ordered]@{ show = (LB $true); labelColor = (Fill $Text2); fontSize = (LD 9); fontFamily = (LStr $Font)
-                       gridlineShow = (LB $false); showAxisTitle = (LB $false) }
-    if ($scalar) { $cat['axisType'] = (LStr 'Scalar') }
-    $val = [ordered]@{ show = (LB $valueAxis); labelColor = (Fill $Text2); fontSize = (LD 9); fontFamily = (LStr $Font)
-                       gridlineShow = (LB $valueAxis); gridlineColor = (Fill $Line); showAxisTitle = (LB $false) }
-    if ($millions) { $val['labelDisplayUnits'] = (LD 1000000); $val['labelPrecision'] = (LL 1) }
+$Year = Col 'dim_date' 'year'
+function CatAxis([bool]$scalar, [string]$labelColor = $Text2) {
+    $p = [ordered]@{ show = (LB $true); labelColor = (Fill $labelColor); fontSize = (LD 9); fontFamily = (LStr $Font)
+                     gridlineShow = (LB $false); showAxisTitle = (LB $false) }
+    if ($scalar) { $p['axisType'] = (LStr 'Scalar') }
+    P $p
+}
+function ValAxis($extra = $null) {
+    $p = [ordered]@{ show = (LB $true); labelColor = (Fill $Text2); fontSize = (LD 9); fontFamily = (LStr $Font)
+                     gridlineShow = (LB $true); gridlineColor = (Fill $Grid); showAxisTitle = (LB $false) }
+    if ($extra) { foreach ($k in $extra.Keys) { $p[$k] = $extra[$k] } }
+    P $p
+}
+# Base data labels: 9 pt, with a panel-coloured background so no line runs through the text.
+function BaseLabels([hashtable]$extra = @{}) {
+    $p = [ordered]@{ show = (LB $true); color = (Fill $Text); fontSize = (LD 9); fontFamily = (LStr $Font)
+                     enableBackground = (LB $true); backgroundColor = (Fill $Panel); backgroundTransparency = (LD 0) }
+    foreach ($k in $extra.Keys) { $p[$k] = $extra[$k] }
+    P $p
+}
+# Labels from a measure that is blank except at the points to label.
+function KeyLabels([string]$measure, [string]$labelMeasure, [string]$position) {
+    $series = [ordered]@{ showSeries = (LB $true); showDynamicLabels = (LB $true); color = (Fill $Text) }
+    if ($position) { $series['labelPosition'] = (LStr $position) }
+    @( (P $series (Meta $measure)),
+       (P ([ordered]@{ showDynamicLabels = (LB $true); dynamicLabelValue = (MeaExpr $labelMeasure); showBlankAs = (LStr '') }) (EachPoint $measure)) )
+}
+# A solid 1 px zero line on the value axis, optionally labelled from a measure. Never dashed.
+function ZeroLine([string]$labelMeasure = '') {
+    $p = [ordered]@{ show = (LB $true); value = (L '0D'); lineColor = (Fill $ZeroLine); transparency = (LD 0)
+                     style = (LStr 'solid'); width = (LD 1); position = (LStr 'front') }
+    if ($labelMeasure) {
+        $p['displayName'] = (MeaExpr $labelMeasure); $p['dataLabelShow'] = (LB $true); $p['dataLabelText'] = (LStr 'Name')
+        $p['dataLabelColor'] = (Fill $Text2); $p['dataLabelHorizontalPosition'] = (LStr 'right'); $p['dataLabelVerticalPosition'] = (LStr 'above')
+    } else { $p['dataLabelShow'] = (LB $false) }
+    P $p ([ordered]@{ id = '0' })
+}
+function Filters($filters) { [ordered]@{ filters = @($filters) } }
+function DateFrom([string]$name, [string]$display, [string]$iso) {
     [ordered]@{
-        categoryAxis = @( (P $cat) )
-        valueAxis    = @( (P $val) )
-        legend       = @( (Hidden) )
+        name = $name; displayName = $display; field = (Col 'dim_date' 'quarter_end'); type = 'Advanced'
+        filter = [ordered]@{
+            Version = 2
+            From = @( [ordered]@{ Name = 'd'; Entity = 'dim_date'; Type = 0 } )
+            Where = @( [ordered]@{ Condition = [ordered]@{ Comparison = [ordered]@{
+                ComparisonKind = 2
+                Left = [ordered]@{ Column = [ordered]@{ Expression = [ordered]@{ SourceRef = [ordered]@{ Source = 'd' } }; Property = 'quarter_end' } }
+                Right = [ordered]@{ Literal = [ordered]@{ Value = "datetime'$iso'" } }
+            } } } )
+        }
     }
 }
-# Line chart. Each series: Measure, Label, Color, KeyLabel (a measure, blank except at the points to
-# label), SeriesLabel (show the series name at the line's end), NameColor.
-function LineVisual($series, [string]$title, [string]$sub, [bool]$millions, $refY, $refX, [bool]$seriesNames) {
-    $objects = AxisObjects $true $true $millions
-    $objects['dataPoint'] = @( @($series) | ForEach-Object { P ([ordered]@{ fill = (Fill $_.Color) }) (Meta $_.Measure) } )
-    $objects['lineStyles'] = @( (P ([ordered]@{ strokeWidth = (LD 2); showMarker = (LB $false) })) )
-    $labels = @( (P ([ordered]@{ show = (LB $true); color = (Fill $Text); fontSize = (LD 9); fontFamily = (LStr $Font)
-                                  labelDensity = (LD 100); enableBackground = (LB $true); backgroundColor = (Fill $Panel)
-                                  backgroundTransparency = (LD 0) })) )
-    foreach ($s in @($series)) {
-        $seriesLabel = [ordered]@{ showSeries = (LB $true); showDynamicLabels = (LB $true); color = (Fill $Text) }
-        if ($s.LabelPosition) { $seriesLabel['labelPosition'] = (LStr $s.LabelPosition) }
-        $labels += (P $seriesLabel (Meta $s.Measure))
-        $labels += (P ([ordered]@{ showDynamicLabels = (LB $true); dynamicLabelValue = (MeaExpr $s.KeyLabel); showBlankAs = (LStr '') }) (EachPoint $s.Measure))
+# Only the June quarters: their labels start with "Jun".
+function JunesOnly {
+    [ordered]@{
+        name = 'junesOnly'; displayName = 'June quarters only'; field = (Col 'dim_date' 'quarter_label'); type = 'Advanced'
+        filter = [ordered]@{
+            Version = 2
+            From = @( [ordered]@{ Name = 'd'; Entity = 'dim_date'; Type = 0 } )
+            Where = @( [ordered]@{ Condition = [ordered]@{ StartsWith = [ordered]@{
+                Left = [ordered]@{ Column = [ordered]@{ Expression = [ordered]@{ SourceRef = [ordered]@{ Source = 'd' } }; Property = 'quarter_label' } }
+                Right = [ordered]@{ Literal = [ordered]@{ Value = "'Jun'" } }
+            } } } )
+        }
     }
+}
+# Line chart over quarters. Each series: Measure, Label, Color, KeyLabel, LabelPosition, NameColor.
+function LineVisual($series, [string]$title, [string]$sub, $valueExtra, $refX, [bool]$seriesNames, [bool]$area) {
+    $objects = [ordered]@{ categoryAxis = @( (CatAxis $true) ); valueAxis = @( (ValAxis $valueExtra) ); legend = @( (Hidden) ) }
+    $objects['dataPoint'] = @( @($series) | ForEach-Object { P ([ordered]@{ fill = (Fill $_.Color) }) (Meta $_.Measure) } )
+    $style = [ordered]@{ strokeWidth = (LD 2.5); showMarker = (LB $false) }
+    if ($area) {
+        # Shaded area under each line in the line's colour at 85% transparency ("Area transparency" lives in dataPoint).
+        $style['areaShow'] = (LB $true); $style['areaMatchStrokeColor'] = (LB $true)
+        $objects['dataPoint'] = @( (P ([ordered]@{ transparency = (LD 85) })) ) +
+            @( @($series) | ForEach-Object { P ([ordered]@{ fill = (Fill $_.Color); transparency = (LD 85) }) (Meta $_.Measure) } )
+    }
+    $objects['lineStyles'] = @( (P $style) )
+    $labels = @( (BaseLabels @{ labelDensity = (LD 100) }) )
+    foreach ($s in @($series)) { $labels += (KeyLabels $s.Measure $s.KeyLabel $s.LabelPosition) }
     $objects['labels'] = $labels
     if ($seriesNames) {
-        $names = @( (P ([ordered]@{ show = (LB $true); textSize = (LD 9); seriesFontFamily = (LStr $Font); enableBackground = (LB $false) })) )
+        # Names at the line ends instead of a legend; text in #94A3B8 or orange, never the grey of a mark.
+        # Line ends close together: a name may move up to 40 px off its line, on a solid grey leader line.
+        $names = @( (P ([ordered]@{ show = (LB $true); textSize = (LD 9); seriesFontFamily = (LStr $Font); enableBackground = (LB $false)
+                                     seriesMatchColor = (LB $false); seriesColor = (Fill $Text2)
+                                     leaderLines = (LB $true); leaderLinePattern = (LStr 'solid'); leaderLineColor = (Fill $Grey); maximumOffset = (LD 40) })) )
         foreach ($s in @($series)) { $names += (P ([ordered]@{ seriesMatchColor = (LB $false); seriesColor = (Fill $s.NameColor) }) (Meta $s.Measure)) }
         $objects['seriesLabels'] = $names
     }
-    if ($null -ne $refY) { $objects['y1AxisReferenceLine'] = @( $refY ) }
     if ($null -ne $refX) { $objects['xAxisReferenceLine'] = @( $refX ) }
     [ordered]@{
         visualType = 'lineChart'
@@ -350,60 +432,35 @@ function LineVisual($series, [string]$title, [string]$sub, [bool]$millions, $ref
         drillFilterOtherVisuals = $true
     }
 }
-# A dashed horizontal line whose value and label come from measures.
-function RefLineY([string]$valueMeasure, [string]$labelMeasure, [string]$hAlign) {
-    P ([ordered]@{
-        show = (LB $true)
-        displayName = (MeaExpr $labelMeasure)
-        value = (MeaExpr $valueMeasure)
-        lineColor = (Fill $Grey)
-        transparency = (LD 0)
-        style = (LStr 'dashed')
-        position = (LStr 'back')
-        dataLabelShow = (LB $true)
-        dataLabelText = (LStr 'Name')
-        dataLabelColor = (Fill $Text2)
-        dataLabelHorizontalPosition = (LStr $hAlign)
-        dataLabelVerticalPosition = (LStr 'above')
-    }) ([ordered]@{ id = '1' })
-}
-function FromDate([string]$name, [string]$display, [string]$iso) {
-    [ordered]@{ filters = @( [ordered]@{
-        name = $name
-        displayName = $display
-        field = (Col 'dim_date' 'quarter_end')
-        type = 'Advanced'
-        filter = [ordered]@{
-            Version = 2
-            From = @( [ordered]@{ Name = 'd'; Entity = 'dim_date'; Type = 0 } )
-            Where = @( [ordered]@{ Condition = [ordered]@{ Comparison = [ordered]@{
-                ComparisonKind = 2
-                Left = [ordered]@{ Column = [ordered]@{ Expression = [ordered]@{ SourceRef = [ordered]@{ Source = 'd' } }; Property = 'quarter_end' } }
-                Right = [ordered]@{ Literal = [ordered]@{ Value = "datetime'$iso'" } }
-            } } } )
-        }
-    } ) }
-}
-function ColumnVisual($category, [string]$categoryName, [string]$measure, [string]$measureName, $tooltips, $colourRules, [string]$title, [string]$sub, $refY, [bool]$byValue) {
-    $objects = AxisObjects $false $false $false
-    $objects['dataPoint'] = @( (P ([ordered]@{ fill = (Fill $Grey) })) ) + @( $colourRules | ForEach-Object { P ([ordered]@{ fill = (Fill $Orange) }) (ScopeEq $category $_) } )
-    # A panel-coloured background behind each label, so a dashed line never runs through the text.
-    $objects['labels'] = @( (P ([ordered]@{ show = (LB $true); color = (Fill $Text); fontSize = (LD 9); fontFamily = (LStr $Font)
-                                             enableBackground = (LB $true); backgroundColor = (Fill $Panel); backgroundTransparency = (LD 0) })) )
-    if ($null -ne $refY) {
-        $objects['y1AxisReferenceLine'] = @( $refY )
-        # Room at the left edge for the line's label, clear of the first column's data label.
-        $objects['categoryAxis'][0].properties['outerPadding'] = (LL 150)
+# Diverging bars or columns: one measure, coloured by a colour measure, with a zero line.
+# $narrow: many narrow columns, so 8 pt labels with no background (which would make neighbours collide)
+# and no gridlines (so no line runs through a label); every column carries its value instead.
+function DivergingVisual([string]$type, $category, [string]$categoryName, [string]$measure, [string]$measureName, [string]$colourMeasure, $tooltips, [string]$title, [string]$sub, [string]$zeroLabel, $sort, [string]$axisEndMeasure = '', [switch]$narrow) {
+    # An axis end from a measure leaves room for the longest bar's label, whatever the data.
+    $axisExtra = [ordered]@{}
+    if ($axisEndMeasure) { $axisExtra['end'] = (MeaExpr $axisEndMeasure) }
+    if ($narrow) { $axisExtra['gridlineShow'] = (LB $false) }
+    $labelExtra = @{ labelPosition = (LStr 'OutsideEnd') }
+    if ($narrow) { $labelExtra['fontSize'] = (LD 8); $labelExtra['enableBackground'] = (LB $false) }
+    # Category names at 8 pt on narrow columns, so they fit level; Power BI angles them only if they don't.
+    $catAxis = CatAxis $false $Text
+    if ($narrow) { $catAxis.properties['fontSize'] = (LD 8) }
+    $objects = [ordered]@{
+        categoryAxis = @( $catAxis )
+        valueAxis    = @( (ValAxis $axisExtra) )
+        legend       = @( (Hidden) )
+        # A colour measure on one series: the selector Power BI writes is the data wildcard alone.
+        dataPoint    = @( (P ([ordered]@{ fill = (MeaFill $colourMeasure) }) ([ordered]@{ data = @( [ordered]@{ dataViewWildcard = [ordered]@{ matchingOption = 1 } } ) })) )
+        labels       = @( (BaseLabels $labelExtra) )
+        y1AxisReferenceLine = @( (ZeroLine $zeroLabel) )
     }
     $state = [ordered]@{
         Category = [ordered]@{ projections = @( (Proj $category $categoryName) ) }
         Y        = [ordered]@{ projections = @( (Proj (Mea $measure) $measureName) ) }
     }
     if ($tooltips) { $state['Tooltips'] = [ordered]@{ projections = @( $tooltips | ForEach-Object { Proj (Mea $_.Measure) $_.Label } ) } }
-    # Lowest value first, or the category's own order (age bands sort by their first age).
-    $sort = if ($byValue) { SortBy (Mea $measure) 'Ascending' } else { SortBy $category 'Ascending' }
     [ordered]@{
-        visualType = 'clusteredColumnChart'
+        visualType = $type
         query = [ordered]@{ queryState = $state; sortDefinition = $sort }
         objects = $objects
         visualContainerObjects = (PanelObjects $title $sub "$title. $sub")
@@ -421,20 +478,88 @@ AddKpi $pg 'kpi_change'   336 296 'Change on a year earlier' '' 'Insured Persons
 AddKpi $pg 'kpi_coverage' 648 296 'Share of Australians covered' '' 'Coverage Rate' 'Coverage Rate Context' $Orange "People with hospital cover as a share of Australia's population, at the end of the latest quarter."
 AddKpi $pg 'kpi_policies' 960 296 'Hospital policies' '' 'Hospital Policies' 'Hospital Policies Context' $Grey 'Hospital policies at the end of the latest quarter. One policy can cover several people.'
 
-AddVisual $pg 'insured_by_quarter' 24 296 608 280 (LineVisual @( @{ Measure = 'Insured Persons'; Label = 'People with hospital cover'; Color = $Blue; KeyLabel = 'Insured Persons Key Label' } ) `
-    'A record 12.8 million people now have hospital cover, up 40% since 2007' `
-    'People with hospital cover at the end of each quarter, Australia-wide, in millions.' $true $null $null $false)
-AddVisual $pg 'coverage_by_quarter' 648 296 608 280 (LineVisual @( @{ Measure = 'Coverage Rate'; Label = 'Share covered'; Color = $Orange; KeyLabel = 'Coverage Rate Key Label' } ) `
-    "${Ellipsis}but the share of Australians covered, 45.8%, is still below its 2015 peak of 47.4%" `
-    'People with hospital cover as a share of the population, at the end of each quarter.' $false (RefLineY 'Coverage Rate Peak' 'Coverage Rate Peak Label' 'left') $null $false)
+# Combo: a column for each June (people, left axis, millions) and the coverage line (right axis, 40% to 50%).
+# The low label sits under the line, so it rides on an invisible copy of the line with its labels below.
+$comboTitle = 'A record 12.8 million people have hospital cover, but the share of Australians covered is still below its 2015 peak'
+$comboSub = 'People with hospital cover at each June (columns, left axis) and the share of the population they make up (line, right axis, 40% to 50%).'
+$combo = [ordered]@{
+    visualType = 'lineClusteredColumnComboChart'
+    query = [ordered]@{
+        queryState = [ordered]@{
+            Category = [ordered]@{ projections = @( (Proj $Year 'June') ) }
+            Y  = [ordered]@{ projections = @( (Proj (Mea 'Insured Persons') 'People with hospital cover') ) }
+            Y2 = [ordered]@{ projections = @( (Proj (Mea 'Coverage Rate') 'Share of Australians covered'), (Proj (Mea 'Coverage Rate, Line for Labels Below') 'Share covered (labels below)') ) }
+        }
+        sortDefinition = (SortBy $Year 'Ascending')
+    }
+    objects = [ordered]@{
+        categoryAxis = @( (CatAxis $false) )
+        # Left axis to 20M keeps the column tops (and their label slots) below the peak label.
+        valueAxis = @( (ValAxis ([ordered]@{
+            start = (LD 0); end = (LD 20000000); labelDisplayUnits = (LD 1000000); labelPrecision = (LL 0)
+            showAxisTitle = (LB $true); titleText = (LStr 'People with hospital cover'); titleColor = (Fill $Text2); titleFontSize = (LD 9)
+            secShow = (LB $true); secStart = (LD 0.4); secEnd = (LD 0.5); secLabelColor = (Fill $Text2); secFontSize = (LD 9); secLabelPrecision = (LL 0)
+            secShowAxisTitle = (LB $true); secTitleText = (LStr 'Share of Australians covered'); secTitleColor = (Fill $Text2); secTitleFontSize = (LD 9)
+        })) )
+        legend = @( (Hidden) )
+        # A single column series takes the default colour, not its series entry.
+        dataPoint = @(
+            (P ([ordered]@{ defaultColor = (Fill $Blue) })),
+            (P ([ordered]@{ fill = (Fill $Blue) }) (Meta 'Insured Persons')),
+            (P ([ordered]@{ fill = (Fill $Orange) }) (Meta 'Coverage Rate')),
+            (P ([ordered]@{ fill = (Fill $Orange) }) (Meta 'Coverage Rate, Line for Labels Below'))
+        )
+        lineStyles = @(
+            (P ([ordered]@{ strokeWidth = (LD 2.5); showMarker = (LB $false) })),
+            (P ([ordered]@{ strokeShow = (LB $false); showMarker = (LB $false) }) (Meta 'Coverage Rate, Line for Labels Below'))
+        )
+        # The latest June's label sits under the line: above it, it would collide with 12.8M and be hidden.
+        labels = @( (BaseLabels @{ labelDensity = (LD 100) }) ) + (KeyLabels 'Insured Persons' 'Insured Persons, June Key Label' 'OutsideEnd') +
+                 (KeyLabels 'Coverage Rate' 'Coverage Rate, June Label Above' 'Above') + (KeyLabels 'Coverage Rate, Line for Labels Below' 'Coverage Rate, June Label Below' 'Under')
+        y1AxisReferenceLine = @( (ZeroLine) )
+    }
+    visualContainerObjects = (PanelObjects $comboTitle $comboSub "$comboTitle. $comboSub")
+    drillFilterOtherVisuals = $true
+}
+# 856 wide so the title fits on one line, which leaves the right axis title room to show in full.
+AddVisual $pg 'members_and_coverage' 24 296 856 296 $combo (Filters @( (JunesOnly) ))
 
-AddTextPanel $pg 'how_numbers_work' 24 592 480 240 'How the numbers work' @(
+# Two donuts: the covered slice orange, the rest #334155, a wide hole; the share and people in each hole.
+# The donut's own centre value and slice borders are off; the hole text is two cards laid over it.
+$donutTitle = 'The slice of Australians covered barely moved, while the people in it grew'
+AddTextPanel $pg 'donut_panel' 896 296 360 296 $donutTitle @() "$donutTitle. Two donuts: share of Australians covered in the first and latest quarters."
+foreach ($d in @(@{ Tag = 'First'; X = 908 }, @{ Tag = 'Latest'; X = 1072 })) {
+    $donut = [ordered]@{
+        visualType = 'donutChart'
+        query = [ordered]@{ queryState = [ordered]@{ Y = [ordered]@{ projections = @(
+            (Proj (Mea "Covered, $($d.Tag) Quarter") 'Covered'), (Proj (Mea "Not Covered, $($d.Tag) Quarter") 'Not covered') ) } } }
+        objects = [ordered]@{
+            dataPoint = @(
+                (P ([ordered]@{ borderShow = (LB $false) })),
+                (P ([ordered]@{ fill = (Fill $Orange) }) (Meta "Covered, $($d.Tag) Quarter")),
+                (P ([ordered]@{ fill = (Fill $Rule) }) (Meta "Not Covered, $($d.Tag) Quarter"))
+            )
+            legend = @( (Hidden) )
+            labels = @( (Hidden) )
+            centerValue = @( (Hidden) )
+            slices = @( (P ([ordered]@{ innerRadiusRatio = (LD 80) })) )
+        }
+        visualContainerObjects = (FlatObjects '' @(0, 0, 0, 0) "Donut: share of Australians with hospital cover, $($d.Tag.ToLower()) quarter")
+        drillFilterOtherVisuals = $true
+    }
+    $lower = $d.Tag.ToLower()
+    AddVisual $pg "donut_${lower}_caption" $d.X 382 168 20 (CardText "Quarter Label, $($d.Tag)" 'Quarter' 10 $Text2 $Font 'center' "Donut caption, $lower quarter")
+    AddVisual $pg "donut_$lower" $d.X 390 168 176 $donut
+    AddVisual $pg "donut_${lower}_share" ($d.X + 14) 450 140 34 (CardText "Coverage Share Label, $($d.Tag) Quarter" 'Share covered' 24 $Text $Semi 'center' "Share covered, $lower quarter")
+    AddVisual $pg "donut_${lower}_people" ($d.X + 4) 486 160 18 (CardText "Coverage People Label, $($d.Tag) Quarter" 'People' 10 $Text2 $Font 'center' "People covered of all Australians, $lower quarter")
+}
+
+AddTextPanel $pg 'how_numbers_work' 24 608 480 232 'How the numbers work' @(
     , @( (Run "Coverage is people with hospital cover divided by Australia's population." 10 $Text2 $false $Font) )
     , @( (Run "People, policies and population are counted at the end of each quarter, so a period's figure is its latest quarter, never a sum." 10 $Text2 $false $Font) )
     , @( (Run "Every figure traces back to a cell in APRA's spreadsheets. The five published figures on the right were rebuilt from them and match at the precision they were published." 10 $Text2 $false $Font) )
 ) "How the numbers work. Coverage is people with hospital cover divided by Australia's population. People, policies and population are counted at the end of each quarter, so a period's figure is its latest quarter, never a sum. Every figure traces back to a cell in APRA's spreadsheets. The five published figures on the right were rebuilt from them and match at the precision they were published."
 
-# Reconciliation table: five rows, no scroll bars; widths leave room for cell padding.
 $recon = @(
     @{ Field = (Col 'reconciliation_panel' 'measure'); Label = 'Measure'; Width = 380 },
     @{ Field = (Col 'reconciliation_panel' 'published_display'); Label = 'Published'; Width = 75 },
@@ -453,62 +578,53 @@ $table = [ordered]@{
                                      backColorSecondary = (Fill $Panel); fontFamily = (LStr $Font); fontSize = (LD 10) })),
                     (P ([ordered]@{ fontColor = (Fill $Blue) }) (EachPoint 'Reconciliation Match')) )
         grid = @( (P ([ordered]@{ gridVertical = (LB $false); gridHorizontal = (LB $true); gridHorizontalColor = (Fill $Line)
-                                   gridHorizontalWeight = (LD 1); outlineColor = (Fill $Line); rowPadding = (LD 4) })) )
+                                   gridHorizontalWeight = (LD 1); outlineColor = (Fill $Line); rowPadding = (LD 3) })) )
         columnWidth = @( $recon | ForEach-Object { P ([ordered]@{ value = (LD $_.Width) }) ([ordered]@{ metadata = (Proj $_.Field '').queryRef }) } )
     }
     visualContainerObjects = (PanelObjects $tableTitle '' $tableTitle)
     drillFilterOtherVisuals = $true
 }
-AddVisual $pg 'reconciliation' 520 592 736 240 $table
+AddVisual $pg 'reconciliation' 520 608 736 232 $table
 
 # ================================================================ page 2: downgrading
 NewPage 'downgrading' 'Downgrading'
 $pg = 'downgrading'
 AddFrame $pg ("2 OF 3 $Dot DOWNGRADING") 'Are people downgrading instead of leaving?' `
     'In aggregate, yes. Policies grew **43.5%** since 2007, but only **26.8%** now give full cover, down from **63.6%**. And **29.4%** carry an excess over 500 dollars, up from **0.5%** before the April 2019 rule change.' `
-    'Full cover means no exclusions and no reduced cover. APRA counts the mix of policies at each quarter end, not who switched, so thinner cover can come from members downgrading or from new members buying less.'
+    "Full cover means no exclusions and no reduced cover. APRA counts the mix of policies at each quarter end, not who switched, so thinner cover can come from members downgrading or from new members buying less. In the excess chart, quarters before September 2010 are left out: the share drops 4.1 points that quarter, and APRA's notes do not explain why."
 AddKpi $pg 'kpi_policies'   24  400 'Hospital policies' '' 'Hospital Policies' 'Hospital Policies Context' $Blue 'Hospital policies at the end of the latest quarter. One policy can cover several people.'
 AddKpi $pg 'kpi_full_cover' 440 400 'With full cover' '' 'Full Cover Share' 'Full Cover Share Context' $Orange 'Share of hospital policies with full cover: no reduced cover and no lifetime exclusions. Latest quarter.'
 AddKpi $pg 'kpi_excess'     856 400 'With an excess over 500 dollars' '' 'Excess Over 500 Share' 'Excess Over 500 Share Context' $Orange 'Share of hospital policies with an excess over 500 dollars for a single person. Latest quarter.'
 
-# Left column: full cover over the state chart, which gets the extra height so its data labels and
-# the "Australia" line label do not collide. Right column: the excess chart over the panel.
-AddVisual $pg 'full_cover_by_quarter' 24 296 608 240 (LineVisual @( @{ Measure = 'Full Cover Share'; Label = 'With full cover'; Color = $Orange; KeyLabel = 'Full Cover Share Key Label' } ) `
+# Left column: the two trends. Right column: the state bars (eight bars need about 320 px) over the panel.
+AddVisual $pg 'full_cover_by_quarter' 24 296 608 232 (LineVisual @( @{ Measure = 'Full Cover Share'; Label = 'With full cover'; Color = $Orange; KeyLabel = 'Full Cover Share Key Label'; LabelPosition = 'Above' } ) `
     'Policies grew 43.5% since 2007, but only 26.8% now give full cover, down from 63.6%' `
-    'Share of hospital policies with full cover, at the end of each quarter.' $false $null $null $false)
+    'Share of hospital policies with full cover, at the end of each quarter.' ([ordered]@{ start = (LD 0); end = (LD 0.8) }) $null $false $true)
 
-$ruleLine = P ([ordered]@{
-    show = (LB $true)
-    displayName = (LStr '1 Apr 2019: maximum excess rises to 750 dollars single')
-    value = (L "datetime'2019-04-01T00:00:00'")
-    lineColor = (Fill $Grey)
-    transparency = (LD 0)
-    style = (LStr 'dashed')
-    position = (LStr 'front')
-    dataLabelShow = (LB $false)
-}) ([ordered]@{ id = '1' })
-AddVisual $pg 'excess_by_quarter' 648 296 608 272 (LineVisual @( @{ Measure = 'Excess Over 500 Share'; Label = 'Excess over 500 dollars'; Color = $Orange; KeyLabel = 'Excess Over 500 Share Key Label' } ) `
+# Two areas that share the March 2019 point: grey before the 1 April 2019 rule change, orange after, so the
+# change of colour marks the rule change. 0.5% labels the grey part's last point, 29.4% the orange part's.
+AddVisual $pg 'excess_by_quarter' 24 544 608 248 (LineVisual @(
+        @{ Measure = 'Excess Over 500 Share, Before Rule Change'; Label = 'Before the rule change'; Color = $Grey; KeyLabel = 'Excess Over 500 Share Key Label'; LabelPosition = 'Above' },
+        @{ Measure = 'Excess Over 500 Share, After Rule Change'; Label = 'After the rule change'; Color = $Orange; KeyLabel = 'Excess Over 500 Share, Latest Label'; LabelPosition = 'Above' }
+    ) `
     'Since the April 2019 rule change, policies with an excess over 500 dollars went from 0.5% to 29.4%' `
-    "Share of hospital policies with an excess over 500 dollars (single), from September 2010. Earlier quarters are left out: the share drops 4.1 points that quarter, and APRA's notes do not explain why." `
-    $false $null $ruleLine $false) (FromDate 'fromSep2010' 'From September 2010' '2010-09-30T00:00:00')
-# The rule-change note sits left of the dashed line (about x 985) and above the flat pre-2019 line.
-$ruleNote = @(
-    (Para @( (Run '1 Apr 2019: maximum excess' 9 $Text2 $false $Font) ) 'right'),
-    (Para @( (Run 'rises to 750 dollars single' 9 $Text2 $false $Font) ) 'right')
-)
-AddVisual $pg 'excess_rule_note' 711 460 230 48 (TextVisual $ruleNote (FlatObjects '' @(0, 0, 0, 0) '1 April 2019: maximum excess rises to 750 dollars single'))
+    'Share of hospital policies with an excess over 500 dollars (single), from September 2010.' ([ordered]@{ start = (LD 0); end = (MeaExpr 'Excess Over 500 Share, Axis Max') }) $null $false $true) (Filters @( (DateFrom 'fromSep2010' 'From September 2010' '2010-09-30T00:00:00') ))
+# The note sits above the orange part, at its left end (the orange part starts near x 362), between the 40% and
+# 20% gridlines (near y 655 and 700). The axis top at 1.5 times the highest share keeps the line below it;
+# 200 wide keeps it clear of the 29.4% label.
+AddVisual $pg 'excess_rule_note' 368 659 200 40 (TextVisual @( (Para @( (Run 'From 1 April 2019 the maximum excess rose to 750 dollars single' 9 $Text2 $false $Font) )) ) (FlatObjects '' @(0, 0, 0, 0) 'From 1 April 2019 the maximum excess rose to 750 dollars single'))
 
-$stateCode = Col 'dim_state' 'state'
-AddVisual $pg 'full_cover_by_state' 24 552 608 244 (ColumnVisual $stateCode 'State' 'Full Cover Share' 'With full cover' $null @("'WA'") `
-    'Full cover is rarest in WA (23.1%) and most common in Tasmania (38.7%)' 'Share of hospital policies with full cover, latest quarter, against Australia as a whole.' `
-    (RefLineY 'Full Cover Share, Australia' 'Full Cover Share, Australia Label' 'left') $true)
+$gap = 'Full Cover Share, Gap to Australia (points)'
+AddVisual $pg 'full_cover_gap_by_state' 648 296 608 320 (DivergingVisual 'clusteredBarChart' (Col 'dim_state' 'state_label') 'State' $gap 'Gap to Australia' 'Full Cover Share, Gap Colour' $null `
+    'Full cover is rarest in WA and most common in Tasmania: 3.7 points below and 11.9 above the national 26.8%' `
+    'Share of hospital policies with full cover, latest quarter, each state against Australia as a whole.' 'Full Cover Share, Australia Label' (SortBy (Mea $gap) 'Ascending'))
 
-AddTextPanel $pg 'less_cover_means' 648 584 608 212 'What less cover means' @(
+AddTextPanel $pg 'less_cover_means' 648 632 608 160 'What less cover means' @(
     , @( (Run 'Exclusions: ' 10 $Text $false $Semi), (Run 'treatments a policy does not pay for at all.' 10 $Text2 $false $Font) )
     , @( (Run 'Reduced cover: ' 10 $Text $false $Semi), (Run 'treatments a policy pays only reduced benefits for.' 10 $Text2 $false $Font) )
-    , @( (Run 'Excess: ' 10 $Text $false $Semi), (Run 'what you pay towards a hospital admission before the insurer pays. Since 1 April 2019 it can be up to 750 dollars for a single person, up from 500.' 10 $Text2 $false $Font) )
+    , @( (Run 'Excess: ' 10 $Text $false $Semi), (Run 'what you pay towards a hospital admission before the insurer pays.' 10 $Text2 $false $Font) )
     , @( (Run 'Before you renew, check your exclusions and your excess.' 10 $Text $true $Font) )
-) 'What less cover means. Exclusions: treatments a policy does not pay for at all. Reduced cover: treatments a policy pays only reduced benefits for. Excess: what you pay towards a hospital admission before the insurer pays. Since 1 April 2019 it can be up to 750 dollars for a single person, up from 500. Before you renew, check your exclusions and your excess.'
+) 'What less cover means. Exclusions: treatments a policy does not pay for at all. Reduced cover: treatments a policy pays only reduced benefits for. Excess: what you pay towards a hospital admission before the insurer pays. Before you renew, check your exclusions and your excess.' -tight
 
 # ================================================================ page 3: an older pool
 NewPage 'older_pool' 'An older pool'
@@ -516,25 +632,115 @@ $pg = 'older_pool'
 AddFrame $pg ("3 OF 3 $Dot AN OLDER POOL") 'Is the pool getting older?' `
     'Yes. By June 2025, people aged 65 and over made up **20.7%** of the insured, up from **13.3%** in June 2007. Across Australia the share rose less, from **13.1%** to **17.4%**.' `
     "These figures are for Australia as a whole: APRA's population by age has no state breakdown. In June 2018 its population table lacks women aged 95+, so Australia's 65+ share is slightly understated that year."
-AddKpi $pg 'kpi_insured_65'   24  400 'Insured people aged 65+' 'Share Aged 65+, Insured Label' 'Share Aged 65+, Insured' 'Share Aged 65+, Insured Context' $Orange 'Share of people with hospital cover who are aged 65 or over, in the latest June with population figures by age.'
-AddKpi $pg 'kpi_australia_65' 440 400 'All Australians aged 65+' 'Share Aged 65+, Australia Label' 'Share Aged 65+, Australia' 'Share Aged 65+, Australia Context' $Grey 'Share of all Australians aged 65 or over, in the same June.'
-AddKpi $pg 'kpi_gap'          856 400 'Gap, percentage points' 'Age Gap Label' 'Age Gap (points)' 'Age Gap Context' $Orange "How many percentage points the insured pool's 65+ share runs ahead of Australia's, in the same June."
+# No KPI tiles on this page: the combo takes their place, and its labels carry the same numbers.
 
-AddVisual $pg 'share_65_by_june' 24 296 1232 236 (LineVisual @(
-        # The two lines start 0.2 points apart: insured labels above their line, Australia's below.
-        @{ Measure = 'Share Aged 65+, Insured'; Label = 'Insured people'; Color = $Orange; KeyLabel = 'Share Aged 65+, Insured Key Label'; NameColor = $Orange; LabelPosition = 'Above' },
-        @{ Measure = 'Share Aged 65+, Australia'; Label = 'All Australians'; Color = $Grey; KeyLabel = 'Share Aged 65+, Australia Key Label'; NameColor = $Text2; LabelPosition = 'Under' }
-    ) `
-    'Insured people are ageing faster than Australia: aged 65+ rose from 13.3% to 20.7% of the insured, against 13.1% to 17.4% of everyone' `
-    'Share of people aged 65 or over, each June: people with hospital cover against all Australians.' $false $null $null $true)
+# 65+ combo: the two shares as lines on the left axis (10% to 25%), the gap between them as columns on the right
+# axis (0 to 10 points). Power BI puts columns on the primary axis; switchAxisPosition moves it to the right.
+$ageTitle = 'Insured people are ageing faster than Australia: aged 65+ rose from 13.3% to 20.7% of the insured, against 13.1% to 17.4% of everyone'
+$ageSub = 'Share of people aged 65 or over, each June (lines, left axis), and the gap between them in percentage points (columns, right axis).'
+$gapSeries = 'Age Gap Series (points)'
+$ageLines = @(
+    # The two lines start 0.2 points apart: insured labels above their line, Australia's below.
+    @{ Measure = 'Share Aged 65+, Insured'; Label = 'Insured people'; Color = $Orange; KeyLabel = 'Share Aged 65+, Insured Key Label'; NameColor = $Orange; LabelPosition = 'Above' },
+    @{ Measure = 'Share Aged 65+, Australia'; Label = 'All Australians'; Color = $Grey; KeyLabel = 'Share Aged 65+, Australia Key Label'; NameColor = $Text2; LabelPosition = 'Under' }
+)
+$ageLabels = @( (BaseLabels @{ labelDensity = (LD 100) }) )
+foreach ($s in $ageLines) { $ageLabels += (KeyLabels $s.Measure $s.KeyLabel $s.LabelPosition) }
+# The gap label (latest June only) sits inside its column, clear of the 17.4% label under the grey line.
+$ageLabels += (KeyLabels $gapSeries 'Age Gap Series Key Label' 'InsideEnd')
+# Names at the line ends, as on the line charts; none for the columns.
+$ageNames = @( (P ([ordered]@{ show = (LB $true); textSize = (LD 9); seriesFontFamily = (LStr $Font); enableBackground = (LB $false)
+                                seriesMatchColor = (LB $false); seriesColor = (Fill $Text2)
+                                leaderLines = (LB $true); leaderLinePattern = (LStr 'solid'); leaderLineColor = (Fill $Grey); maximumOffset = (LD 40) })) )
+foreach ($s in $ageLines) { $ageNames += (P ([ordered]@{ seriesMatchColor = (LB $false); seriesColor = (Fill $s.NameColor) }) (Meta $s.Measure)) }
+$ageNames += (P ([ordered]@{ show = (LB $false) }) (Meta $gapSeries))
+# Narrow gaps between the columns, so the latest one is wide enough to hold its label inside.
+$ageAxis = CatAxis $false
+$ageAxis.properties['innerPadding'] = (LL 20)
+$ageCombo = [ordered]@{
+    visualType = 'lineClusteredColumnComboChart'
+    query = [ordered]@{
+        queryState = [ordered]@{
+            Category = [ordered]@{ projections = @( (Proj $Year 'June') ) }
+            Y  = [ordered]@{ projections = @( (Proj (Mea $gapSeries) 'Gap, percentage points') ) }
+            Y2 = [ordered]@{ projections = @( $ageLines | ForEach-Object { Proj (Mea $_.Measure) $_.Label } ) }
+        }
+        sortDefinition = (SortBy $Year 'Ascending')
+    }
+    objects = [ordered]@{
+        categoryAxis = @( $ageAxis )
+        valueAxis = @( (ValAxis ([ordered]@{
+            start = (LD 0); end = (LD 10); switchAxisPosition = (LB $true)
+            showAxisTitle = (LB $true); titleText = (LStr 'Gap, percentage points'); titleColor = (Fill $Text2); titleFontSize = (LD 9)
+            secShow = (LB $true); secStart = (LD 0.1); secEnd = (LD 0.25); secLabelColor = (Fill $Text2); secFontSize = (LD 9); secLabelPrecision = (LL 0)
+            secShowAxisTitle = (LB $false)
+        })) )
+        legend = @( (Hidden) )
+        # One column series takes the default colour; orange at 50% transparency.
+        dataPoint = @(
+            (P ([ordered]@{ defaultColor = (Fill $Orange); fillTransparency = (LD 50) })),
+            (P ([ordered]@{ fill = (Fill $Orange); fillTransparency = (LD 50) }) (Meta $gapSeries))
+        ) + @( $ageLines | ForEach-Object { P ([ordered]@{ fill = (Fill $_.Color) }) (Meta $_.Measure) } )
+        lineStyles = @( (P ([ordered]@{ strokeWidth = (LD 2.5); showMarker = (LB $false) })) )
+        labels = $ageLabels
+        seriesLabels = $ageNames
+        y1AxisReferenceLine = @( (ZeroLine) )
+    }
+    visualContainerObjects = (PanelObjects $ageTitle $ageSub "$ageTitle. $ageSub")
+    drillFilterOtherVisuals = $true
+}
+# Full width where the KPI tiles would be, 288 tall, so the labels at each end have room.
+AddVisual $pg 'share_65_by_june' 24 176 1232 288 $ageCombo (Filters @( (JunesOnly) ))
 
-$ageBand = Col 'dim_age_band' 'age_band'
-AddVisual $pg 'coverage_change_by_age' 24 548 1232 248 (ColumnVisual $ageBand 'Age' 'Coverage Change by Age (points)' 'Change, points' @(
+# Age mix: four 100% bars (insured and all Australians, first and latest June), four age groups.
+$group = Col 'dim_age_band' 'age_group4'
+$mixTitle = 'Every age group under 65 shrank as a share of the insured; 65 and over grew from 13.3% to 20.7%'
+$mixSub = 'Share of people in each age group, June 2007 and June 2025: people with hospital cover against all Australians.'
+# Little space between the four bars, so each is thick enough to hold its labels.
+$mixAxis = CatAxis $false $Text
+$mixAxis.properties['innerPadding'] = (LL 10)
+$mix = [ordered]@{
+    visualType = 'hundredPercentStackedBarChart'
+    query = [ordered]@{
+        queryState = [ordered]@{
+            Category = [ordered]@{ projections = @( (Proj (Col 'mix_bars' 'bar') 'Group') ) }
+            Series   = [ordered]@{ projections = @( (Proj $group 'Age group') ) }
+            Y        = [ordered]@{ projections = @( (Proj (Mea 'Age Mix Share') 'Share') ) }
+        }
+        sortDefinition = (SortBy (Col 'mix_bars' 'bar') 'Ascending')
+    }
+    objects = [ordered]@{
+        categoryAxis = @( $mixAxis )
+        valueAxis = @( (ValAxis) )
+        legend = @( (P ([ordered]@{ show = (LB $true); position = (LStr 'Top'); showTitle = (LB $false); labelColor = (Fill $Text2); fontSize = (LD 9) })) )
+        # A blue ramp that gets lighter with age, 65 and over in orange; a 1 px panel-coloured border between segments.
+        dataPoint = @(
+            (P ([ordered]@{ borderShow = (LB $true); borderColor = (Fill $Panel); borderSize = (LD 1) })),
+            (P ([ordered]@{ fill = (Fill $AgeBlue1) }) (ScopeEq $group "'Under 25'")),
+            (P ([ordered]@{ fill = (Fill $AgeBlue2) }) (ScopeEq $group "'25${EnDash}49'")),
+            (P ([ordered]@{ fill = (Fill $AgeBlue3) }) (ScopeEq $group "'50${EnDash}64'")),
+            (P ([ordered]@{ fill = (Fill $Orange) }) (ScopeEq $group "'65 and over'"))
+        )
+        # Power BI ignores the colour of labels inside stacked segments (visual, series or measure) and draws
+        # them in the theme's "background" colour. That is why theme.json sets "background" light. Semibold, as
+        # the lightest blue carries them at about 3.8:1.
+        labels = @( (P ([ordered]@{ show = (LB $true); labelPosition = (LStr 'InsideCenter'); color = (Fill $Text); fontSize = (LD 9); fontFamily = (LStr $Semi)
+                                     labelPrecision = (LL 1) })) )
+        y1AxisReferenceLine = @( (ZeroLine) )
+    }
+    visualContainerObjects = (PanelObjects $mixTitle $mixSub "$mixTitle. $mixSub")
+    drillFilterOtherVisuals = $true
+}
+# 520 wide, so the smallest segment (13.1%) has room for its label.
+AddVisual $pg 'age_mix' 24 480 520 312 $mix
+
+# Change by age: twenty bands as diverging columns. Horizontal bars would need 20 px per band, over 400 px
+# of plot, more than the page has.
+AddVisual $pg 'coverage_change_by_age' 560 480 696 312 (DivergingVisual 'clusteredColumnChart' (Col 'dim_age_band' 'age_band') 'Age' 'Coverage Change by Age (points)' 'Change, points' 'Coverage Change by Age, Colour' @(
         @{ Measure = 'Coverage by Age, First June'; Label = 'Coverage, June 2007' },
         @{ Measure = 'Coverage by Age, Latest June'; Label = 'Coverage, June 2025' }
-    ) @("'25-29'", "'30-34'", "'50-54'", "'55-59'", "'60-64'", "'80-84'", "'85-89'") `
-    'Coverage rose most among 80- to 89-year-olds, up 18 to 19 points since 2007, and fell among 25- to 34- and 50- to 64-year-olds' `
-    'Change in the share of each age band with hospital cover, June 2007 to June 2025, percentage points. National figures.' $null $false)
+    ) 'Coverage rose most among 80- to 89-year-olds, up 18 to 19 points since 2007, and fell among 25- to 34- and 50- to 64-year-olds' `
+    'Change in the share of each age band with hospital cover, June 2007 to June 2025, percentage points. National figures.' '' (SortBy (Col 'dim_age_band' 'age_band') 'Ascending') 'Coverage Change by Age, Axis Max' -narrow)
 
 # ================================================================ tab order, serialise and check, before writing
 foreach ($name in $pages.Keys) {
@@ -549,7 +755,7 @@ $model = @{}
 foreach ($f in Get-ChildItem -LiteralPath $TablesDir -Filter *.tmdl) {
     $lines = [IO.File]::ReadAllLines($f.FullName, $utf8)
     $table = (($lines | Where-Object { $_ -match '^table ' } | Select-Object -First 1) -replace '^table ', '') -replace "^'(.*)'$", '$1'
-    $cols = @($lines | Where-Object { $_ -match "^`tcolumn " } | ForEach-Object { ($_ -replace "^`tcolumn ", '') -replace "^'(.*)'$", '$1' })
+    $cols = @($lines | Where-Object { $_ -match "^`tcolumn " } | ForEach-Object { (($_ -replace "^`tcolumn ", '') -replace ' =.*$', '') -replace "^'(.*)'$", '$1' })
     $meas = @($lines | Where-Object { $_ -match "^`tmeasure " } | ForEach-Object { (($_ -replace "^`tmeasure ", '') -replace ' =.*$', '') -replace "^'(.*)'$", '$1' })
     $model[$table] = @{ Column = $cols; Measure = $meas }
 }
@@ -598,6 +804,11 @@ $found = New-Object System.Collections.Generic.HashSet[string]
 foreach ($path in $files.Keys) {
     try { $parsed = $files[$path] | ConvertFrom-Json } catch { throw "Not valid JSON: $path ($($_.Exception.Message))" }
     Walk $parsed @{} $found
+    # Power BI rejects a formatting object that is not a list ("not provided as the correct type").
+    foreach ($bag in 'objects', 'visualContainerObjects') {
+        $o = if ($parsed.visual) { $parsed.visual.$bag } else { $null }
+        if ($o) { foreach ($prop in $o.PSObject.Properties) { if ($prop.Value -isnot [System.Array]) { throw "$bag.$($prop.Name) is not a list in $path; nothing written" } } }
+    }
 }
 $missing = foreach ($r in $found) {
     $kind, $entity, $prop = $r -split '\|', 3

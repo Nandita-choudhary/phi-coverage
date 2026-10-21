@@ -52,23 +52,6 @@ table _Measures
 		displayFolder: Change on a year earlier
 		lineageTag: 9856d027-2c48-4cc1-842b-365d925e3ce3
 
-	/// The share of people with hospital cover, against the same quarter a year earlier. Blank when there is no year earlier to compare with, rather than a misleading zero.
-	measure 'Coverage Rate, Change on a Year Earlier' =
-			VAR LastQuarter = MAX ( fact_insured[quarter_end] )
-			VAR YearEarlier = EDATE ( LastQuarter, -12 )
-			VAR YearEarlierValue =
-			    CALCULATE (
-			        [Coverage Rate],
-			        REMOVEFILTERS ( dim_date ),
-			        fact_insured[quarter_end] = YearEarlier,
-			        fact_population[quarter_end] = YearEarlier
-			    )
-			RETURN
-			    IF ( NOT ISBLANK ( YearEarlierValue ), [Coverage Rate] - YearEarlierValue )
-		formatString: +0.0%;-0.0%
-		displayFolder: Change on a year earlier
-		lineageTag: e4972422-139d-47e4-9578-a4209dbd9722
-
 	/// Share of hospital policies with full cover: no reduced cover, no lifetime exclusions.
 	measure 'Full Cover Share' =
 			DIVIDE (
@@ -119,11 +102,11 @@ table _Measures
 		displayFolder: An older pool
 		lineageTag: 770a39fb-9618-47fe-af2b-1e3d4f92f5ee
 
-	/// How far the insured pool's 65+ share runs ahead of the country's, in percentage points.
-	measure 'Age Gap (points)' = ( [Share Aged 65+, Insured] - [Share Aged 65+, Australia] ) * 100
+	/// Gap between the insured pool's 65+ share and Australia's at each June, in percentage points: the columns of the 65+ chart.
+	measure 'Age Gap Series (points)' = ( [Share Aged 65+, Insured] - [Share Aged 65+, Australia] ) * 100
 		formatString: 0.0
 		displayFolder: An older pool
-		lineageTag: eea6f061-4edf-4f08-8c9c-9b3263316f9f
+		lineageTag: c4b39ac6-e120-450a-a2af-eeab28d5b4d0
 
 	/// Hospital coverage within an age band or group, each June. National only: population by age has no state, so it is blank under a state filter. Also blank where APRA's population table lacks a gender and band that the insured count includes (women 95+, June 2018), rather than a rate with a hole in its denominator.
 	measure 'Coverage Rate by Age' =
@@ -152,11 +135,6 @@ table _Measures
 			    & FORMAT ( MAX ( fact_insured[quarter_end] ), "mmmm yyyy" )
 		displayFolder: Labels
 		lineageTag: d42401c9-76ac-4832-8cfb-a5e3f0cb8b15
-
-	/// The June that page 3's cards describe.
-	measure 'Population Year' = FORMAT ( MAX ( fact_population_by_age[quarter_end] ), "mmmm yyyy" )
-		displayFolder: Labels
-		lineageTag: 76dcbb70-d452-4aff-8bf8-6c5cb3689fdd
 
 	/// A tick and Yes, or No, for the reconciliation table: whether ours rounds to the published figure. The SQL view stores it as true or false.
 	measure 'Reconciliation Match' = IF ( HASONEVALUE ( reconciliation_panel[matches] ), IF ( SELECTEDVALUE ( reconciliation_panel[matches] ), "✓ Yes", "No" ) )
@@ -257,97 +235,6 @@ table _Measures
 		displayFolder: Context lines
 		lineageTag: 90fd876d-2c76-4f0f-8bfc-452bc7879a0c
 
-	/// KPI context line: the insured 65+ share in the first June with population by age.
-	measure 'Share Aged 65+, Insured Context' =
-			VAR FirstJune = CALCULATE ( MIN ( fact_population_by_age[quarter_end] ), REMOVEFILTERS ( dim_date ) )
-			VAR AtFirst =
-			    CALCULATE ( [Share Aged 65+, Insured], REMOVEFILTERS ( dim_date ), fact_population_by_age[quarter_end] = FirstJune )
-			VAR Latest = [Share Aged 65+, Insured]
-			RETURN
-			    IF (
-			        NOT ISBLANK ( AtFirst ) && NOT ISBLANK ( Latest ),
-			        IF ( Latest < AtFirst, "Down from ", "Up from " ) & FORMAT ( AtFirst, "0.0%" ) & " in "
-			            & FORMAT ( FirstJune, "mmmm yyyy" )
-			    )
-		displayFolder: Context lines
-		lineageTag: ac942234-5324-462e-acec-2389714f54f2
-
-	/// KPI context line: the 65+ share of all Australians in the first June with population by age.
-	measure 'Share Aged 65+, Australia Context' =
-			VAR FirstJune = CALCULATE ( MIN ( fact_population_by_age[quarter_end] ), REMOVEFILTERS ( dim_date ) )
-			VAR AtFirst =
-			    CALCULATE ( [Share Aged 65+, Australia], REMOVEFILTERS ( dim_date ), fact_population_by_age[quarter_end] = FirstJune )
-			VAR Latest = [Share Aged 65+, Australia]
-			RETURN
-			    IF (
-			        NOT ISBLANK ( AtFirst ) && NOT ISBLANK ( Latest ),
-			        IF ( Latest < AtFirst, "Down from ", "Up from " ) & FORMAT ( AtFirst, "0.0%" ) & " in "
-			            & FORMAT ( FirstJune, "mmmm yyyy" )
-			    )
-		displayFolder: Context lines
-		lineageTag: a5e0596e-9442-498a-ba43-9fe69da7b7b1
-
-	/// KPI context line: the gap between the insured and Australian 65+ shares in the first June, in points.
-	measure 'Age Gap Context' =
-			VAR FirstJune = CALCULATE ( MIN ( fact_population_by_age[quarter_end] ), REMOVEFILTERS ( dim_date ) )
-			VAR AtFirst =
-			    CALCULATE ( [Age Gap (points)], REMOVEFILTERS ( dim_date ), fact_population_by_age[quarter_end] = FirstJune )
-			VAR Latest = [Age Gap (points)]
-			RETURN
-			    IF (
-			        NOT ISBLANK ( AtFirst ) && NOT ISBLANK ( Latest ),
-			        IF ( Latest < AtFirst, "Down from ", "Up from " ) & FORMAT ( AtFirst, "0.0" ) & " points in "
-			            & FORMAT ( FirstJune, "mmmm yyyy" )
-			    )
-		displayFolder: Context lines
-		lineageTag: e7863432-81f5-46a9-8732-b50c7608635b
-
-	/// KPI label for page 3, ending in the June it describes.
-	measure 'Share Aged 65+, Insured Label' = "Insured people aged 65+ · " & [Population Year]
-		displayFolder: KPI labels
-		lineageTag: 9f567d5c-3ccb-43db-8efe-6760e1753133
-
-	/// KPI label for page 3, ending in the June it describes.
-	measure 'Share Aged 65+, Australia Label' = "All Australians aged 65+ · " & [Population Year]
-		displayFolder: KPI labels
-		lineageTag: 16768cff-7ec1-41db-afcd-04bb189aca5c
-
-	/// KPI label for page 3, ending in the June it describes.
-	measure 'Age Gap Label' = "Gap, percentage points · " & [Population Year]
-		displayFolder: KPI labels
-		lineageTag: fc764cd3-5234-4e56-80db-05d73eb7b2a3
-
-	/// Data label for the insured line: the first and latest quarters only, in millions.
-	measure 'Insured Persons Key Label' =
-			VAR ThisQuarter = SELECTEDVALUE ( dim_date[quarter_end] )
-			VAR FirstQuarter = CALCULATE ( MIN ( fact_insured[quarter_end] ), REMOVEFILTERS ( dim_date ) )
-			VAR LatestQuarter = CALCULATE ( MAX ( fact_insured[quarter_end] ), REMOVEFILTERS ( dim_date ) )
-			RETURN
-			    IF (
-			        ThisQuarter = FirstQuarter || ThisQuarter = LatestQuarter,
-			        FORMAT ( [Insured Persons] / 1000000, "0.0" ) & "M"
-			    )
-		displayFolder: Key points
-		lineageTag: 6d108af5-2312-41a6-ad5c-56c2d82aa994
-
-	/// Data label for the coverage line: the lowest quarter since the peak, and the latest quarter.
-	measure 'Coverage Rate Key Label' =
-			VAR ThisQuarter = SELECTEDVALUE ( dim_date[quarter_end] )
-			VAR Rates =
-			    ADDCOLUMNS (
-			        CALCULATETABLE ( VALUES ( dim_date[quarter_end] ), REMOVEFILTERS ( dim_date ) ),
-			        "@Rate", [Coverage Rate]
-			    )
-			VAR Known = FILTER ( Rates, NOT ISBLANK ( [@Rate] ) )
-			VAR PeakQuarter = MAXX ( TOPN ( 1, Known, [@Rate], DESC ), dim_date[quarter_end] )
-			VAR LowQuarter =
-			    MAXX ( TOPN ( 1, FILTER ( Known, dim_date[quarter_end] > PeakQuarter ), [@Rate], ASC ), dim_date[quarter_end] )
-			VAR LatestQuarter = MAXX ( Known, dim_date[quarter_end] )
-			RETURN
-			    IF ( ThisQuarter = LowQuarter || ThisQuarter = LatestQuarter, FORMAT ( [Coverage Rate], "0.0%" ) )
-		displayFolder: Key points
-		lineageTag: 4bed264b-1039-4b94-a01c-cc68dd5b0f88
-
 	/// Data label for the full cover line: the first and latest quarters only.
 	measure 'Full Cover Share Key Label' =
 			VAR ThisQuarter = SELECTEDVALUE ( dim_date[quarter_end] )
@@ -390,31 +277,14 @@ table _Measures
 		displayFolder: Key points
 		lineageTag: 12a35086-1016-4e4e-a1ac-f2db0245f96f
 
-	/// The highest share of Australians covered in any quarter: the dashed line on page 1.
-	measure 'Coverage Rate Peak' =
-			VAR Rates =
-			    ADDCOLUMNS (
-			        CALCULATETABLE ( VALUES ( dim_date[quarter_end] ), REMOVEFILTERS ( dim_date ) ),
-			        "@Rate", [Coverage Rate]
-			    )
+	/// Data label for the gap columns: the latest June with population by age only (at June 2007 the 0.2 label has no room beside 13.1%).
+	measure 'Age Gap Series Key Label' =
+			VAR ThisQuarter = SELECTEDVALUE ( dim_date[quarter_end] )
+			VAR LatestJune = CALCULATE ( MAX ( fact_population_by_age[quarter_end] ), REMOVEFILTERS ( dim_date ) )
 			RETURN
-			    MAXX ( Rates, [@Rate] )
-		formatString: 0.0%;-0.0%;0.0%
-		displayFolder: Reference lines
-		lineageTag: a94e7f0c-0615-43d9-a334-f1a04691c616
-
-	/// Label for the peak line on page 1.
-	measure 'Coverage Rate Peak Label' =
-			VAR Rates =
-			    ADDCOLUMNS (
-			        CALCULATETABLE ( VALUES ( dim_date[quarter_end] ), REMOVEFILTERS ( dim_date ) ),
-			        "@Rate", [Coverage Rate]
-			    )
-			VAR Peak = TOPN ( 1, FILTER ( Rates, NOT ISBLANK ( [@Rate] ) ), [@Rate], DESC )
-			RETURN
-			    FORMAT ( MAXX ( Peak, dim_date[quarter_end] ), "mmmm yyyy" ) & " peak " & FORMAT ( MAXX ( Peak, [@Rate] ), "0.0%" )
-		displayFolder: Reference lines
-		lineageTag: b485ca6a-1542-4b4c-a6b2-2e87e1116906
+			    IF ( ThisQuarter = LatestJune, FORMAT ( [Age Gap Series (points)], "0.0" ) )
+		displayFolder: Key points
+		lineageTag: fe135121-76e5-47f8-b7d1-eb6791c5b4e7
 
 	/// The national full cover share, whatever state is in view: the dashed line on the state chart.
 	measure 'Full Cover Share, Australia' = CALCULATE ( [Full Cover Share], REMOVEFILTERS ( dim_state ) )
@@ -462,6 +332,241 @@ table _Measures
 			    IF ( NOT ISBLANK ( SourceText ), LEFT ( SourceText, FIND ( ",", SourceText & "," ) - 1 ) )
 		displayFolder: Table
 		lineageTag: 7356a33d-a4e9-4d2c-9ded-0c102c6bfdd4
+
+	/// Top of the excess chart's value axis: the highest share times 1.5, rounded up to 5%, so the line stays clear of the rule-change note.
+	measure 'Excess Over 500 Share, Axis Max' =
+			VAR Highest = MAXX ( ALL ( dim_date[quarter_end] ), [Excess Over 500 Share] )
+			RETURN CEILING ( Highest * 1.5, 0.05 )
+		formatString: 0%
+		displayFolder: Key points
+		lineageTag: 263b0443-cbe6-4386-a130-c7a5478523b1
+
+	/// How far a state's full cover share sits above or below Australia's, in percentage points.
+	measure 'Full Cover Share, Gap to Australia (points)' = ( [Full Cover Share] - CALCULATE ( [Full Cover Share], REMOVEFILTERS ( dim_state ) ) ) * 100
+		formatString: +0.0" pts";"−"0.0" pts";0.0" pts"
+		displayFolder: State gap
+		lineageTag: 569eb646-df5b-455b-b7c7-8e4d8591bce7
+
+	/// Bar colour for the state chart: orange below Australia, blue above.
+	measure 'Full Cover Share, Gap Colour' = IF ( [Full Cover Share, Gap to Australia (points)] < 0, "#EB6834", "#4C9BEF" )
+		displayFolder: State gap
+		lineageTag: c4d1cf9d-bad0-4a6f-b19a-ba3e5d0287e8
+
+	/// Column colour for the change-by-age chart: orange for a fall, blue for a rise.
+	measure 'Coverage Change by Age, Colour' = IF ( [Coverage Change by Age (points)] < 0, "#EB6834", "#4C9BEF" )
+		displayFolder: Change by age
+		lineageTag: c982725f-ba83-4dae-bc57-33955f7910e5
+
+	/// Top of the change-by-age value axis: the largest rise plus a quarter, rounded up to 5 points, so its label fits above it.
+	measure 'Coverage Change by Age, Axis Max' =
+			VAR Highest = MAXX ( ALL ( dim_age_band[age_band] ), [Coverage Change by Age (points)] )
+			RETURN CEILING ( MAX ( Highest, 0 ) * 1.25, 5 )
+		formatString: 0
+		displayFolder: Change by age
+		lineageTag: d1d329e2-e092-4fc3-8cf6-e3fcbbe1c94d
+
+	/// Share of each age group within one bar of the age-mix chart: insured people or all Australians, at that bar's June.
+	measure 'Age Mix Share' =
+			VAR BarBase = SELECTEDVALUE ( mix_bars[base] )
+			VAR AtJune = SELECTEDVALUE ( mix_bars[june] )
+			VAR InGroup =
+			    SWITCH (
+			        BarBase,
+			        "Insured",
+			            CALCULATE ( SUM ( fact_insured[insured_persons] ), REMOVEFILTERS ( dim_date ), fact_insured[quarter_end] = AtJune ),
+			        "Australians",
+			            CALCULATE ( SUM ( fact_population_by_age[population] ), REMOVEFILTERS ( dim_date ), fact_population_by_age[quarter_end] = AtJune )
+			    )
+			VAR AllAges =
+			    SWITCH (
+			        BarBase,
+			        "Insured",
+			            CALCULATE ( SUM ( fact_insured[insured_persons] ), REMOVEFILTERS ( dim_date ), REMOVEFILTERS ( dim_age_band ), fact_insured[quarter_end] = AtJune ),
+			        "Australians",
+			            CALCULATE ( SUM ( fact_population_by_age[population] ), REMOVEFILTERS ( dim_date ), REMOVEFILTERS ( dim_age_band ), fact_population_by_age[quarter_end] = AtJune )
+			    )
+			RETURN
+			    DIVIDE ( InGroup, AllAges )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Age mix
+		lineageTag: e6e0f775-5184-4757-9bd1-ad9ff64fd36e
+
+	/// Column label for the combo chart: the first and latest Junes only, in millions.
+	measure 'Insured Persons, June Key Label' =
+			VAR ThisQuarter = MAX ( dim_date[quarter_end] )
+			VAR FirstJune = CALCULATE ( MIN ( fact_insured[quarter_end] ), REMOVEFILTERS ( dim_date ), MONTH ( fact_insured[quarter_end] ) = 6 )
+			VAR LatestJune = CALCULATE ( MAX ( fact_insured[quarter_end] ), REMOVEFILTERS ( dim_date ), MONTH ( fact_insured[quarter_end] ) = 6 )
+			RETURN
+			    IF (
+			        HASONEVALUE ( dim_date[year] ) && ( ThisQuarter = FirstJune || ThisQuarter = LatestJune ),
+			        FORMAT ( [Insured Persons] / 1000000, "0.0" ) & "M"
+			    )
+		displayFolder: Key points
+		lineageTag: 455bebbe-3568-415b-8a1f-01db74cb953e
+
+	/// Line label for the combo chart, placed above the line: the peak June.
+	measure 'Coverage Rate, June Label Above' =
+			VAR ThisQuarter = MAX ( dim_date[quarter_end] )
+			VAR Junes =
+			    ADDCOLUMNS (
+			        CALCULATETABLE ( VALUES ( dim_date[quarter_end] ), REMOVEFILTERS ( dim_date ), MONTH ( dim_date[quarter_end] ) = 6 ),
+			        "@Rate",
+			            VAR RowQuarter = dim_date[quarter_end]
+			            RETURN CALCULATE ( [Coverage Rate], REMOVEFILTERS ( dim_date ), dim_date[quarter_end] = RowQuarter )
+			    )
+			VAR Known = FILTER ( Junes, NOT ISBLANK ( [@Rate] ) )
+			VAR PeakJune = MAXX ( TOPN ( 1, Known, [@Rate], DESC ), dim_date[quarter_end] )
+			RETURN
+			    IF (
+			        HASONEVALUE ( dim_date[year] ) && ThisQuarter = PeakJune,
+			        "Peak " & FORMAT ( [Coverage Rate], "0.0%" ) & ", " & FORMAT ( PeakJune, "mmmm yyyy" )
+			    )
+		displayFolder: Key points
+		lineageTag: b0691f1a-db31-4927-b94f-18d0ceae5312
+
+	/// Line label for the combo chart, placed under the line: the lowest June since the peak, and the latest June unless it is the peak.
+	measure 'Coverage Rate, June Label Below' =
+			VAR ThisQuarter = MAX ( dim_date[quarter_end] )
+			VAR Junes =
+			    ADDCOLUMNS (
+			        CALCULATETABLE ( VALUES ( dim_date[quarter_end] ), REMOVEFILTERS ( dim_date ), MONTH ( dim_date[quarter_end] ) = 6 ),
+			        "@Rate",
+			            VAR RowQuarter = dim_date[quarter_end]
+			            RETURN CALCULATE ( [Coverage Rate], REMOVEFILTERS ( dim_date ), dim_date[quarter_end] = RowQuarter )
+			    )
+			VAR Known = FILTER ( Junes, NOT ISBLANK ( [@Rate] ) )
+			VAR PeakJune = MAXX ( TOPN ( 1, Known, [@Rate], DESC ), dim_date[quarter_end] )
+			VAR LowJune = MAXX ( TOPN ( 1, FILTER ( Known, dim_date[quarter_end] > PeakJune ), [@Rate], ASC ), dim_date[quarter_end] )
+			VAR LatestJune = MAXX ( Known, dim_date[quarter_end] )
+			VAR ThisRate = [Coverage Rate]
+			RETURN
+			    IF (
+			        HASONEVALUE ( dim_date[year] ),
+			        SWITCH (
+			            TRUE (),
+			            ThisQuarter = LowJune, "Low " & FORMAT ( ThisRate, "0.0%" ) & ", " & FORMAT ( LowJune, "mmmm yyyy" ),
+			            ThisQuarter = LatestJune && LatestJune <> PeakJune, FORMAT ( ThisRate, "0.0%" )
+			        )
+			    )
+		displayFolder: Key points
+		lineageTag: 7a07cd35-51ad-4f6b-8d1c-9abf43ab35e0
+
+	/// The coverage line again, drawn invisibly, so some labels can sit under the line while the peak label sits above it.
+	measure 'Coverage Rate, Line for Labels Below' = [Coverage Rate]
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Key points
+		lineageTag: 28ffa47e-3812-47a5-8dd2-ec1c76b3b8b5
+
+	/// People with hospital cover in the first quarter in the data (donut slice).
+	measure 'Covered, First Quarter' =
+			VAR AtQuarter = CALCULATE ( MIN ( fact_insured[quarter_end] ), REMOVEFILTERS ( dim_date ) )
+			RETURN
+			    CALCULATE ( [Insured Persons], REMOVEFILTERS ( dim_date ), fact_insured[quarter_end] = AtQuarter )
+		formatString: #,0
+		displayFolder: Donuts
+		lineageTag: 2a2a6fd4-2026-40b4-acb9-ddf6b37649e5
+
+	/// Australians without hospital cover in the first quarter in the data (donut slice).
+	measure 'Not Covered, First Quarter' =
+			VAR AtQuarter = CALCULATE ( MIN ( fact_insured[quarter_end] ), REMOVEFILTERS ( dim_date ) )
+			VAR People = CALCULATE ( [Total Population], REMOVEFILTERS ( dim_date ), fact_population[quarter_end] = AtQuarter )
+			RETURN
+			    People - [Covered, First Quarter]
+		formatString: #,0
+		displayFolder: Donuts
+		lineageTag: 9ff19fb3-70bd-47a3-bfb6-90f6938b3242
+
+	/// Share covered in the first quarter, for the donut hole.
+	measure 'Coverage Share Label, First Quarter' =
+			VAR AtQuarter = CALCULATE ( MIN ( fact_insured[quarter_end] ), REMOVEFILTERS ( dim_date ) )
+			VAR People = CALCULATE ( [Total Population], REMOVEFILTERS ( dim_date ), fact_population[quarter_end] = AtQuarter )
+			RETURN
+			    FORMAT ( DIVIDE ( [Covered, First Quarter], People ), "0.0%" )
+		displayFolder: Donuts
+		lineageTag: abb032e9-8d20-4e39-ba41-d5cdbe6b4ece
+
+	/// People covered of all Australians in the first quarter, for the donut hole.
+	measure 'Coverage People Label, First Quarter' =
+			VAR AtQuarter = CALCULATE ( MIN ( fact_insured[quarter_end] ), REMOVEFILTERS ( dim_date ) )
+			VAR People = CALCULATE ( [Total Population], REMOVEFILTERS ( dim_date ), fact_population[quarter_end] = AtQuarter )
+			RETURN
+			    FORMAT ( [Covered, First Quarter] / 1000000, "0.0" ) & "M of " & FORMAT ( People / 1000000, "0.0" ) & "M"
+		displayFolder: Donuts
+		lineageTag: dbdbfbc7-960a-49e4-a2c4-3175a2574176
+
+	/// The first quarter in the data, as a donut caption.
+	measure 'Quarter Label, First' = FORMAT ( CALCULATE ( MIN ( fact_insured[quarter_end] ), REMOVEFILTERS ( dim_date ) ), "mmmm yyyy" )
+		displayFolder: Donuts
+		lineageTag: f9379a31-65c1-40cb-9610-e42e94807d04
+
+	/// People with hospital cover in the latest quarter in the data (donut slice).
+	measure 'Covered, Latest Quarter' =
+			VAR AtQuarter = CALCULATE ( MAX ( fact_insured[quarter_end] ), REMOVEFILTERS ( dim_date ) )
+			RETURN
+			    CALCULATE ( [Insured Persons], REMOVEFILTERS ( dim_date ), fact_insured[quarter_end] = AtQuarter )
+		formatString: #,0
+		displayFolder: Donuts
+		lineageTag: 43e44a61-f245-43bf-985c-55f4c4c21d6a
+
+	/// Australians without hospital cover in the latest quarter in the data (donut slice).
+	measure 'Not Covered, Latest Quarter' =
+			VAR AtQuarter = CALCULATE ( MAX ( fact_insured[quarter_end] ), REMOVEFILTERS ( dim_date ) )
+			VAR People = CALCULATE ( [Total Population], REMOVEFILTERS ( dim_date ), fact_population[quarter_end] = AtQuarter )
+			RETURN
+			    People - [Covered, Latest Quarter]
+		formatString: #,0
+		displayFolder: Donuts
+		lineageTag: a5145504-35ca-4a43-b8bd-0fa17be3a7e5
+
+	/// Share covered in the latest quarter, for the donut hole.
+	measure 'Coverage Share Label, Latest Quarter' =
+			VAR AtQuarter = CALCULATE ( MAX ( fact_insured[quarter_end] ), REMOVEFILTERS ( dim_date ) )
+			VAR People = CALCULATE ( [Total Population], REMOVEFILTERS ( dim_date ), fact_population[quarter_end] = AtQuarter )
+			RETURN
+			    FORMAT ( DIVIDE ( [Covered, Latest Quarter], People ), "0.0%" )
+		displayFolder: Donuts
+		lineageTag: 90398c1e-5ff6-4f59-bc2b-ddbe95f2440e
+
+	/// People covered of all Australians in the latest quarter, for the donut hole.
+	measure 'Coverage People Label, Latest Quarter' =
+			VAR AtQuarter = CALCULATE ( MAX ( fact_insured[quarter_end] ), REMOVEFILTERS ( dim_date ) )
+			VAR People = CALCULATE ( [Total Population], REMOVEFILTERS ( dim_date ), fact_population[quarter_end] = AtQuarter )
+			RETURN
+			    FORMAT ( [Covered, Latest Quarter] / 1000000, "0.0" ) & "M of " & FORMAT ( People / 1000000, "0.0" ) & "M"
+		displayFolder: Donuts
+		lineageTag: d53d9fdc-03a0-4b87-a3df-d6e9cc4c229d
+
+	/// The latest quarter in the data, as a donut caption.
+	measure 'Quarter Label, Latest' = FORMAT ( CALCULATE ( MAX ( fact_insured[quarter_end] ), REMOVEFILTERS ( dim_date ) ), "mmmm yyyy" )
+		displayFolder: Donuts
+		lineageTag: 8da45c89-6790-49e4-a762-8e380437578b
+
+	/// The excess share up to March 2019, the last quarter before the 1 April 2019 rule change: the grey part of the excess chart.
+	measure 'Excess Over 500 Share, Before Rule Change' =
+			VAR ThisQuarter = MAX ( dim_date[quarter_end] )
+			RETURN
+			    IF ( ThisQuarter <= DATE ( 2019, 3, 31 ), [Excess Over 500 Share] )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Downgrading
+		lineageTag: fc3e09ec-19e2-48fb-9400-a7b62a607ee1
+
+	/// The excess share from March 2019 on, so it meets the grey part at that point: the orange part of the excess chart.
+	measure 'Excess Over 500 Share, After Rule Change' =
+			VAR ThisQuarter = MAX ( dim_date[quarter_end] )
+			RETURN
+			    IF ( ThisQuarter >= DATE ( 2019, 3, 31 ), [Excess Over 500 Share] )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Downgrading
+		lineageTag: a95825fc-eed4-48c3-9c02-2ecbbcc21312
+
+	/// Data label for the orange part of the excess chart: the latest quarter only.
+	measure 'Excess Over 500 Share, Latest Label' =
+			VAR ThisQuarter = SELECTEDVALUE ( dim_date[quarter_end] )
+			VAR LatestQuarter = CALCULATE ( MAX ( fact_policies[quarter_end] ), REMOVEFILTERS ( dim_date ) )
+			RETURN
+			    IF ( ThisQuarter = LatestQuarter, FORMAT ( [Excess Over 500 Share], "0.0%" ) )
+		displayFolder: Key points
+		lineageTag: 64f63e8a-6800-4030-a607-3b5aff1a850b
 
 	column Placeholder
 		dataType: int64

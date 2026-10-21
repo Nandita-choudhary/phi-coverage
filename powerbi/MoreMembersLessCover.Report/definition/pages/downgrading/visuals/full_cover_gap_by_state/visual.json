@@ -1,16 +1,16 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
-  "name": "full_cover_by_state",
+  "name": "full_cover_gap_by_state",
   "position": {
-    "x": 24,
-    "y": 552,
+    "x": 648,
+    "y": 296,
     "z": 27000,
-    "height": 244,
+    "height": 320,
     "width": 608,
-    "tabOrder": 17000
+    "tabOrder": 15000
   },
   "visual": {
-    "visualType": "clusteredColumnChart",
+    "visualType": "clusteredBarChart",
     "query": {
       "queryState": {
         "Category": {
@@ -23,11 +23,11 @@
                       "Entity": "dim_state"
                     }
                   },
-                  "Property": "state"
+                  "Property": "state_label"
                 }
               },
-              "queryRef": "dim_state.state",
-              "nativeQueryRef": "state",
+              "queryRef": "dim_state.state_label",
+              "nativeQueryRef": "state_label",
               "active": true,
               "displayName": "State"
             }
@@ -43,12 +43,12 @@
                       "Entity": "_Measures"
                     }
                   },
-                  "Property": "Full Cover Share"
+                  "Property": "Full Cover Share, Gap to Australia (points)"
                 }
               },
-              "queryRef": "_Measures.Full Cover Share",
-              "nativeQueryRef": "Full Cover Share",
-              "displayName": "With full cover"
+              "queryRef": "_Measures.Full Cover Share, Gap to Australia (points)",
+              "nativeQueryRef": "Full Cover Share, Gap to Australia (points)",
+              "displayName": "Gap to Australia"
             }
           ]
         }
@@ -63,7 +63,7 @@
                     "Entity": "_Measures"
                   }
                 },
-                "Property": "Full Cover Share"
+                "Property": "Full Cover Share, Gap to Australia (points)"
               }
             },
             "direction": "Ascending"
@@ -74,6 +74,58 @@
     },
     "objects": {
       "categoryAxis": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "labelColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#F1F5F9'"
+                    }
+                  }
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "9D"
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Segoe UI'"
+                }
+              }
+            },
+            "gridlineShow": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "showAxisTitle": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "valueAxis": [
         {
           "properties": {
             "show": {
@@ -111,66 +163,7 @@
             "gridlineShow": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
-                }
-              }
-            },
-            "showAxisTitle": {
-              "expr": {
-                "Literal": {
-                  "Value": "false"
-                }
-              }
-            },
-            "outerPadding": {
-              "expr": {
-                "Literal": {
-                  "Value": "150L"
-                }
-              }
-            }
-          }
-        }
-      ],
-      "valueAxis": [
-        {
-          "properties": {
-            "show": {
-              "expr": {
-                "Literal": {
-                  "Value": "false"
-                }
-              }
-            },
-            "labelColor": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#94A3B8'"
-                    }
-                  }
-                }
-              }
-            },
-            "fontSize": {
-              "expr": {
-                "Literal": {
-                  "Value": "9D"
-                }
-              }
-            },
-            "fontFamily": {
-              "expr": {
-                "Literal": {
-                  "Value": "'Segoe UI'"
-                }
-              }
-            },
-            "gridlineShow": {
-              "expr": {
-                "Literal": {
-                  "Value": "false"
+                  "Value": "true"
                 }
               }
             },
@@ -179,7 +172,7 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#24324A'"
+                      "Value": "'#2E3D58'"
                     }
                   }
                 }
@@ -215,23 +208,13 @@
               "solid": {
                 "color": {
                   "expr": {
-                    "Literal": {
-                      "Value": "'#64748B'"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        {
-          "properties": {
-            "fill": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#EB6834'"
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_Measures"
+                        }
+                      },
+                      "Property": "Full Cover Share, Gap Colour"
                     }
                   }
                 }
@@ -241,25 +224,8 @@
           "selector": {
             "data": [
               {
-                "scopeId": {
-                  "Comparison": {
-                    "ComparisonKind": 0,
-                    "Left": {
-                      "Column": {
-                        "Expression": {
-                          "SourceRef": {
-                            "Entity": "dim_state"
-                          }
-                        },
-                        "Property": "state"
-                      }
-                    },
-                    "Right": {
-                      "Literal": {
-                        "Value": "'WA'"
-                      }
-                    }
-                  }
+                "dataViewWildcard": {
+                  "matchingOption": 1
                 }
               }
             ]
@@ -325,6 +291,13 @@
                   "Value": "0D"
                 }
               }
+            },
+            "labelPosition": {
+              "expr": {
+                "Literal": {
+                  "Value": "'OutsideEnd'"
+                }
+              }
             }
           }
         }
@@ -339,27 +312,10 @@
                 }
               }
             },
-            "displayName": {
-              "expr": {
-                "Measure": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "_Measures"
-                    }
-                  },
-                  "Property": "Full Cover Share, Australia Label"
-                }
-              }
-            },
             "value": {
               "expr": {
-                "Measure": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "_Measures"
-                    }
-                  },
-                  "Property": "Full Cover Share, Australia"
+                "Literal": {
+                  "Value": "0D"
                 }
               }
             },
@@ -368,7 +324,7 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#64748B'"
+                      "Value": "'#94A3B8'"
                     }
                   }
                 }
@@ -384,14 +340,33 @@
             "style": {
               "expr": {
                 "Literal": {
-                  "Value": "'dashed'"
+                  "Value": "'solid'"
+                }
+              }
+            },
+            "width": {
+              "expr": {
+                "Literal": {
+                  "Value": "1D"
                 }
               }
             },
             "position": {
               "expr": {
                 "Literal": {
-                  "Value": "'back'"
+                  "Value": "'front'"
+                }
+              }
+            },
+            "displayName": {
+              "expr": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Full Cover Share, Australia Label"
                 }
               }
             },
@@ -423,7 +398,7 @@
             "dataLabelHorizontalPosition": {
               "expr": {
                 "Literal": {
-                  "Value": "'left'"
+                  "Value": "'right'"
                 }
               }
             },
@@ -436,7 +411,7 @@
             }
           },
           "selector": {
-            "id": "1"
+            "id": "0"
           }
         }
       ]
@@ -571,7 +546,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Full cover is rarest in WA (23.1%) and most common in Tasmania (38.7%)'"
+                  "Value": "'Full cover is rarest in WA and most common in Tasmania: 3.7 points below and 11.9 above the national 26.8%'"
                 }
               }
             },
@@ -630,7 +605,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Share of hospital policies with full cover, latest quarter, against Australia as a whole.'"
+                  "Value": "'Share of hospital policies with full cover, latest quarter, each state against Australia as a whole.'"
                 }
               }
             },
@@ -688,7 +663,7 @@
             "altText": {
               "expr": {
                 "Literal": {
-                  "Value": "'Full cover is rarest in WA (23.1%) and most common in Tasmania (38.7%). Share of hospital policies with full cover, latest quarter, against Australia as a whole.'"
+                  "Value": "'Full cover is rarest in WA and most common in Tasmania: 3.7 points below and 11.9 above the national 26.8%. Share of hospital policies with full cover, latest quarter, each state against Australia as a whole.'"
                 }
               }
             }

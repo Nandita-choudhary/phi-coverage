@@ -3,11 +3,11 @@
   "name": "footnote",
   "position": {
     "x": 24,
-    "y": 812,
+    "y": 808,
     "z": 6000,
     "height": 32,
     "width": 1232,
-    "tabOrder": 16000
+    "tabOrder": 8000
   },
   "visual": {
     "visualType": "textbox",

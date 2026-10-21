@@ -1,13 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
-  "name": "kpi_australia_65_label",
+  "name": "donut_latest_people",
   "position": {
-    "x": 472,
-    "y": 188,
-    "z": 16000,
-    "height": 20,
-    "width": 352,
-    "tabOrder": 6000
+    "x": 1076,
+    "y": 486,
+    "z": 37000,
+    "height": 18,
+    "width": 160,
+    "tabOrder": 26000
   },
   "visual": {
     "visualType": "cardVisual",
@@ -23,12 +23,12 @@
                       "Entity": "_Measures"
                     }
                   },
-                  "Property": "Share Aged 65+, Australia Label"
+                  "Property": "Coverage People Label, Latest Quarter"
                 }
               },
-              "queryRef": "_Measures.Share Aged 65+, Australia Label",
-              "nativeQueryRef": "Share Aged 65+, Australia Label",
-              "displayName": "Label"
+              "queryRef": "_Measures.Coverage People Label, Latest Quarter",
+              "nativeQueryRef": "Coverage People Label, Latest Quarter",
+              "displayName": "People"
             }
           ]
         }
@@ -73,7 +73,7 @@
             "horizontalAlignment": {
               "expr": {
                 "Literal": {
-                  "Value": "'left'"
+                  "Value": "'center'"
                 }
               }
             },
@@ -486,7 +486,7 @@
             "altText": {
               "expr": {
                 "Literal": {
-                  "Value": "'All Australians aged 65+'"
+                  "Value": "'People covered of all Australians, latest quarter'"
                 }
               }
             }

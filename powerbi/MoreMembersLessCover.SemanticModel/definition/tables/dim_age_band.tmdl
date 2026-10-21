@@ -48,6 +48,39 @@ table dim_age_band
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Four age groups for the age-mix chart.
+	column age_group4 =
+			SWITCH (
+			    TRUE (),
+			    dim_age_band[age_band_start] < 25, "Under 25",
+			    dim_age_band[age_band_start] < 50, "25–49",
+			    dim_age_band[age_band_start] < 65, "50–64",
+			    "65 and over"
+			)
+		dataType: string
+		lineageTag: 9a9bb6a6-5f74-4968-bdfc-b2a0dce2070c
+		summarizeBy: none
+		sortByColumn: age_group4_order
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Sort order for age_group4.
+	column age_group4_order =
+			SWITCH (
+			    TRUE (),
+			    dim_age_band[age_band_start] < 25, 1,
+			    dim_age_band[age_band_start] < 50, 2,
+			    dim_age_band[age_band_start] < 65, 3,
+			    4
+			)
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 882d6447-f071-4bb0-934a-6c9e773a089b
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
 	partition dim_age_band = m
 		mode: import
 		source =

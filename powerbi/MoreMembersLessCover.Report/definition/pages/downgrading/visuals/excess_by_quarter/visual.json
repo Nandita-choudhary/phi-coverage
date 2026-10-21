@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
   "name": "excess_by_quarter",
   "position": {
-    "x": 648,
-    "y": 296,
+    "x": 24,
+    "y": 544,
     "z": 25000,
-    "height": 272,
+    "height": 248,
     "width": 608,
-    "tabOrder": 15000
+    "tabOrder": 16000
   },
   "visual": {
     "visualType": "lineChart",
@@ -43,12 +43,27 @@
                       "Entity": "_Measures"
                     }
                   },
-                  "Property": "Excess Over 500 Share"
+                  "Property": "Excess Over 500 Share, Before Rule Change"
                 }
               },
-              "queryRef": "_Measures.Excess Over 500 Share",
-              "nativeQueryRef": "Excess Over 500 Share",
-              "displayName": "Excess over 500 dollars"
+              "queryRef": "_Measures.Excess Over 500 Share, Before Rule Change",
+              "nativeQueryRef": "Excess Over 500 Share, Before Rule Change",
+              "displayName": "Before the rule change"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Excess Over 500 Share, After Rule Change"
+                }
+              },
+              "queryRef": "_Measures.Excess Over 500 Share, After Rule Change",
+              "nativeQueryRef": "Excess Over 500 Share, After Rule Change",
+              "displayName": "After the rule change"
             }
           ]
         }
@@ -179,7 +194,7 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#24324A'"
+                      "Value": "'#2E3D58'"
                     }
                   }
                 }
@@ -189,6 +204,25 @@
               "expr": {
                 "Literal": {
                   "Value": "false"
+                }
+              }
+            },
+            "start": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            },
+            "end": {
+              "expr": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Excess Over 500 Share, Axis Max"
                 }
               }
             }
@@ -211,6 +245,42 @@
       "dataPoint": [
         {
           "properties": {
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "85D"
+                }
+              }
+            }
+          }
+        },
+        {
+          "properties": {
+            "fill": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#64748B'"
+                    }
+                  }
+                }
+              }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "85D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "_Measures.Excess Over 500 Share, Before Rule Change"
+          }
+        },
+        {
+          "properties": {
             "fill": {
               "solid": {
                 "color": {
@@ -221,10 +291,17 @@
                   }
                 }
               }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "85D"
+                }
+              }
             }
           },
           "selector": {
-            "metadata": "_Measures.Excess Over 500 Share"
+            "metadata": "_Measures.Excess Over 500 Share, After Rule Change"
           }
         }
       ],
@@ -234,7 +311,7 @@
             "strokeWidth": {
               "expr": {
                 "Literal": {
-                  "Value": "2D"
+                  "Value": "2.5D"
                 }
               }
             },
@@ -242,6 +319,20 @@
               "expr": {
                 "Literal": {
                   "Value": "false"
+                }
+              }
+            },
+            "areaShow": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "areaMatchStrokeColor": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
                 }
               }
             }
@@ -283,13 +374,6 @@
                 }
               }
             },
-            "labelDensity": {
-              "expr": {
-                "Literal": {
-                  "Value": "100D"
-                }
-              }
-            },
             "enableBackground": {
               "expr": {
                 "Literal": {
@@ -312,6 +396,13 @@
               "expr": {
                 "Literal": {
                   "Value": "0D"
+                }
+              }
+            },
+            "labelDensity": {
+              "expr": {
+                "Literal": {
+                  "Value": "100D"
                 }
               }
             }
@@ -343,10 +434,17 @@
                   }
                 }
               }
+            },
+            "labelPosition": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Above'"
+                }
+              }
             }
           },
           "selector": {
-            "metadata": "_Measures.Excess Over 500 Share"
+            "metadata": "_Measures.Excess Over 500 Share, Before Rule Change"
           }
         },
         {
@@ -386,76 +484,86 @@
                 }
               }
             ],
-            "metadata": "_Measures.Excess Over 500 Share"
+            "metadata": "_Measures.Excess Over 500 Share, Before Rule Change"
           }
-        }
-      ],
-      "xAxisReferenceLine": [
+        },
         {
           "properties": {
-            "show": {
+            "showSeries": {
               "expr": {
                 "Literal": {
                   "Value": "true"
                 }
               }
             },
-            "displayName": {
+            "showDynamicLabels": {
               "expr": {
                 "Literal": {
-                  "Value": "'1 Apr 2019: maximum excess rises to 750 dollars single'"
+                  "Value": "true"
                 }
               }
             },
-            "value": {
-              "expr": {
-                "Literal": {
-                  "Value": "datetime'2019-04-01T00:00:00'"
-                }
-              }
-            },
-            "lineColor": {
+            "color": {
               "solid": {
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#64748B'"
+                      "Value": "'#F1F5F9'"
                     }
                   }
                 }
               }
             },
-            "transparency": {
+            "labelPosition": {
               "expr": {
                 "Literal": {
-                  "Value": "0D"
-                }
-              }
-            },
-            "style": {
-              "expr": {
-                "Literal": {
-                  "Value": "'dashed'"
-                }
-              }
-            },
-            "position": {
-              "expr": {
-                "Literal": {
-                  "Value": "'front'"
-                }
-              }
-            },
-            "dataLabelShow": {
-              "expr": {
-                "Literal": {
-                  "Value": "false"
+                  "Value": "'Above'"
                 }
               }
             }
           },
           "selector": {
-            "id": "1"
+            "metadata": "_Measures.Excess Over 500 Share, After Rule Change"
+          }
+        },
+        {
+          "properties": {
+            "showDynamicLabels": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "dynamicLabelValue": {
+              "expr": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Excess Over 500 Share, Latest Label"
+                }
+              }
+            },
+            "showBlankAs": {
+              "expr": {
+                "Literal": {
+                  "Value": "''"
+                }
+              }
+            }
+          },
+          "selector": {
+            "data": [
+              {
+                "dataViewWildcard": {
+                  "matchingOption": 1
+                }
+              }
+            ],
+            "metadata": "_Measures.Excess Over 500 Share, After Rule Change"
           }
         }
       ]
@@ -649,7 +757,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Share of hospital policies with an excess over 500 dollars (single), from September 2010. Earlier quarters are left out: the share drops 4.1 points that quarter, and APRA''s notes do not explain why.'"
+                  "Value": "'Share of hospital policies with an excess over 500 dollars (single), from September 2010.'"
                 }
               }
             },
@@ -707,7 +815,7 @@
             "altText": {
               "expr": {
                 "Literal": {
-                  "Value": "'Since the April 2019 rule change, policies with an excess over 500 dollars went from 0.5% to 29.4%. Share of hospital policies with an excess over 500 dollars (single), from September 2010. Earlier quarters are left out: the share drops 4.1 points that quarter, and APRA''s notes do not explain why.'"
+                  "Value": "'Since the April 2019 rule change, policies with an excess over 500 dollars went from 0.5% to 29.4%. Share of hospital policies with an excess over 500 dollars (single), from September 2010.'"
                 }
               }
             }

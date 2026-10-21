@@ -1,13 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
-  "name": "kpi_australia_65_context",
+  "name": "donut_first_share",
   "position": {
-    "x": 472,
-    "y": 252,
-    "z": 18000,
-    "height": 20,
-    "width": 352,
-    "tabOrder": 12000
+    "x": 922,
+    "y": 450,
+    "z": 32000,
+    "height": 34,
+    "width": 140,
+    "tabOrder": 23000
   },
   "visual": {
     "visualType": "cardVisual",
@@ -23,12 +23,12 @@
                       "Entity": "_Measures"
                     }
                   },
-                  "Property": "Share Aged 65+, Australia Context"
+                  "Property": "Coverage Share Label, First Quarter"
                 }
               },
-              "queryRef": "_Measures.Share Aged 65+, Australia Context",
-              "nativeQueryRef": "Share Aged 65+, Australia Context",
-              "displayName": "Context"
+              "queryRef": "_Measures.Coverage Share Label, First Quarter",
+              "nativeQueryRef": "Coverage Share Label, First Quarter",
+              "displayName": "Share covered"
             }
           ]
         }
@@ -48,14 +48,14 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "10D"
+                  "Value": "24D"
                 }
               }
             },
             "fontFamily": {
               "expr": {
                 "Literal": {
-                  "Value": "'Segoe UI'"
+                  "Value": "'Segoe UI Semibold'"
                 }
               }
             },
@@ -64,7 +64,7 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#94A3B8'"
+                      "Value": "'#F1F5F9'"
                     }
                   }
                 }
@@ -73,7 +73,7 @@
             "horizontalAlignment": {
               "expr": {
                 "Literal": {
-                  "Value": "'left'"
+                  "Value": "'center'"
                 }
               }
             },
@@ -486,7 +486,7 @@
             "altText": {
               "expr": {
                 "Literal": {
-                  "Value": "'Context for All Australians aged 65+'"
+                  "Value": "'Share covered, first quarter'"
                 }
               }
             }

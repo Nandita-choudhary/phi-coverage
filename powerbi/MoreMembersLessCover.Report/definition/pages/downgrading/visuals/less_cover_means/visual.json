@@ -3,11 +3,11 @@
   "name": "less_cover_means",
   "position": {
     "x": 648,
-    "y": 584,
+    "y": 632,
     "z": 28000,
-    "height": 212,
+    "height": 160,
     "width": 608,
-    "tabOrder": 18000
+    "tabOrder": 17000
   },
   "visual": {
     "visualType": "textbox",
@@ -33,7 +33,7 @@
                   {
                     "value": " ",
                     "textStyle": {
-                      "fontSize": "5pt"
+                      "fontSize": "4pt"
                     }
                   }
                 ]
@@ -61,16 +61,6 @@
               {
                 "textRuns": [
                   {
-                    "value": " ",
-                    "textStyle": {
-                      "fontSize": "5pt"
-                    }
-                  }
-                ]
-              },
-              {
-                "textRuns": [
-                  {
                     "value": "Reduced cover: ",
                     "textStyle": {
                       "fontFamily": "Segoe UI Semibold",
@@ -91,16 +81,6 @@
               {
                 "textRuns": [
                   {
-                    "value": " ",
-                    "textStyle": {
-                      "fontSize": "5pt"
-                    }
-                  }
-                ]
-              },
-              {
-                "textRuns": [
-                  {
                     "value": "Excess: ",
                     "textStyle": {
                       "fontFamily": "Segoe UI Semibold",
@@ -109,7 +89,7 @@
                     }
                   },
                   {
-                    "value": "what you pay towards a hospital admission before the insurer pays. Since 1 April 2019 it can be up to 750 dollars for a single person, up from 500.",
+                    "value": "what you pay towards a hospital admission before the insurer pays.",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "10pt",
@@ -123,7 +103,7 @@
                   {
                     "value": " ",
                     "textStyle": {
-                      "fontSize": "5pt"
+                      "fontSize": "4pt"
                     }
                   }
                 ]
@@ -308,7 +288,7 @@
             "altText": {
               "expr": {
                 "Literal": {
-                  "Value": "'What less cover means. Exclusions: treatments a policy does not pay for at all. Reduced cover: treatments a policy pays only reduced benefits for. Excess: what you pay towards a hospital admission before the insurer pays. Since 1 April 2019 it can be up to 750 dollars for a single person, up from 500. Before you renew, check your exclusions and your excess.'"
+                  "Value": "'What less cover means. Exclusions: treatments a policy does not pay for at all. Reduced cover: treatments a policy pays only reduced benefits for. Excess: what you pay towards a hospital admission before the insurer pays. Before you renew, check your exclusions and your excess.'"
                 }
               }
             }

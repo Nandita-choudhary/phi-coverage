@@ -11,7 +11,7 @@
   "maximum": "#EB6834",
   "center": "#64748B",
   "minimum": "#4C9BEF",
-  "background": "#131C2E",
+  "background": "#F1F5F9",
   "secondaryBackground": "#0B1220",
   "backgroundLight": "#24324A",
   "backgroundNeutral": "#24324A",
@@ -125,7 +125,7 @@
             "gridlineShow": true,
             "gridlineColor": {
               "solid": {
-                "color": "#24324A"
+                "color": "#2E3D58"
               }
             },
             "labelColor": {
@@ -160,6 +160,64 @@
             },
             "fontFamily": "Segoe UI",
             "fontSize": 9
+          }
+        ],
+        "visualTooltip": [
+          {
+            "background": {
+              "solid": {
+                "color": "#131C2E"
+              }
+            },
+            "themedBackground": {
+              "solid": {
+                "color": "#131C2E"
+              }
+            },
+            "titleFontColor": {
+              "solid": {
+                "color": "#94A3B8"
+              }
+            },
+            "themedTitleFontColor": {
+              "solid": {
+                "color": "#94A3B8"
+              }
+            },
+            "valueFontColor": {
+              "solid": {
+                "color": "#F1F5F9"
+              }
+            },
+            "themedValueFontColor": {
+              "solid": {
+                "color": "#F1F5F9"
+              }
+            }
+          }
+        ],
+        "visualHeaderTooltip": [
+          {
+            "background": {
+              "solid": {
+                "color": "#131C2E"
+              }
+            },
+            "themedBackground": {
+              "solid": {
+                "color": "#131C2E"
+              }
+            },
+            "titleFontColor": {
+              "solid": {
+                "color": "#F1F5F9"
+              }
+            },
+            "themedTitleFontColor": {
+              "solid": {
+                "color": "#F1F5F9"
+              }
+            }
           }
         ]
       }

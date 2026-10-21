@@ -28,6 +28,14 @@ table dim_state
 
 		annotation SummarizationSetBy = Automatic
 
+	/// State code and its full cover share in the latest quarter, for the state chart's axis. Recomputed at refresh.
+	column state_label = dim_state[state] & "  " & FORMAT ( CALCULATE ( [Full Cover Share] ), "0.0%" )
+		dataType: string
+		lineageTag: ef02adbd-d19b-479d-a52f-370a9926c74c
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
 	partition dim_state = m
 		mode: import
 		source =

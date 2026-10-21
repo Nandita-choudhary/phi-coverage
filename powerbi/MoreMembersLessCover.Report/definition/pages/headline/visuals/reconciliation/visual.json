@@ -3,11 +3,11 @@
   "name": "reconciliation",
   "position": {
     "x": 520,
-    "y": 592,
-    "z": 31000,
-    "height": 240,
+    "y": 608,
+    "z": 39000,
+    "height": 232,
     "width": 736,
-    "tabOrder": 20000
+    "tabOrder": 28000
   },
   "visual": {
     "visualType": "tableEx",
@@ -288,7 +288,7 @@
             "rowPadding": {
               "expr": {
                 "Literal": {
-                  "Value": "4D"
+                  "Value": "3D"
                 }
               }
             }

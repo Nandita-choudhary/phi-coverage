@@ -152,16 +152,6 @@ cultureInfo en-US
 			          }
 			        },
 			        {
-			          "Share covered": {
-			            "State": "Suggested",
-			            "Source": {
-			              "Type": "External",
-			              "Agent": "PowerBI.VisualColumnRename"
-			            },
-			            "Weight": 0.9
-			          }
-			        },
-			        {
 			          "Share of Australians covered": {
 			            "State": "Suggested",
 			            "Source": {
@@ -808,16 +798,6 @@ cultureInfo en-US
 			          }
 			        },
 			        {
-			          "Excess over 500 dollars": {
-			            "State": "Suggested",
-			            "Source": {
-			              "Type": "External",
-			              "Agent": "PowerBI.VisualColumnRename"
-			            },
-			            "Weight": 0.9
-			          }
-			        },
-			        {
 			          "With an excess over 500 dollars": {
 			            "State": "Suggested",
 			            "Source": {
@@ -993,32 +973,6 @@ cultureInfo en-US
 			        },
 			        {
 			          "All Australians": {
-			            "State": "Suggested",
-			            "Source": {
-			              "Type": "External",
-			              "Agent": "PowerBI.VisualColumnRename"
-			            },
-			            "Weight": 0.9
-			          }
-			        }
-			      ]
-			    },
-			    "entity__measure.age_gap_points": {
-			      "Definition": {
-			        "Binding": {
-			          "ConceptualEntity": "_Measures",
-			          "ConceptualProperty": "Age Gap (points)"
-			        }
-			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "age gap (points)": {
-			            "State": "Generated"
-			          }
-			        },
-			        {
-			          "Gap, percentage points": {
 			            "State": "Suggested",
 			            "Source": {
 			              "Type": "External",
@@ -1349,6 +1303,16 @@ cultureInfo en-US
 			              "Agent": "Thesaurus"
 			            },
 			            "Weight": 0.736
+			          }
+			        },
+			        {
+			          "June": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
 			          }
 			        }
 			      ],
@@ -6806,48 +6770,6 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "entity__measure.coverage_rate_change_on_a_year_earlier": {
-			      "Definition": {
-			        "Binding": {
-			          "ConceptualEntity": "_Measures",
-			          "ConceptualProperty": "Coverage Rate, Change on a Year Earlier"
-			        }
-			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "coverage rate, change on a year earlier": {
-			            "State": "Generated"
-			          }
-			        }
-			      ]
-			    },
-			    "entity__measure.population_year": {
-			      "Definition": {
-			        "Binding": {
-			          "ConceptualEntity": "_Measures",
-			          "ConceptualProperty": "Population Year"
-			        }
-			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "population year": {
-			            "State": "Generated"
-			          }
-			        },
-			        {
-			          "population yr": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.75
-			          }
-			        }
-			      ]
-			    },
 			    "entity__measure.insured_persons_context": {
 			      "Definition": {
 			        "Binding": {
@@ -7640,634 +7562,6 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "entity__measure.share_aged_65_insured_context": {
-			      "Definition": {
-			        "Binding": {
-			          "ConceptualEntity": "_Measures",
-			          "ConceptualProperty": "Share Aged 65+, Insured Context"
-			        }
-			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "share aged 65+, insured context": {
-			            "State": "Generated"
-			          }
-			        },
-			        {
-			          "Context": {
-			            "State": "Suggested",
-			            "Source": {
-			              "Type": "External",
-			              "Agent": "PowerBI.VisualColumnRename"
-			            },
-			            "Weight": 0.9
-			          }
-			        }
-			      ]
-			    },
-			    "entity__measure.share_aged_65_australia_context": {
-			      "Definition": {
-			        "Binding": {
-			          "ConceptualEntity": "_Measures",
-			          "ConceptualProperty": "Share Aged 65+, Australia Context"
-			        }
-			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "share aged 65+, australia context": {
-			            "State": "Generated"
-			          }
-			        },
-			        {
-			          "Context": {
-			            "State": "Suggested",
-			            "Source": {
-			              "Type": "External",
-			              "Agent": "PowerBI.VisualColumnRename"
-			            },
-			            "Weight": 0.9
-			          }
-			        }
-			      ]
-			    },
-			    "entity__measure.age_gap_context": {
-			      "Definition": {
-			        "Binding": {
-			          "ConceptualEntity": "_Measures",
-			          "ConceptualProperty": "Age Gap Context"
-			        }
-			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "age gap context": {
-			            "State": "Generated"
-			          }
-			        },
-			        {
-			          "context": {
-			            "State": "Generated",
-			            "Weight": 0.97
-			          }
-			        },
-			        {
-			          "gap context": {
-			            "State": "Generated",
-			            "Weight": 0.97
-			          }
-			        },
-			        {
-			          "age gap situation": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.508
-			          }
-			        },
-			        {
-			          "age gap framework": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.508
-			          }
-			        },
-			        {
-			          "age gap milieu": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.508
-			          }
-			        },
-			        {
-			          "age gap environment": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.508
-			          }
-			        },
-			        {
-			          "gap situation": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.5
-			          }
-			        },
-			        {
-			          "gap framework": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.5
-			          }
-			        },
-			        {
-			          "gap milieu": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.5
-			          }
-			        },
-			        {
-			          "gap environment": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.5
-			          }
-			        },
-			        {
-			          "age gap setting": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.492
-			          }
-			        },
-			        {
-			          "age gap background": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.492
-			          }
-			        }
-			      ]
-			    },
-			    "entity__measure.share_aged_65_insured_label": {
-			      "Definition": {
-			        "Binding": {
-			          "ConceptualEntity": "_Measures",
-			          "ConceptualProperty": "Share Aged 65+, Insured Label"
-			        }
-			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "share aged 65+, insured label": {
-			            "State": "Generated"
-			          }
-			        },
-			        {
-			          "Label": {
-			            "State": "Suggested",
-			            "Source": {
-			              "Type": "External",
-			              "Agent": "PowerBI.VisualColumnRename"
-			            },
-			            "Weight": 0.9
-			          }
-			        }
-			      ]
-			    },
-			    "entity__measure.share_aged_65_australia_label": {
-			      "Definition": {
-			        "Binding": {
-			          "ConceptualEntity": "_Measures",
-			          "ConceptualProperty": "Share Aged 65+, Australia Label"
-			        }
-			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "share aged 65+, australia label": {
-			            "State": "Generated"
-			          }
-			        },
-			        {
-			          "Label": {
-			            "State": "Suggested",
-			            "Source": {
-			              "Type": "External",
-			              "Agent": "PowerBI.VisualColumnRename"
-			            },
-			            "Weight": 0.9
-			          }
-			        }
-			      ]
-			    },
-			    "entity__measure.age_gap_label": {
-			      "Definition": {
-			        "Binding": {
-			          "ConceptualEntity": "_Measures",
-			          "ConceptualProperty": "Age Gap Label"
-			        }
-			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "age gap label": {
-			            "State": "Generated"
-			          }
-			        },
-			        {
-			          "label": {
-			            "State": "Generated",
-			            "Weight": 0.97
-			          }
-			        },
-			        {
-			          "gap label": {
-			            "State": "Generated",
-			            "Weight": 0.97
-			          }
-			        },
-			        {
-			          "age gap sticker": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.762
-			          }
-			        },
-			        {
-			          "gap sticker": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.75
-			          }
-			        },
-			        {
-			          "age gap tag": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.739
-			          }
-			        },
-			        {
-			          "age gap decal": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.739
-			          }
-			        },
-			        {
-			          "sticker": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.736
-			          }
-			        },
-			        {
-			          "gap tag": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.727
-			          }
-			        },
-			        {
-			          "gap decal": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.727
-			          }
-			        },
-			        {
-			          "tag": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.714
-			          }
-			        },
-			        {
-			          "decal": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.714
-			          }
-			        },
-			        {
-			          "age gap name tag": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.604
-			          }
-			        }
-			      ]
-			    },
-			    "entity__measure.insured_persons_key_label": {
-			      "Definition": {
-			        "Binding": {
-			          "ConceptualEntity": "_Measures",
-			          "ConceptualProperty": "Insured Persons Key Label"
-			        }
-			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "insured persons key label": {
-			            "State": "Generated"
-			          }
-			        },
-			        {
-			          "label": {
-			            "State": "Generated",
-			            "Weight": 0.97
-			          }
-			        },
-			        {
-			          "key label": {
-			            "State": "Generated",
-			            "Weight": 0.97
-			          }
-			        },
-			        {
-			          "persons key label": {
-			            "State": "Generated",
-			            "Weight": 0.97
-			          }
-			        },
-			        {
-			          "insured person key sticker": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.771
-			          }
-			        },
-			        {
-			          "person key sticker": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.762
-			          }
-			        },
-			        {
-			          "key sticker": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.75
-			          }
-			        },
-			        {
-			          "insured person key tag": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.748
-			          }
-			        },
-			        {
-			          "insured person key decal": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.748
-			          }
-			        },
-			        {
-			          "person key tag": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.739
-			          }
-			        },
-			        {
-			          "person key decal": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.739
-			          }
-			        },
-			        {
-			          "sticker": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.736
-			          }
-			        },
-			        {
-			          "key tag": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.727
-			          }
-			        },
-			        {
-			          "key decal": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.727
-			          }
-			        }
-			      ]
-			    },
-			    "entity__measure.coverage_rate_key_label": {
-			      "Definition": {
-			        "Binding": {
-			          "ConceptualEntity": "_Measures",
-			          "ConceptualProperty": "Coverage Rate Key Label"
-			        }
-			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "coverage rate key label": {
-			            "State": "Generated"
-			          }
-			        },
-			        {
-			          "label": {
-			            "State": "Generated",
-			            "Weight": 0.97
-			          }
-			        },
-			        {
-			          "key label": {
-			            "State": "Generated",
-			            "Weight": 0.97
-			          }
-			        },
-			        {
-			          "rate key label": {
-			            "State": "Generated",
-			            "Weight": 0.97
-			          }
-			        },
-			        {
-			          "coverage rate key sticker": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.771
-			          }
-			        },
-			        {
-			          "rate key sticker": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.762
-			          }
-			        },
-			        {
-			          "key sticker": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.75
-			          }
-			        },
-			        {
-			          "coverage rate key tag": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.748
-			          }
-			        },
-			        {
-			          "coverage rate key decal": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.748
-			          }
-			        },
-			        {
-			          "rate key tag": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.739
-			          }
-			        },
-			        {
-			          "rate key decal": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.739
-			          }
-			        },
-			        {
-			          "sticker": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.736
-			          }
-			        },
-			        {
-			          "key tag": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.727
-			          }
-			        },
-			        {
-			          "key decal": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.727
-			          }
-			        }
-			      ]
-			    },
 			    "entity__measure.full_cover_share_key_label": {
 			      "Definition": {
 			        "Binding": {
@@ -8586,268 +7880,6 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "entity__measure.coverage_rate_peak": {
-			      "Definition": {
-			        "Binding": {
-			          "ConceptualEntity": "_Measures",
-			          "ConceptualProperty": "Coverage Rate Peak"
-			        }
-			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "coverage rate peak": {
-			            "State": "Generated"
-			          }
-			        },
-			        {
-			          "peak": {
-			            "State": "Generated",
-			            "Weight": 0.97
-			          }
-			        },
-			        {
-			          "rate peak": {
-			            "State": "Generated",
-			            "Weight": 0.97
-			          }
-			        },
-			        {
-			          "coverage rate mountaintop": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.482
-			          }
-			        },
-			        {
-			          "coverage rate height": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.482
-			          }
-			        },
-			        {
-			          "coverage rate alp": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.482
-			          }
-			        },
-			        {
-			          "crowning": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.476
-			          }
-			        },
-			        {
-			          "ultimate": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.476
-			          }
-			        },
-			        {
-			          "rate mountaintop": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.475
-			          }
-			        },
-			        {
-			          "rate height": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.475
-			          }
-			        },
-			        {
-			          "rate alp": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.475
-			          }
-			        },
-			        {
-			          "coverage rate mountain": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.468
-			          }
-			        },
-			        {
-			          "coverage rate summit": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.468
-			          }
-			        }
-			      ]
-			    },
-			    "entity__measure.coverage_rate_peak_label": {
-			      "Definition": {
-			        "Binding": {
-			          "ConceptualEntity": "_Measures",
-			          "ConceptualProperty": "Coverage Rate Peak Label"
-			        }
-			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "coverage rate peak label": {
-			            "State": "Generated"
-			          }
-			        },
-			        {
-			          "label": {
-			            "State": "Generated",
-			            "Weight": 0.97
-			          }
-			        },
-			        {
-			          "peak label": {
-			            "State": "Generated",
-			            "Weight": 0.97
-			          }
-			        },
-			        {
-			          "rate peak label": {
-			            "State": "Generated",
-			            "Weight": 0.97
-			          }
-			        },
-			        {
-			          "coverage rate peak sticker": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.771
-			          }
-			        },
-			        {
-			          "rate peak sticker": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.762
-			          }
-			        },
-			        {
-			          "peak sticker": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.75
-			          }
-			        },
-			        {
-			          "coverage rate peak tag": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.748
-			          }
-			        },
-			        {
-			          "coverage rate peak decal": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.748
-			          }
-			        },
-			        {
-			          "rate peak tag": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.739
-			          }
-			        },
-			        {
-			          "rate peak decal": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.739
-			          }
-			        },
-			        {
-			          "sticker": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.736
-			          }
-			        },
-			        {
-			          "peak tag": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.727
-			          }
-			        },
-			        {
-			          "peak decal": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.727
-			          }
-			        }
-			      ]
-			    },
 			    "entity__measure.full_cover_share_australia": {
 			      "Definition": {
 			        "Binding": {
@@ -9110,6 +8142,384 @@ cultureInfo en-US
 			        },
 			        {
 			          "Source": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "table_measures.covered_first_quarter": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Measures",
+			          "ConceptualProperty": "Covered, First Quarter"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Covered": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "table_measures.not_covered_first_quarter": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Measures",
+			          "ConceptualProperty": "Not Covered, First Quarter"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Not covered": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "table_measures.quarter_label_first": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Measures",
+			          "ConceptualProperty": "Quarter Label, First"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Quarter": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "table_measures.coverage_people_label_first_quarter": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Measures",
+			          "ConceptualProperty": "Coverage People Label, First Quarter"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "People": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "table_measures.coverage_share_label_first_quarter": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Measures",
+			          "ConceptualProperty": "Coverage Share Label, First Quarter"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Share covered": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "table_measures.covered_latest_quarter": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Measures",
+			          "ConceptualProperty": "Covered, Latest Quarter"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Covered": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "table_measures.not_covered_latest_quarter": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Measures",
+			          "ConceptualProperty": "Not Covered, Latest Quarter"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Not covered": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "table_measures.quarter_label_latest": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Measures",
+			          "ConceptualProperty": "Quarter Label, Latest"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Quarter": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "table_measures.coverage_people_label_latest_quarter": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Measures",
+			          "ConceptualProperty": "Coverage People Label, Latest Quarter"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "People": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "table_measures.coverage_share_label_latest_quarter": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Measures",
+			          "ConceptualProperty": "Coverage Share Label, Latest Quarter"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Share covered": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "table_measures.coverage_rate_line_for_labels_below": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Measures",
+			          "ConceptualProperty": "Coverage Rate, Line for Labels Below"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Share covered (labels below)": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "table_measures.full_cover_share_gap_to_australia_points": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Measures",
+			          "ConceptualProperty": "Full Cover Share, Gap to Australia (points)"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Gap to Australia": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "table_measures.age_mix_share": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Measures",
+			          "ConceptualProperty": "Age Mix Share"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Share": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "dim_state.state_label": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "dim_state",
+			          "ConceptualProperty": "state_label"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "State": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "mix_bars.bar": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "mix_bars",
+			          "ConceptualProperty": "bar"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Group": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "dim_age_band.age_group4": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "dim_age_band",
+			          "ConceptualProperty": "age_group4"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Age group": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "table_measures.excess_over_500_share_before_rule_change": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Measures",
+			          "ConceptualProperty": "Excess Over 500 Share, Before Rule Change"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Before the rule change": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "table_measures.excess_over_500_share_after_rule_change": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Measures",
+			          "ConceptualProperty": "Excess Over 500 Share, After Rule Change"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "After the rule change": {
 			            "State": "Suggested",
 			            "Source": {
 			              "Type": "External",
@@ -10217,72 +9627,6 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "fact_insured_has_entity__measure_age_gap_points": {
-			      "Binding": {
-			        "ConceptualEntity": "fact_insured"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "fact_insured": {
-			          "Target": {
-			            "Entity": "fact_insured"
-			          }
-			        },
-			        "entity__measure.age_gap_points": {
-			          "Target": {
-			            "Entity": "entity__measure.age_gap_points"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "fact_insured"
-			            },
-			            "Object": {
-			              "Role": "entity__measure.age_gap_points"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "fact_insured_have_age_gap_points"
-			        }
-			      ]
-			    },
-			    "fact_population_by_age_has_entity__measure_age_gap_points": {
-			      "Binding": {
-			        "ConceptualEntity": "fact_population_by_age"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "fact_population_by_age": {
-			          "Target": {
-			            "Entity": "fact_population_by_age"
-			          }
-			        },
-			        "entity__measure.age_gap_points": {
-			          "Target": {
-			            "Entity": "entity__measure.age_gap_points"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "fact_population_by_age"
-			            },
-			            "Object": {
-			              "Role": "entity__measure.age_gap_points"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "fact_population_by_age_have_age_gap_points"
-			        }
-			      ]
-			    },
 			    "fact_insured_has_entity__measure_share_aged_65_insured": {
 			      "Binding": {
 			        "ConceptualEntity": "fact_insured"
@@ -11207,105 +10551,6 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "fact_insured_has_entity__measure_coverage_rate_change_on_a_year_earlier": {
-			      "Binding": {
-			        "ConceptualEntity": "fact_insured"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "fact_insured": {
-			          "Target": {
-			            "Entity": "fact_insured"
-			          }
-			        },
-			        "entity__measure.coverage_rate_change_on_a_year_earlier": {
-			          "Target": {
-			            "Entity": "entity__measure.coverage_rate_change_on_a_year_earlier"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "fact_insured"
-			            },
-			            "Object": {
-			              "Role": "entity__measure.coverage_rate_change_on_a_year_earlier"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "fact_insured_have_coverage_rate_change_on_a_year_earlier"
-			        }
-			      ]
-			    },
-			    "fact_population_has_entity__measure_coverage_rate_change_on_a_year_earlier": {
-			      "Binding": {
-			        "ConceptualEntity": "fact_population"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "fact_population": {
-			          "Target": {
-			            "Entity": "fact_population"
-			          }
-			        },
-			        "entity__measure.coverage_rate_change_on_a_year_earlier": {
-			          "Target": {
-			            "Entity": "entity__measure.coverage_rate_change_on_a_year_earlier"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "fact_population"
-			            },
-			            "Object": {
-			              "Role": "entity__measure.coverage_rate_change_on_a_year_earlier"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "fact_populations_have_coverage_rate_change_on_a_year_earlier"
-			        }
-			      ]
-			    },
-			    "fact_population_by_age_has_entity__measure_population_year": {
-			      "Binding": {
-			        "ConceptualEntity": "fact_population_by_age"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "fact_population_by_age": {
-			          "Target": {
-			            "Entity": "fact_population_by_age"
-			          }
-			        },
-			        "entity__measure.population_year": {
-			          "Target": {
-			            "Entity": "entity__measure.population_year"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "fact_population_by_age"
-			            },
-			            "Object": {
-			              "Role": "entity__measure.population_year"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "fact_population_by_age_have_population_year"
-			        }
-			      ]
-			    },
 			    "fact_insured_has_entity__measure_insured_persons_context": {
 			      "Binding": {
 			        "ConceptualEntity": "fact_insured"
@@ -11468,369 +10713,6 @@ cultureInfo en-US
 			          "State": "Generated",
 			          "Weight": 0.99,
 			          "ID": "fact_policies_have_full_cover_share_context"
-			        }
-			      ]
-			    },
-			    "fact_insured_has_entity__measure_share_aged_65_insured_context": {
-			      "Binding": {
-			        "ConceptualEntity": "fact_insured"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "fact_insured": {
-			          "Target": {
-			            "Entity": "fact_insured"
-			          }
-			        },
-			        "entity__measure.share_aged_65_insured_context": {
-			          "Target": {
-			            "Entity": "entity__measure.share_aged_65_insured_context"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "fact_insured"
-			            },
-			            "Object": {
-			              "Role": "entity__measure.share_aged_65_insured_context"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "fact_insured_have_share_aged_65_insured_context"
-			        }
-			      ]
-			    },
-			    "fact_population_by_age_has_entity__measure_share_aged_65_insured_context": {
-			      "Binding": {
-			        "ConceptualEntity": "fact_population_by_age"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "fact_population_by_age": {
-			          "Target": {
-			            "Entity": "fact_population_by_age"
-			          }
-			        },
-			        "entity__measure.share_aged_65_insured_context": {
-			          "Target": {
-			            "Entity": "entity__measure.share_aged_65_insured_context"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "fact_population_by_age"
-			            },
-			            "Object": {
-			              "Role": "entity__measure.share_aged_65_insured_context"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "fact_population_by_age_have_share_aged_65_insured_context"
-			        }
-			      ]
-			    },
-			    "fact_population_by_age_has_entity__measure_share_aged_65_australia_context": {
-			      "Binding": {
-			        "ConceptualEntity": "fact_population_by_age"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "fact_population_by_age": {
-			          "Target": {
-			            "Entity": "fact_population_by_age"
-			          }
-			        },
-			        "entity__measure.share_aged_65_australia_context": {
-			          "Target": {
-			            "Entity": "entity__measure.share_aged_65_australia_context"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "fact_population_by_age"
-			            },
-			            "Object": {
-			              "Role": "entity__measure.share_aged_65_australia_context"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "fact_population_by_age_have_share_aged_65_australia_context"
-			        }
-			      ]
-			    },
-			    "fact_insured_has_entity__measure_age_gap_context": {
-			      "Binding": {
-			        "ConceptualEntity": "fact_insured"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "fact_insured": {
-			          "Target": {
-			            "Entity": "fact_insured"
-			          }
-			        },
-			        "entity__measure.age_gap_context": {
-			          "Target": {
-			            "Entity": "entity__measure.age_gap_context"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "fact_insured"
-			            },
-			            "Object": {
-			              "Role": "entity__measure.age_gap_context"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "fact_insured_have_age_gap_context"
-			        }
-			      ]
-			    },
-			    "fact_population_by_age_has_entity__measure_age_gap_context": {
-			      "Binding": {
-			        "ConceptualEntity": "fact_population_by_age"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "fact_population_by_age": {
-			          "Target": {
-			            "Entity": "fact_population_by_age"
-			          }
-			        },
-			        "entity__measure.age_gap_context": {
-			          "Target": {
-			            "Entity": "entity__measure.age_gap_context"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "fact_population_by_age"
-			            },
-			            "Object": {
-			              "Role": "entity__measure.age_gap_context"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "fact_population_by_age_have_age_gap_context"
-			        }
-			      ]
-			    },
-			    "fact_population_by_age_has_entity__measure_share_aged_65_insured_label": {
-			      "Binding": {
-			        "ConceptualEntity": "fact_population_by_age"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "fact_population_by_age": {
-			          "Target": {
-			            "Entity": "fact_population_by_age"
-			          }
-			        },
-			        "entity__measure.share_aged_65_insured_label": {
-			          "Target": {
-			            "Entity": "entity__measure.share_aged_65_insured_label"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "fact_population_by_age"
-			            },
-			            "Object": {
-			              "Role": "entity__measure.share_aged_65_insured_label"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "fact_population_by_age_have_share_aged_65_insured_label"
-			        }
-			      ]
-			    },
-			    "fact_population_by_age_has_entity__measure_share_aged_65_australia_label": {
-			      "Binding": {
-			        "ConceptualEntity": "fact_population_by_age"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "fact_population_by_age": {
-			          "Target": {
-			            "Entity": "fact_population_by_age"
-			          }
-			        },
-			        "entity__measure.share_aged_65_australia_label": {
-			          "Target": {
-			            "Entity": "entity__measure.share_aged_65_australia_label"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "fact_population_by_age"
-			            },
-			            "Object": {
-			              "Role": "entity__measure.share_aged_65_australia_label"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "fact_population_by_age_have_share_aged_65_australia_label"
-			        }
-			      ]
-			    },
-			    "fact_population_by_age_has_entity__measure_age_gap_label": {
-			      "Binding": {
-			        "ConceptualEntity": "fact_population_by_age"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "fact_population_by_age": {
-			          "Target": {
-			            "Entity": "fact_population_by_age"
-			          }
-			        },
-			        "entity__measure.age_gap_label": {
-			          "Target": {
-			            "Entity": "entity__measure.age_gap_label"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "fact_population_by_age"
-			            },
-			            "Object": {
-			              "Role": "entity__measure.age_gap_label"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "fact_population_by_age_have_age_gap_label"
-			        }
-			      ]
-			    },
-			    "dim_date_has_entity__measure_insured_persons_key_label": {
-			      "Binding": {
-			        "ConceptualEntity": "dim_date"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "dim_date": {
-			          "Target": {
-			            "Entity": "dim_date"
-			          }
-			        },
-			        "entity__measure.insured_persons_key_label": {
-			          "Target": {
-			            "Entity": "entity__measure.insured_persons_key_label"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "dim_date"
-			            },
-			            "Object": {
-			              "Role": "entity__measure.insured_persons_key_label"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "dim_dates_have_insured_persons_key_label"
-			        }
-			      ]
-			    },
-			    "fact_insured_has_entity__measure_insured_persons_key_label": {
-			      "Binding": {
-			        "ConceptualEntity": "fact_insured"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "fact_insured": {
-			          "Target": {
-			            "Entity": "fact_insured"
-			          }
-			        },
-			        "entity__measure.insured_persons_key_label": {
-			          "Target": {
-			            "Entity": "entity__measure.insured_persons_key_label"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "fact_insured"
-			            },
-			            "Object": {
-			              "Role": "entity__measure.insured_persons_key_label"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "fact_insured_have_insured_persons_key_label"
-			        }
-			      ]
-			    },
-			    "entity__measure_has_coverage_rate_key_label": {
-			      "Binding": {
-			        "ConceptualEntity": "_Measures"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "entity__measure": {
-			          "Target": {
-			            "Entity": "entity__measure"
-			          }
-			        },
-			        "entity__measure.coverage_rate_key_label": {
-			          "Target": {
-			            "Entity": "entity__measure.coverage_rate_key_label"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "entity__measure"
-			            },
-			            "Object": {
-			              "Role": "entity__measure.coverage_rate_key_label"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "Phrasing_measures_have_coverage_rate_key_label"
 			        }
 			      ]
 			    },
@@ -12062,72 +10944,6 @@ cultureInfo en-US
 			          "State": "Generated",
 			          "Weight": 0.99,
 			          "ID": "fact_population_by_age_have_share_aged_65_australia_key_label"
-			        }
-			      ]
-			    },
-			    "entity__measure_has_coverage_rate_peak": {
-			      "Binding": {
-			        "ConceptualEntity": "_Measures"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "entity__measure": {
-			          "Target": {
-			            "Entity": "entity__measure"
-			          }
-			        },
-			        "entity__measure.coverage_rate_peak": {
-			          "Target": {
-			            "Entity": "entity__measure.coverage_rate_peak"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "entity__measure"
-			            },
-			            "Object": {
-			              "Role": "entity__measure.coverage_rate_peak"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "Phrasing_measures_have_coverage_rate_peak"
-			        }
-			      ]
-			    },
-			    "entity__measure_has_coverage_rate_peak_label": {
-			      "Binding": {
-			        "ConceptualEntity": "_Measures"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "entity__measure": {
-			          "Target": {
-			            "Entity": "entity__measure"
-			          }
-			        },
-			        "entity__measure.coverage_rate_peak_label": {
-			          "Target": {
-			            "Entity": "entity__measure.coverage_rate_peak_label"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "entity__measure"
-			            },
-			            "Object": {
-			              "Role": "entity__measure.coverage_rate_peak_label"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "Phrasing_measures_have_coverage_rate_peak_label"
 			        }
 			      ]
 			    },

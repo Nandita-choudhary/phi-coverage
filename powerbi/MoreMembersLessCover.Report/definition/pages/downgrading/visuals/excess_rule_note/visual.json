@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "excess_rule_note",
   "position": {
-    "x": 711,
-    "y": 460,
+    "x": 368,
+    "y": 659,
     "z": 26000,
-    "height": 48,
-    "width": 230,
-    "tabOrder": 16000
+    "height": 40,
+    "width": 200,
+    "tabOrder": 18000
   },
   "visual": {
     "visualType": "textbox",
@@ -19,28 +19,14 @@
               {
                 "textRuns": [
                   {
-                    "value": "1 Apr 2019: maximum excess",
+                    "value": "From 1 April 2019 the maximum excess rose to 750 dollars single",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "9pt",
                       "color": "#94A3B8"
                     }
                   }
-                ],
-                "horizontalTextAlignment": "right"
-              },
-              {
-                "textRuns": [
-                  {
-                    "value": "rises to 750 dollars single",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "9pt",
-                      "color": "#94A3B8"
-                    }
-                  }
-                ],
-                "horizontalTextAlignment": "right"
+                ]
               }
             ]
           }
@@ -166,7 +152,7 @@
             "altText": {
               "expr": {
                 "Literal": {
-                  "Value": "'1 April 2019: maximum excess rises to 750 dollars single'"
+                  "Value": "'From 1 April 2019 the maximum excess rose to 750 dollars single'"
                 }
               }
             }

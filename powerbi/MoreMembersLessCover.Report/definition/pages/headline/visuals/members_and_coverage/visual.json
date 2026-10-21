@@ -1,16 +1,16 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
-  "name": "coverage_by_quarter",
+  "name": "members_and_coverage",
   "position": {
-    "x": 648,
+    "x": 24,
     "y": 296,
-    "z": 29000,
-    "height": 280,
-    "width": 608,
-    "tabOrder": 18000
+    "z": 28000,
+    "height": 296,
+    "width": 856,
+    "tabOrder": 17000
   },
   "visual": {
-    "visualType": "lineChart",
+    "visualType": "lineClusteredColumnComboChart",
     "query": {
       "queryState": {
         "Category": {
@@ -23,17 +23,36 @@
                       "Entity": "dim_date"
                     }
                   },
-                  "Property": "quarter_end"
+                  "Property": "year"
                 }
               },
-              "queryRef": "dim_date.quarter_end",
-              "nativeQueryRef": "quarter_end",
+              "queryRef": "dim_date.year",
+              "nativeQueryRef": "year",
               "active": true,
-              "displayName": "Quarter"
+              "displayName": "June"
             }
           ]
         },
         "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Insured Persons"
+                }
+              },
+              "queryRef": "_Measures.Insured Persons",
+              "nativeQueryRef": "Insured Persons",
+              "displayName": "People with hospital cover"
+            }
+          ]
+        },
+        "Y2": {
           "projections": [
             {
               "field": {
@@ -48,7 +67,22 @@
               },
               "queryRef": "_Measures.Coverage Rate",
               "nativeQueryRef": "Coverage Rate",
-              "displayName": "Share covered"
+              "displayName": "Share of Australians covered"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Coverage Rate, Line for Labels Below"
+                }
+              },
+              "queryRef": "_Measures.Coverage Rate, Line for Labels Below",
+              "nativeQueryRef": "Coverage Rate, Line for Labels Below",
+              "displayName": "Share covered (labels below)"
             }
           ]
         }
@@ -63,7 +97,7 @@
                     "Entity": "dim_date"
                   }
                 },
-                "Property": "quarter_end"
+                "Property": "year"
               }
             },
             "direction": "Ascending"
@@ -121,13 +155,6 @@
                   "Value": "false"
                 }
               }
-            },
-            "axisType": {
-              "expr": {
-                "Literal": {
-                  "Value": "'Scalar'"
-                }
-              }
             }
           }
         }
@@ -179,7 +206,7 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#24324A'"
+                      "Value": "'#2E3D58'"
                     }
                   }
                 }
@@ -188,7 +215,138 @@
             "showAxisTitle": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "true"
+                }
+              }
+            },
+            "start": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            },
+            "end": {
+              "expr": {
+                "Literal": {
+                  "Value": "20000000D"
+                }
+              }
+            },
+            "labelDisplayUnits": {
+              "expr": {
+                "Literal": {
+                  "Value": "1000000D"
+                }
+              }
+            },
+            "labelPrecision": {
+              "expr": {
+                "Literal": {
+                  "Value": "0L"
+                }
+              }
+            },
+            "titleText": {
+              "expr": {
+                "Literal": {
+                  "Value": "'People with hospital cover'"
+                }
+              }
+            },
+            "titleColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#94A3B8'"
+                    }
+                  }
+                }
+              }
+            },
+            "titleFontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "9D"
+                }
+              }
+            },
+            "secShow": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "secStart": {
+              "expr": {
+                "Literal": {
+                  "Value": "0.4D"
+                }
+              }
+            },
+            "secEnd": {
+              "expr": {
+                "Literal": {
+                  "Value": "0.5D"
+                }
+              }
+            },
+            "secLabelColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#94A3B8'"
+                    }
+                  }
+                }
+              }
+            },
+            "secFontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "9D"
+                }
+              }
+            },
+            "secLabelPrecision": {
+              "expr": {
+                "Literal": {
+                  "Value": "0L"
+                }
+              }
+            },
+            "secShowAxisTitle": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "secTitleText": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Share of Australians covered'"
+                }
+              }
+            },
+            "secTitleColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#94A3B8'"
+                    }
+                  }
+                }
+              }
+            },
+            "secTitleFontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "9D"
                 }
               }
             }
@@ -211,6 +369,39 @@
       "dataPoint": [
         {
           "properties": {
+            "defaultColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#4C9BEF'"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "properties": {
+            "fill": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#4C9BEF'"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "_Measures.Insured Persons"
+          }
+        },
+        {
+          "properties": {
             "fill": {
               "solid": {
                 "color": {
@@ -226,6 +417,24 @@
           "selector": {
             "metadata": "_Measures.Coverage Rate"
           }
+        },
+        {
+          "properties": {
+            "fill": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#EB6834'"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "_Measures.Coverage Rate, Line for Labels Below"
+          }
         }
       ],
       "lineStyles": [
@@ -234,7 +443,7 @@
             "strokeWidth": {
               "expr": {
                 "Literal": {
-                  "Value": "2D"
+                  "Value": "2.5D"
                 }
               }
             },
@@ -245,6 +454,27 @@
                 }
               }
             }
+          }
+        },
+        {
+          "properties": {
+            "strokeShow": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "showMarker": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "_Measures.Coverage Rate, Line for Labels Below"
           }
         }
       ],
@@ -283,13 +513,6 @@
                 }
               }
             },
-            "labelDensity": {
-              "expr": {
-                "Literal": {
-                  "Value": "100D"
-                }
-              }
-            },
             "enableBackground": {
               "expr": {
                 "Literal": {
@@ -312,6 +535,13 @@
               "expr": {
                 "Literal": {
                   "Value": "0D"
+                }
+              }
+            },
+            "labelDensity": {
+              "expr": {
+                "Literal": {
+                  "Value": "100D"
                 }
               }
             }
@@ -343,6 +573,92 @@
                   }
                 }
               }
+            },
+            "labelPosition": {
+              "expr": {
+                "Literal": {
+                  "Value": "'OutsideEnd'"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "_Measures.Insured Persons"
+          }
+        },
+        {
+          "properties": {
+            "showDynamicLabels": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "dynamicLabelValue": {
+              "expr": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Insured Persons, June Key Label"
+                }
+              }
+            },
+            "showBlankAs": {
+              "expr": {
+                "Literal": {
+                  "Value": "''"
+                }
+              }
+            }
+          },
+          "selector": {
+            "data": [
+              {
+                "dataViewWildcard": {
+                  "matchingOption": 1
+                }
+              }
+            ],
+            "metadata": "_Measures.Insured Persons"
+          }
+        },
+        {
+          "properties": {
+            "showSeries": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "showDynamicLabels": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#F1F5F9'"
+                    }
+                  }
+                }
+              }
+            },
+            "labelPosition": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Above'"
+                }
+              }
             }
           },
           "selector": {
@@ -366,7 +682,7 @@
                       "Entity": "_Measures"
                     }
                   },
-                  "Property": "Coverage Rate Key Label"
+                  "Property": "Coverage Rate, June Label Above"
                 }
               }
             },
@@ -388,6 +704,85 @@
             ],
             "metadata": "_Measures.Coverage Rate"
           }
+        },
+        {
+          "properties": {
+            "showSeries": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "showDynamicLabels": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#F1F5F9'"
+                    }
+                  }
+                }
+              }
+            },
+            "labelPosition": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Under'"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "_Measures.Coverage Rate, Line for Labels Below"
+          }
+        },
+        {
+          "properties": {
+            "showDynamicLabels": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "dynamicLabelValue": {
+              "expr": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Coverage Rate, June Label Below"
+                }
+              }
+            },
+            "showBlankAs": {
+              "expr": {
+                "Literal": {
+                  "Value": "''"
+                }
+              }
+            }
+          },
+          "selector": {
+            "data": [
+              {
+                "dataViewWildcard": {
+                  "matchingOption": 1
+                }
+              }
+            ],
+            "metadata": "_Measures.Coverage Rate, Line for Labels Below"
+          }
         }
       ],
       "y1AxisReferenceLine": [
@@ -400,27 +795,10 @@
                 }
               }
             },
-            "displayName": {
-              "expr": {
-                "Measure": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "_Measures"
-                    }
-                  },
-                  "Property": "Coverage Rate Peak Label"
-                }
-              }
-            },
             "value": {
               "expr": {
-                "Measure": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "_Measures"
-                    }
-                  },
-                  "Property": "Coverage Rate Peak"
+                "Literal": {
+                  "Value": "0D"
                 }
               }
             },
@@ -429,7 +807,7 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#64748B'"
+                      "Value": "'#94A3B8'"
                     }
                   }
                 }
@@ -445,59 +823,34 @@
             "style": {
               "expr": {
                 "Literal": {
-                  "Value": "'dashed'"
+                  "Value": "'solid'"
+                }
+              }
+            },
+            "width": {
+              "expr": {
+                "Literal": {
+                  "Value": "1D"
                 }
               }
             },
             "position": {
               "expr": {
                 "Literal": {
-                  "Value": "'back'"
+                  "Value": "'front'"
                 }
               }
             },
             "dataLabelShow": {
               "expr": {
                 "Literal": {
-                  "Value": "true"
-                }
-              }
-            },
-            "dataLabelText": {
-              "expr": {
-                "Literal": {
-                  "Value": "'Name'"
-                }
-              }
-            },
-            "dataLabelColor": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#94A3B8'"
-                    }
-                  }
-                }
-              }
-            },
-            "dataLabelHorizontalPosition": {
-              "expr": {
-                "Literal": {
-                  "Value": "'left'"
-                }
-              }
-            },
-            "dataLabelVerticalPosition": {
-              "expr": {
-                "Literal": {
-                  "Value": "'above'"
+                  "Value": "false"
                 }
               }
             }
           },
           "selector": {
-            "id": "1"
+            "id": "0"
           }
         }
       ]
@@ -632,7 +985,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'…but the share of Australians covered, 45.8%, is still below its 2015 peak of 47.4%'"
+                  "Value": "'A record 12.8 million people have hospital cover, but the share of Australians covered is still below its 2015 peak'"
                 }
               }
             },
@@ -691,7 +1044,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'People with hospital cover as a share of the population, at the end of each quarter.'"
+                  "Value": "'People with hospital cover at each June (columns, left axis) and the share of the population they make up (line, right axis, 40% to 50%).'"
                 }
               }
             },
@@ -749,7 +1102,7 @@
             "altText": {
               "expr": {
                 "Literal": {
-                  "Value": "'…but the share of Australians covered, 45.8%, is still below its 2015 peak of 47.4%. People with hospital cover as a share of the population, at the end of each quarter.'"
+                  "Value": "'A record 12.8 million people have hospital cover, but the share of Australians covered is still below its 2015 peak. People with hospital cover at each June (columns, left axis) and the share of the population they make up (line, right axis, 40% to 50%).'"
                 }
               }
             }
@@ -758,5 +1111,57 @@
       ]
     },
     "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "junesOnly",
+        "displayName": "June quarters only",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "dim_date"
+              }
+            },
+            "Property": "quarter_label"
+          }
+        },
+        "type": "Advanced",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "d",
+              "Entity": "dim_date",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "StartsWith": {
+                  "Left": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Source": "d"
+                        }
+                      },
+                      "Property": "quarter_label"
+                    }
+                  },
+                  "Right": {
+                    "Literal": {
+                      "Value": "'Jun'"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    ]
   }
 }

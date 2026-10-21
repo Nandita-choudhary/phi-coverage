@@ -1,13 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
-  "name": "kpi_insured_65_context",
+  "name": "donut_latest_caption",
   "position": {
-    "x": 56,
-    "y": 252,
-    "z": 13000,
+    "x": 1072,
+    "y": 382,
+    "z": 34000,
     "height": 20,
-    "width": 352,
-    "tabOrder": 11000
+    "width": 168,
+    "tabOrder": 20000
   },
   "visual": {
     "visualType": "cardVisual",
@@ -23,12 +23,12 @@
                       "Entity": "_Measures"
                     }
                   },
-                  "Property": "Share Aged 65+, Insured Context"
+                  "Property": "Quarter Label, Latest"
                 }
               },
-              "queryRef": "_Measures.Share Aged 65+, Insured Context",
-              "nativeQueryRef": "Share Aged 65+, Insured Context",
-              "displayName": "Context"
+              "queryRef": "_Measures.Quarter Label, Latest",
+              "nativeQueryRef": "Quarter Label, Latest",
+              "displayName": "Quarter"
             }
           ]
         }
@@ -73,7 +73,7 @@
             "horizontalAlignment": {
               "expr": {
                 "Literal": {
-                  "Value": "'left'"
+                  "Value": "'center'"
                 }
               }
             },
@@ -486,7 +486,7 @@
             "altText": {
               "expr": {
                 "Literal": {
-                  "Value": "'Context for Insured people aged 65+'"
+                  "Value": "'Donut caption, latest quarter'"
                 }
               }
             }
