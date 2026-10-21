@@ -34,6 +34,7 @@ CLEAN = ROOT / "data" / "clean"
 JSON_OUT = ROOT / "data" / "findings.json"
 MD_OUT = ROOT / "docs" / "findings.md"
 README = ROOT / "README.md"
+EVENTS = ROOT / "data" / "policy_events.json"
 
 FULL_COVER = "Full cover"
 OVER_500 = "Over $500 single"
@@ -47,6 +48,8 @@ KINDS = {
     "change": "the difference between the two dates named, in the unit shown",
     "growth": "the percentage change between the two dates named",
     "count": "a tally of items in one of this project's own tables, such as age bands or checked figures",
+    "proportion": "one change as a percentage of another change",
+    "difference": "the percentage by which one series exceeds another at the same date",
 }
 
 
@@ -65,6 +68,8 @@ def as_at(q: str) -> str:
 
 
 def fmt(value: float, unit: str, kind: str) -> str:
+    if kind == "difference":
+        return f"{value:+.2f}%"
     if unit in ("people", "policies"):
         return f"{value:+,.0f} {unit}" if kind == "change" else f"{value:,.0f} {unit}"
     if unit == "points":
@@ -269,6 +274,80 @@ def build() -> tuple[Findings, dict]:
           span(first_june_age, latest_june_age), "count", ", ".join(fell))
     f.get("coverage_by_band_bands_that_fell")["display"] = f"{len(fell)} of {len(band_rows)} bands"
 
+    # ---- why the pool aged: Australia ageing against change in coverage within age groups
+    c0, c1 = i0 / p0, i1 / p1                      # coverage rate by band, first and latest June
+
+    def share_65_implied(rates: pd.Series, pop: pd.Series) -> float:
+        insured_by_band = rates * pop
+        return insured_by_band[insured_by_band.index >= 65].sum() / insured_by_band.sum() * 100
+
+    s0, s1 = share_65_implied(c0, p0), share_65_implied(c1, p1)
+    ageing_first = share_65_implied(c0, p1) - s0        # first June's rates on the latest population
+    coverage_after_ageing = s1 - share_65_implied(c0, p1)
+    coverage_first = share_65_implied(c1, p0) - s0      # latest rates on the first June's population
+    ageing_after_coverage = s1 - share_65_implied(c1, p0)
+    interaction = (s1 - s0) - ageing_first - coverage_first
+    kitagawa_ageing = (ageing_first + ageing_after_coverage) / 2
+    kitagawa_coverage = (coverage_after_ageing + coverage_first) / 2
+    period = span(first_june_age, latest_june_age)
+    rise = "Rise in the insured 65 and over share"
+    f.add("decomp_ageing_first", f"{rise} from Australia ageing, with the first June's coverage rates held",
+          ageing_first, "points", period, "change")
+    f.add("decomp_coverage_after_ageing", f"{rise} from change in coverage within age groups, after ageing",
+          coverage_after_ageing, "points", period, "change")
+    f.add("decomp_coverage_first", f"{rise} from change in coverage within age groups, with the first June's population held",
+          coverage_first, "points", period, "change")
+    f.add("decomp_ageing_after_coverage", f"{rise} from Australia ageing, after the coverage change",
+          ageing_after_coverage, "points", period, "change")
+    f.add("decomp_interaction", f"{rise}: interaction of the two, attributable to neither alone",
+          interaction, "points", period, "change")
+    f.add("decomp_kitagawa_ageing", f"{rise} from Australia ageing, Kitagawa average of both orderings",
+          kitagawa_ageing, "points", period, "change")
+    f.add("decomp_kitagawa_coverage", f"{rise} from change in coverage within age groups, Kitagawa average",
+          kitagawa_coverage, "points", period, "change")
+    f.add("decomp_kitagawa_ageing_proportion", "Australia ageing as a proportion of the rise, Kitagawa average",
+          kitagawa_ageing / (s1 - s0) * 100, "% of the rise in the insured 65 and over share", period, "proportion")
+    pt = lambda v, name: f"{name} {v:+.1f} points"   # noqa: E731
+    f.tables["ageing_decomposition"] = [
+        {"method": "First June's coverage rates held, ageing first", "ageing": pt(ageing_first, "ageing"),
+         "coverage_change": pt(coverage_after_ageing, "coverage change"), "interaction": ""},
+        {"method": "First June's population held, coverage change first", "ageing": pt(ageing_after_coverage, "ageing"),
+         "coverage_change": pt(coverage_first, "coverage change"), "interaction": ""},
+        {"method": "Pure effects and their interaction", "ageing": pt(ageing_first, "ageing"),
+         "coverage_change": pt(coverage_first, "coverage change"), "interaction": pt(interaction, "interaction")},
+        {"method": "Kitagawa average of the two orderings", "ageing": pt(kitagawa_ageing, "ageing"),
+         "coverage_change": pt(kitagawa_coverage, "coverage change"), "interaction": ""},
+    ]
+
+    groups = [("Children, 0 to 14", 0, 14), ("15 to 24", 15, 24), ("25 to 34", 25, 34), ("35 to 39", 35, 39),
+              ("40s, 40 to 49", 40, 49), ("50 to 64", 50, 64), ("65 and over", 65, 200), ("Under 65", 0, 64)]
+    group_rows = []
+    for name, lo, hi in groups:
+        m = (i0.index >= lo) & (i0.index <= hi)
+        r0 = i0[m].sum() / p0[m].sum() * 100
+        r1 = i1[m].sum() / p1[m].sum() * 100
+        group_rows.append({"age_group": name, "coverage_first": round(r0, 2), "coverage_latest": round(r1, 2),
+                           "change_points": round(r1 - r0, 2), "display": f"{r0:.1f}% to {r1:.1f}% ({r1 - r0:+.1f} points)",
+                           "unit": "% of people in the group", "period": period, "kind": "share and change"})
+    f.tables["coverage_by_group"] = group_rows
+    for fid, name in (("coverage_under_65_change", "Under 65"), ("coverage_65_plus_change", "65 and over"),
+                      ("coverage_25_34_change", "25 to 34"), ("coverage_50_64_change", "50 to 64"),
+                      ("coverage_children_change", "Children, 0 to 14"), ("coverage_40s_change", "40s, 40 to 49")):
+        r = next(g for g in group_rows if g["age_group"] == name)
+        f.add(fid, f"Coverage, {name.lower()}, change", r["change_points"], "points", period, "change")
+    by_age_total = p1.sum()
+    quarterly_total = pop_q[latest_june_age]
+    f.add("population_by_age_table_latest_june", "Australia's population, APRA's annual population-by-age table",
+          by_age_total, "people", at(latest_june_age), "stock",
+          "The denominator for every coverage-by-age figure")
+    f.add("population_quarterly_latest_june", "Australia's population, APRA's quarterly population series",
+          quarterly_total, "people", at(latest_june_age), "stock",
+          "The denominator for the headline coverage rate and the reconciliation")
+    f.add("population_series_difference", "Population-by-age table against the quarterly series",
+          (by_age_total / quarterly_total - 1) * 100, "%", at(latest_june_age), "difference",
+          "APRA publishes two population series; coverage by age uses the annual one, so its rates sit slightly "
+          "below the headline rate for the same June")
+
     # ---- how far our sums sit from APRA's own totals
     totals = pd.read_csv(CLEAN / "published_totals.csv").set_index(["quarter_end", "state"])
     ours_pol = policies.groupby(["quarter_end", "state"])["policies"].sum()
@@ -280,6 +359,17 @@ def build() -> tuple[Findings, dict]:
                 worst, "% of the published total", "any state and quarter", "share",
                 "APRA's detail tables and its totals do not agree exactly; etl/checks.py allows a small tolerance")
     row["display"] = f"{worst:.3f}%"
+
+    # ---- policy events and reporting changes, from data/policy_events.json
+    events = json.loads(EVENTS.read_text(encoding="utf-8"))
+    f.tables["policy_events"] = [{"date": e["date"], "date_label": as_at(e["date"]), "background": e.get("background", False),
+                                  **{k: e[k] for k in ("label", "what", "source_name", "source", "explains")}}
+                                 for e in sorted(events["events"], key=lambda e: e["date"])]
+    f.tables["series_notes"] = ([{"date": r["date"], "date_label": month_year(r["date"]), "kind": "reporting change", **{k: r[k] for k in ("series", "what")}}
+                                 for r in events["reporting_changes"]]
+                                + [{"date": r["date"], "date_label": month_year(r["date"]), "kind": "unexplained step", **{k: r[k] for k in ("series", "what")}}
+                                   for r in events["unexplained"]])
+    f.tables["series_notes"].sort(key=lambda r: r["date"])
 
     # ---- reconciliation, from validate.py's table
     f.tables["reconciliation"] = recon[["measure", "published_display", "ours_display", "matches", "source"]] \
@@ -303,8 +393,10 @@ HEADLINE = ["insured_latest", "insured_first", "insured_growth", "insured_change
 DOWNGRADING = ["full_cover_first", "full_cover_latest", "full_cover_change", "excess_over_500_before_rule",
                "excess_over_500_latest", "full_cover_lowest_state", "full_cover_highest_state"]
 AGEING = ["share_65_plus_insured_first", "share_65_plus_insured_latest", "share_65_plus_australia_first",
-          "share_65_plus_australia_latest", "age_gap_first", "age_gap_latest", "coverage_by_band_largest_rise",
-          "coverage_by_band_bands_that_fell"]
+          "share_65_plus_australia_latest", "age_gap_first", "age_gap_latest", "share_65_plus_insured_change",
+          "decomp_kitagawa_ageing", "decomp_kitagawa_coverage", "decomp_interaction",
+          "decomp_kitagawa_ageing_proportion", "coverage_under_65_change", "coverage_65_plus_change",
+          "coverage_by_band_largest_rise", "coverage_by_band_bands_that_fell", "population_series_difference"]
 
 
 def blocks(f: Findings, release: dict) -> dict[str, str]:
@@ -317,6 +409,18 @@ def blocks(f: Findings, release: dict) -> dict[str, str]:
     mix_table = table(mix_rows, ["Population, June"] + [g for g, _, _ in AGE_GROUPS])
     bands = table([{"Age band": r["age_band"], "Coverage, first to latest June": r["display"]}
                    for r in f.tables["coverage_by_band"]], ["Age band", "Coverage, first to latest June"])
+    decomp = table([{"Method": r["method"], "Australia ageing": r["ageing"],
+                     "Change in coverage within age groups": r["coverage_change"], "Interaction": r["interaction"]}
+                    for r in f.tables["ageing_decomposition"]],
+                   ["Method", "Australia ageing", "Change in coverage within age groups", "Interaction"])
+    groups = table([{"Age group": r["age_group"], "Coverage, first to latest June": r["display"]}
+                    for r in f.tables["coverage_by_group"]], ["Age group", "Coverage, first to latest June"])
+    events = table([{"Date": r["date_label"], "Event": f"**{r['label']}.** {r['what']}",
+                     "Explains a series feature?": r["explains"] or ("No: background, before the series starts" if r["background"] else "No: context only"),
+                     "Source": f"[{r['source_name']}]({r['source']})"} for r in f.tables["policy_events"]],
+                   ["Date", "Event", "Explains a series feature?", "Source"])
+    notes = table([{"Quarter": r["date_label"], "Series": r["series"], "What": r["what"], "Kind": r["kind"]}
+                   for r in f.tables["series_notes"]], ["Quarter", "Series", "What", "Kind"])
     recon = table([{"Measure": r["measure"], "Published": r["published"], "Rebuilt": r["ours"],
                     "Source": r["source"].split(",")[0], "Match": "Yes" if r["matches"] else "No"}
                    for r in f.tables["reconciliation"]], ["Measure", "Published", "Rebuilt", "Source", "Match"])
@@ -326,7 +430,14 @@ def blocks(f: Findings, release: dict) -> dict[str, str]:
                     f"population by age is annual, to {release['latest_june_with_population_by_age_label']}."),
         "headline": figure_table(f, HEADLINE) + "\n\n" + kinds,
         "downgrading": figure_table(f, DOWNGRADING) + "\n\n" + state,
-        "ageing": figure_table(f, AGEING) + "\n\n" + mix_table + "\n\n" + bands,
+        "ageing": (figure_table(f, AGEING) + "\n\n" + mix_table + "\n\n"
+                   + "Why the pool aged, split two ways. The insured 65 and over share depends on Australia's age "
+                   + "structure and on coverage within each age group; holding one at its first June value isolates "
+                   + "the other, and the two orderings differ by the interaction.\n\n" + decomp + "\n\n"
+                   + "Coverage by age group and by band uses APRA's annual population-by-age table as the "
+                   + "denominator; the headline rate uses its quarterly population series, which differs by the "
+                   + "amount in the last row of the figures above.\n\n" + groups + "\n\n" + bands),
+        "events": events + "\n\n" + notes,
         "reconciliation": recon,
     }
 
@@ -358,6 +469,9 @@ def main() -> None:
         "## The headline", "", b["headline"], "",
         "## Downgrading", "", b["downgrading"], "",
         "## An older pool", "", b["ageing"], "",
+        "## Policy events and reporting changes on the timeline", "",
+        "Events are context for a chart, not a cause. Only an entry that says so is claimed to explain a",
+        "feature of a series. Source: `data/policy_events.json`.", "", b["events"], "",
         "## Checked against published figures", "", b["reconciliation"], "",
     ]), encoding="utf-8")
 

@@ -5,7 +5,9 @@
   "gap": "the difference between two shares at the same date, in percentage points",
   "change": "the difference between the two dates named, in the unit shown",
   "growth": "the percentage change between the two dates named",
-  "count": "a tally of items in one of this project's own tables, such as age bands or checked figures"
+  "count": "a tally of items in one of this project's own tables, such as age bands or checked figures",
+  "proportion": "one change as a percentage of another change",
+  "difference": "the percentage by which one series exceeds another at the same date"
  },
  "generated_on": "2026-10-21",
  "release": {
@@ -416,6 +418,176 @@
    "period": "30 June 2007 to 30 June 2025",
    "kind": "count",
    "note": "0-4, 25-29, 30-34, 50-54, 55-59, 60-64"
+  },
+  {
+   "id": "decomp_ageing_first",
+   "label": "Rise in the insured 65 and over share from Australia ageing, with the first June's coverage rates held",
+   "value": 4.397642224733705,
+   "display": "+4.4 points",
+   "unit": "points",
+   "period": "30 June 2007 to 30 June 2025",
+   "kind": "change",
+   "note": ""
+  },
+  {
+   "id": "decomp_coverage_after_ageing",
+   "label": "Rise in the insured 65 and over share from change in coverage within age groups, after ageing",
+   "value": 3.011407071308117,
+   "display": "+3.0 points",
+   "unit": "points",
+   "period": "30 June 2007 to 30 June 2025",
+   "kind": "change",
+   "note": ""
+  },
+  {
+   "id": "decomp_coverage_first",
+   "label": "Rise in the insured 65 and over share from change in coverage within age groups, with the first June's population held",
+   "value": 2.4120341492745148,
+   "display": "+2.4 points",
+   "unit": "points",
+   "period": "30 June 2007 to 30 June 2025",
+   "kind": "change",
+   "note": ""
+  },
+  {
+   "id": "decomp_ageing_after_coverage",
+   "label": "Rise in the insured 65 and over share from Australia ageing, after the coverage change",
+   "value": 4.997015146767307,
+   "display": "+5.0 points",
+   "unit": "points",
+   "period": "30 June 2007 to 30 June 2025",
+   "kind": "change",
+   "note": ""
+  },
+  {
+   "id": "decomp_interaction",
+   "label": "Rise in the insured 65 and over share: interaction of the two, attributable to neither alone",
+   "value": 0.5993729220336022,
+   "display": "+0.6 points",
+   "unit": "points",
+   "period": "30 June 2007 to 30 June 2025",
+   "kind": "change",
+   "note": ""
+  },
+  {
+   "id": "decomp_kitagawa_ageing",
+   "label": "Rise in the insured 65 and over share from Australia ageing, Kitagawa average of both orderings",
+   "value": 4.697328685750506,
+   "display": "+4.7 points",
+   "unit": "points",
+   "period": "30 June 2007 to 30 June 2025",
+   "kind": "change",
+   "note": ""
+  },
+  {
+   "id": "decomp_kitagawa_coverage",
+   "label": "Rise in the insured 65 and over share from change in coverage within age groups, Kitagawa average",
+   "value": 2.711720610291316,
+   "display": "+2.7 points",
+   "unit": "points",
+   "period": "30 June 2007 to 30 June 2025",
+   "kind": "change",
+   "note": ""
+  },
+  {
+   "id": "decomp_kitagawa_ageing_proportion",
+   "label": "Australia ageing as a proportion of the rise, Kitagawa average",
+   "value": 63.39988435844241,
+   "display": "63.4%",
+   "unit": "% of the rise in the insured 65 and over share",
+   "period": "30 June 2007 to 30 June 2025",
+   "kind": "proportion",
+   "note": ""
+  },
+  {
+   "id": "coverage_under_65_change",
+   "label": "Coverage, under 65, change",
+   "value": -0.41,
+   "display": "-0.4 points",
+   "unit": "points",
+   "period": "30 June 2007 to 30 June 2025",
+   "kind": "change",
+   "note": ""
+  },
+  {
+   "id": "coverage_65_plus_change",
+   "label": "Coverage, 65 and over, change",
+   "value": 9.34,
+   "display": "+9.3 points",
+   "unit": "points",
+   "period": "30 June 2007 to 30 June 2025",
+   "kind": "change",
+   "note": ""
+  },
+  {
+   "id": "coverage_25_34_change",
+   "label": "Coverage, 25 to 34, change",
+   "value": -3.19,
+   "display": "-3.2 points",
+   "unit": "points",
+   "period": "30 June 2007 to 30 June 2025",
+   "kind": "change",
+   "note": ""
+  },
+  {
+   "id": "coverage_50_64_change",
+   "label": "Coverage, 50 to 64, change",
+   "value": -4.69,
+   "display": "-4.7 points",
+   "unit": "points",
+   "period": "30 June 2007 to 30 June 2025",
+   "kind": "change",
+   "note": ""
+  },
+  {
+   "id": "coverage_children_change",
+   "label": "Coverage, children, 0 to 14, change",
+   "value": 2.73,
+   "display": "+2.7 points",
+   "unit": "points",
+   "period": "30 June 2007 to 30 June 2025",
+   "kind": "change",
+   "note": ""
+  },
+  {
+   "id": "coverage_40s_change",
+   "label": "Coverage, 40s, 40 to 49, change",
+   "value": 2.95,
+   "display": "+3.0 points",
+   "unit": "points",
+   "period": "30 June 2007 to 30 June 2025",
+   "kind": "change",
+   "note": ""
+  },
+  {
+   "id": "population_by_age_table_latest_june",
+   "label": "Australia's population, APRA's annual population-by-age table",
+   "value": 27710058.0,
+   "display": "27,710,058 people",
+   "unit": "people",
+   "period": "as at 30 June 2025",
+   "kind": "stock",
+   "note": "The denominator for every coverage-by-age figure"
+  },
+  {
+   "id": "population_quarterly_latest_june",
+   "label": "Australia's population, APRA's quarterly population series",
+   "value": 27606008.0,
+   "display": "27,606,008 people",
+   "unit": "people",
+   "period": "as at 30 June 2025",
+   "kind": "stock",
+   "note": "The denominator for the headline coverage rate and the reconciliation"
+  },
+  {
+   "id": "population_series_difference",
+   "label": "Population-by-age table against the quarterly series",
+   "value": 0.3769107072634226,
+   "display": "+0.38%",
+   "unit": "%",
+   "period": "as at 30 June 2025",
+   "kind": "difference",
+   "note": "APRA publishes two population series; coverage by age uses the annual one, so its rates sit slightly below the headline rate for the same June"
   },
   {
    "id": "apra_totals_max_difference",
@@ -883,6 +1055,206 @@
     "unit": "% of people in the band",
     "period": "30 June 2007 to 30 June 2025",
     "kind": "share and change"
+   }
+  ],
+  "ageing_decomposition": [
+   {
+    "method": "First June's coverage rates held, ageing first",
+    "ageing": "ageing +4.4 points",
+    "coverage_change": "coverage change +3.0 points",
+    "interaction": ""
+   },
+   {
+    "method": "First June's population held, coverage change first",
+    "ageing": "ageing +5.0 points",
+    "coverage_change": "coverage change +2.4 points",
+    "interaction": ""
+   },
+   {
+    "method": "Pure effects and their interaction",
+    "ageing": "ageing +4.4 points",
+    "coverage_change": "coverage change +2.4 points",
+    "interaction": "interaction +0.6 points"
+   },
+   {
+    "method": "Kitagawa average of the two orderings",
+    "ageing": "ageing +4.7 points",
+    "coverage_change": "coverage change +2.7 points",
+    "interaction": ""
+   }
+  ],
+  "coverage_by_group": [
+   {
+    "age_group": "Children, 0 to 14",
+    "coverage_first": 40.26,
+    "coverage_latest": 42.99,
+    "change_points": 2.73,
+    "display": "40.3% to 43.0% (+2.7 points)",
+    "unit": "% of people in the group",
+    "period": "30 June 2007 to 30 June 2025",
+    "kind": "share and change"
+   },
+   {
+    "age_group": "15 to 24",
+    "coverage_first": 37.56,
+    "coverage_latest": 38.34,
+    "change_points": 0.77,
+    "display": "37.6% to 38.3% (+0.8 points)",
+    "unit": "% of people in the group",
+    "period": "30 June 2007 to 30 June 2025",
+    "kind": "share and change"
+   },
+   {
+    "age_group": "25 to 34",
+    "coverage_first": 34.71,
+    "coverage_latest": 31.52,
+    "change_points": -3.19,
+    "display": "34.7% to 31.5% (-3.2 points)",
+    "unit": "% of people in the group",
+    "period": "30 June 2007 to 30 June 2025",
+    "kind": "share and change"
+   },
+   {
+    "age_group": "35 to 39",
+    "coverage_first": 44.27,
+    "coverage_latest": 45.42,
+    "change_points": 1.15,
+    "display": "44.3% to 45.4% (+1.1 points)",
+    "unit": "% of people in the group",
+    "period": "30 June 2007 to 30 June 2025",
+    "kind": "share and change"
+   },
+   {
+    "age_group": "40s, 40 to 49",
+    "coverage_first": 48.44,
+    "coverage_latest": 51.39,
+    "change_points": 2.95,
+    "display": "48.4% to 51.4% (+3.0 points)",
+    "unit": "% of people in the group",
+    "period": "30 June 2007 to 30 June 2025",
+    "kind": "share and change"
+   },
+   {
+    "age_group": "50 to 64",
+    "coverage_first": 55.86,
+    "coverage_latest": 51.17,
+    "change_points": -4.69,
+    "display": "55.9% to 51.2% (-4.7 points)",
+    "unit": "% of people in the group",
+    "period": "30 June 2007 to 30 June 2025",
+    "kind": "share and change"
+   },
+   {
+    "age_group": "65 and over",
+    "coverage_first": 44.45,
+    "coverage_latest": 53.78,
+    "change_points": 9.34,
+    "display": "44.4% to 53.8% (+9.3 points)",
+    "unit": "% of people in the group",
+    "period": "30 June 2007 to 30 June 2025",
+    "kind": "share and change"
+   },
+   {
+    "age_group": "Under 65",
+    "coverage_first": 43.82,
+    "coverage_latest": 43.42,
+    "change_points": -0.41,
+    "display": "43.8% to 43.4% (-0.4 points)",
+    "unit": "% of people in the group",
+    "period": "30 June 2007 to 30 June 2025",
+    "kind": "share and change"
+   }
+  ],
+  "policy_events": [
+   {
+    "date": "2000-07-01",
+    "date_label": "1 July 2000",
+    "background": true,
+    "label": "Lifetime Health Cover introduced",
+    "what": "People taking out hospital cover after age 30 pay a 2% loading on the premium for each year over 30, up to 70%, removed after 10 years of continuous cover. Background: it predates the series, which starts in June 2007.",
+    "source_name": "Department of Health and Aged Care, privatehealth.gov.au, Lifetime Health Cover",
+    "source": "https://www.privatehealth.gov.au/health_insurance/surcharges_incentives/lifetime_health_cover.htm",
+    "explains": ""
+   },
+   {
+    "date": "2008-07-01",
+    "date_label": "1 July 2008",
+    "background": false,
+    "label": "Medicare Levy Surcharge thresholds raised",
+    "what": "The income threshold above which people without hospital cover pay the surcharge rose from $50,000 to $70,000 for singles and from $100,000 to $140,000 for families, from the 2008-09 income year.",
+    "source_name": "Parliament of Australia, Tax Laws Amendment (Medicare Levy Surcharge Thresholds) Bill (No. 2) 2008",
+    "source": "https://aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r3094",
+    "explains": ""
+   },
+   {
+    "date": "2012-07-01",
+    "date_label": "1 July 2012",
+    "background": false,
+    "label": "Private health insurance rebate means-tested",
+    "what": "The rebate fell in three income tiers from $84,001 for singles and $168,001 for families, and stopped at $130,001 and $260,001.",
+    "source_name": "Parliamentary Library, FlagPost on the legislation to means test the rebate (2011); National Seniors fact sheet on the enacted thresholds",
+    "source": "https://www.aph.gov.au/About_Parliament/Parliamentary_Departments/Parliamentary_Library/FlagPost/2011/July/Legislation_to_means_test_the_private_health_insurance_rebate_re-introduceddebate_continues",
+    "explains": ""
+   },
+   {
+    "date": "2014-04-01",
+    "date_label": "1 April 2014",
+    "background": false,
+    "label": "Rebate tied to an indexed base premium",
+    "what": "The rebate applies to a base premium indexed by the lesser of CPI and the insurer's premium rise, so the rebate's share of the premium falls when premiums rise faster than CPI.",
+    "source_name": "Parliamentary Library, Bills Digest no. 35 2013-14 (Private Health Insurance Legislation Amendment (Base Premium) Bill)",
+    "source": "https://aph.gov.au/Parliamentary_Business/Bills_Legislation/bd/bd1314a/14bd035",
+    "explains": ""
+   },
+   {
+    "date": "2019-04-01",
+    "date_label": "1 April 2019",
+    "background": false,
+    "label": "Private health insurance reforms",
+    "what": "The maximum voluntary excess rose from $500 to $750 for singles and from $1,000 to $1,500 for couples and families; hospital products were classified Gold, Silver, Bronze or Basic, mandatory from 1 April 2020; insurers could offer people aged 18 to 29 a discount of 2% of the hospital premium for each year under 30, up to 10%.",
+    "source_name": "Department of Health and Aged Care, privatehealth.gov.au, Private Health Insurance Changes",
+    "source": "https://www.privatehealth.gov.au/health_insurance/phichanges/index.htm",
+    "explains": "The climb in hospital policies with an excess over $500 from this date: the rule allowed excesses above $500 for the first time (docs/series-breaks.md)."
+   },
+   {
+    "date": "2020-04-01",
+    "date_label": "1 April 2020",
+    "background": false,
+    "label": "COVID-19: the April premium increase deferred",
+    "what": "Private Healthcare Australia's member funds postponed the 1 April 2020 premium increase for at least six months.",
+    "source_name": "Commonwealth Ombudsman, Private Health Insurance Quarterly Bulletin 94",
+    "source": "https://www.ombudsman.gov.au/__data/assets/pdf_file/0010/111115/PHI-QB-94.pdf",
+    "explains": ""
+   }
+  ],
+  "series_notes": [
+   {
+    "date": "2009-09-30",
+    "date_label": "September 2009",
+    "kind": "reporting change",
+    "series": "Every state series",
+    "what": "ACT figures were included with NSW until 30/09/2009 (APRA, Notes on Statistics); the ACT's population shows zero until then and NSW includes it."
+   },
+   {
+    "date": "2010-09-30",
+    "date_label": "September 2010",
+    "kind": "unexplained step",
+    "series": "Hospital policies with an excess over $500 (single)",
+    "what": "A one-quarter step down with no note from APRA and no policy event found; the series is used from this quarter on."
+   },
+   {
+    "date": "2014-09-30",
+    "date_label": "September 2014",
+    "kind": "reporting change",
+    "series": "Lifetime exclusions against reduced cover",
+    "what": "An insurer reclassified its policies from non-exclusionary to exclusionary (APRA, Notes on Statistics)."
+   },
+   {
+    "date": "2018-09-30",
+    "date_label": "September 2018",
+    "kind": "unexplained step",
+    "series": "Lifetime exclusions against reduced cover",
+    "what": "The largest one-quarter move in the split, with no note from APRA; the split is never trended."
    }
   ],
   "reconciliation": [

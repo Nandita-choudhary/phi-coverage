@@ -36,6 +36,10 @@ points or more in one quarter, about three times the typical move.
 - **Do not claim why** (for example a cohort effect from Lifetime Health Cover in 2000) unless
   published work supports it, and cite it if so.
 
+Policy events on the same timeline, each with its source, are listed in
+[`docs/findings.md`](findings.md), rendered from `data/policy_events.json`. Only the April 2019
+excess rule is claimed to explain a feature of a series.
+
 ## APRA's notes on reclassifications, quoted
 
 - "The noticeable change in exclusionary and non-exclusionary policies for the Sep-14 quarter

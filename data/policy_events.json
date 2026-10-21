@@ -1,0 +1,78 @@
+{
+  "note": "Policy events and reporting changes on the timeline of APRA's series, each with its source. An event is context for a chart, not a cause: only an entry with an 'explains' field is claimed to explain a feature of a series, and only the April 2019 excess rule earns one. The report's chart markers and docs/findings.md are rendered from this file by etl/findings.py.",
+  "events": [
+    {
+      "date": "2000-07-01",
+      "label": "Lifetime Health Cover introduced",
+      "what": "People taking out hospital cover after age 30 pay a 2% loading on the premium for each year over 30, up to 70%, removed after 10 years of continuous cover. Background: it predates the series, which starts in June 2007.",
+      "source_name": "Department of Health and Aged Care, privatehealth.gov.au, Lifetime Health Cover",
+      "source": "https://www.privatehealth.gov.au/health_insurance/surcharges_incentives/lifetime_health_cover.htm",
+      "explains": "",
+      "background": true
+    },
+    {
+      "date": "2008-07-01",
+      "label": "Medicare Levy Surcharge thresholds raised",
+      "what": "The income threshold above which people without hospital cover pay the surcharge rose from $50,000 to $70,000 for singles and from $100,000 to $140,000 for families, from the 2008-09 income year.",
+      "source_name": "Parliament of Australia, Tax Laws Amendment (Medicare Levy Surcharge Thresholds) Bill (No. 2) 2008",
+      "source": "https://aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r3094",
+      "explains": ""
+    },
+    {
+      "date": "2012-07-01",
+      "label": "Private health insurance rebate means-tested",
+      "what": "The rebate fell in three income tiers from $84,001 for singles and $168,001 for families, and stopped at $130,001 and $260,001.",
+      "source_name": "Parliamentary Library, FlagPost on the legislation to means test the rebate (2011); National Seniors fact sheet on the enacted thresholds",
+      "source": "https://www.aph.gov.au/About_Parliament/Parliamentary_Departments/Parliamentary_Library/FlagPost/2011/July/Legislation_to_means_test_the_private_health_insurance_rebate_re-introduceddebate_continues",
+      "explains": ""
+    },
+    {
+      "date": "2014-04-01",
+      "label": "Rebate tied to an indexed base premium",
+      "what": "The rebate applies to a base premium indexed by the lesser of CPI and the insurer's premium rise, so the rebate's share of the premium falls when premiums rise faster than CPI.",
+      "source_name": "Parliamentary Library, Bills Digest no. 35 2013-14 (Private Health Insurance Legislation Amendment (Base Premium) Bill)",
+      "source": "https://aph.gov.au/Parliamentary_Business/Bills_Legislation/bd/bd1314a/14bd035",
+      "explains": ""
+    },
+    {
+      "date": "2019-04-01",
+      "label": "Private health insurance reforms",
+      "what": "The maximum voluntary excess rose from $500 to $750 for singles and from $1,000 to $1,500 for couples and families; hospital products were classified Gold, Silver, Bronze or Basic, mandatory from 1 April 2020; insurers could offer people aged 18 to 29 a discount of 2% of the hospital premium for each year under 30, up to 10%.",
+      "source_name": "Department of Health and Aged Care, privatehealth.gov.au, Private Health Insurance Changes",
+      "source": "https://www.privatehealth.gov.au/health_insurance/phichanges/index.htm",
+      "explains": "The climb in hospital policies with an excess over $500 from this date: the rule allowed excesses above $500 for the first time (docs/series-breaks.md)."
+    },
+    {
+      "date": "2020-04-01",
+      "label": "COVID-19: the April premium increase deferred",
+      "what": "Private Healthcare Australia's member funds postponed the 1 April 2020 premium increase for at least six months.",
+      "source_name": "Commonwealth Ombudsman, Private Health Insurance Quarterly Bulletin 94",
+      "source": "https://www.ombudsman.gov.au/__data/assets/pdf_file/0010/111115/PHI-QB-94.pdf",
+      "explains": ""
+    }
+  ],
+  "reporting_changes": [
+    {
+      "date": "2009-09-30",
+      "series": "Every state series",
+      "what": "ACT figures were included with NSW until 30/09/2009 (APRA, Notes on Statistics); the ACT's population shows zero until then and NSW includes it."
+    },
+    {
+      "date": "2014-09-30",
+      "series": "Lifetime exclusions against reduced cover",
+      "what": "An insurer reclassified its policies from non-exclusionary to exclusionary (APRA, Notes on Statistics)."
+    }
+  ],
+  "unexplained": [
+    {
+      "date": "2010-09-30",
+      "series": "Hospital policies with an excess over $500 (single)",
+      "what": "A one-quarter step down with no note from APRA and no policy event found; the series is used from this quarter on."
+    },
+    {
+      "date": "2018-09-30",
+      "series": "Lifetime exclusions against reduced cover",
+      "what": "The largest one-quarter move in the split, with no note from APRA; the split is never trended."
+    }
+  ]
+}
