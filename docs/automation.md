@@ -92,25 +92,22 @@ Its form is in `.env.example`: `mssql+pymssql://user:password@server.database.wi
 **The Azure SQL firewall must let the runner in.** GitHub's runners have no fixed address. The
 simplest setting is "Allow Azure services and resources to access this server", which works
 because the runners run in Azure; it also admits other Azure addresses, which is acceptable for
-a database holding public data, and worth saying in an interview. The stricter option is a
+a database holding public data. The stricter option is a
 workflow step that adds the runner's address before loading and removes it after.
 
 Same rule as `.env` locally. A connection string in git history is a connection string you have
 to rotate.
 
-## Proving it works
+## Proven on 18 October 2026
 
-A workflow that has never run is a YAML file, not automation. Before calling this done:
-
-- [ ] Trigger it by hand (`workflow_dispatch`) and watch it succeed
-- [ ] Break something on purpose — point a check at a wrong total — and watch it fail and stop
-- [ ] Screenshot the green run and the red one; both go in the README
-
-The red one is the more persuasive screenshot. Anyone can make a script run once.
+A workflow that has never run is a YAML file, not automation. This one was run by hand
+(`workflow_dispatch`) on `main` and passed, loading the June 2026 release and committing its
+records. On a branch with a deliberately wrong published figure, the same workflow stopped at
+"Clean, check and reconcile" and skipped the load and the commit. GitHub keeps run logs for
+90 days; the bot's commits on `main` are the lasting evidence.
 
 ## The honest limit
 
-Until a real new quarter lands and the job picks it up unattended, what exists is a *scheduled*
-pipeline rather than a *proven* one. Say it that way until it has actually caught a release, then
-update the README. It costs nothing to be accurate and it is the kind of precision interviewers
-notice.
+Until a new APRA release lands and the job picks it up unattended, this is a *scheduled*
+pipeline rather than one *proven* on a real release. The README says so, and the first
+unattended catch will be recorded in the change log.

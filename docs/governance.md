@@ -1,14 +1,12 @@
 # Governance
 
-Four things that turn a script into something an employer would let near their data. None of
-them is hard; all of them are the difference between "I made a chart" and "I ran a pipeline".
-
-Each one has a job-ad word attached, and that is not a coincidence — the words only mean
-something if the thing underneath actually exists, so build the thing.
+Four things that make the pipeline trustworthy: a data dictionary, automated checks,
+reconciliation against published figures, and a change log. Each section says what exists in
+the repo and where.
 
 ---
 
-## 1 · Data dictionary → *"documentation", "data governance"*
+## 1 · Data dictionary
 
 Every field in every tidy table, defined once in `docs/data-dictionary.md`:
 
@@ -19,9 +17,7 @@ The last two columns are the point. Any number in the dashboard can be traced ba
 a spreadsheet APRA published. That is lineage, and it is what governance actually means in
 practice.
 
-Write it as the pipeline is built, not afterwards. Written afterwards it is always wrong.
-
-## 2 · Automated quality checks → *"data quality"*
+## 2 · Automated quality checks
 
 `etl/checks.py`, run on every load, before anything is written to the database:
 
@@ -37,55 +33,29 @@ Each check prints pass or fail with the number. **A failure stops the load** —
 and carry on. That distinction is the whole point: a pipeline that keeps going when the data is
 wrong is worse than no pipeline.
 
-## 3 · Reconciliation → *"reconciliation", "controls"*
+## 3 · Reconciliation
 
-`etl/validate.py`. Take figures somebody else has already published, compute them from the raw
-files, compare:
+`etl/validate.py` takes figures somebody else has already published, computes them from the
+raw files and compares. The finished table is generated into
+[`docs/reconciliation.md`](reconciliation.md) and loaded into the database for the report's
+reconciliation panel. It is not typed anywhere else, so it cannot go stale.
 
-| Measure | Published | Source | Ours | Diff | Pass? |
-| ------- | --------- | ------ | ---- | ---- | ----- |
-| Hospital policies with exclusions, Jun 2018 | 44% | ACCC | ? | ? | ? |
-| Hospital policies with an excess or co-payment, Jun 2018 | 84% | ACCC | ? | ? | ? |
-| Hospital cover, % of population | 45.6% | CHOICE (APRA) | ? | ? | ? |
-| Coverage rate, 25–29 | 26.3% | CHOICE (APRA) | ? | ? | ? |
+**The matching rule:** a figure matches when ours rounds to the published value at the precision
+it was published. A mismatch fails the refresh, and the fix is to the understanding of the
+measure, never to the tolerance.
 
-The first row is the interesting one. APRA's `PolicyCover` field splits *reduced cover* from
-*lifetime exclusions* as separate categories, so "not full cover" may be a wider measure than
-the ACCC's "carried exclusions". Work out which categories the ACCC is counting before
-declaring a mismatch a bug.
+Definitions need care. APRA's `PolicyCover` field splits *reduced cover* from *lifetime
+exclusions*, and the ACCC's "carried exclusions" turned out to mean APRA's two lifetime-exclusion
+categories; "not full cover" is a wider measure and is never called "exclusions" here. APRA and
+CHOICE can also count different populations or quarters. The notes column of the reconciliation
+table records each such decision.
 
-Set a tolerance — say 0.1 percentage points — and **fail the refresh outside it**.
+This is independent proof the pipeline is right, checked against a regulator rather than
+against itself, which is why the README carries the table.
 
-This is the most valuable single artefact in the project. It is independent proof the pipeline is
-right, checked against a regulator rather than against itself. Put the finished table in the
-README.
+## 4 · Change log
 
-A mismatch is not automatically a bug in your code: APRA and CHOICE may define a measure
-differently, or count a different population. Work out which it is and write the answer down.
-"I found a definitional difference and documented it" is a better story than a clean match.
-
-## 4 · Change log → *"auditability"*
-
-`docs/change-log.md`, one line per load:
-
-```
-2026-11-02  Loaded Sep 2026 quarter.  412,880 rows.  All checks passed.
-            Reconciliation: all published figures within tolerance.
-2026-08-14  Loaded Jun 2026 quarter.  410,114 rows.  Age-band check FAILED —
-            APRA split the 85+ band into 85-89 and 90+. Loader updated, reloaded.
-```
-
-Append to it on every run, by hand or from the script. The interesting entries are the failures —
-they are evidence that the checks catch real things, and that one above is the kind of thing that
-genuinely happens.
-
----
-
-## What this gives you to say
-
-> "Every quarter the pipeline pulls APRA's new release, runs quality checks, reconciles the
-> figures against published totals, and refuses to load if anything is out of tolerance. Each
-> load is logged, and every field traces back to a source file and sheet."
-
-That one sentence covers data quality, reconciliation, lineage, controls and auditability —
-and unlike a keyword list, it is all true and all demonstrable in the repo.
+[`docs/change-log.md`](change-log.md), newest first: one entry per load, written by the
+downloader and the loader, with failures and deliberate baseline changes written in by hand.
+The entries that matter are the failures. They are evidence that the checks catch real things,
+such as the row-count baseline reset when the handling of the ACT changed.

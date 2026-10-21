@@ -101,7 +101,7 @@ def main() -> None:
     if not files:
         sys.exit(
             f"No .xlsx files in {RAW.relative_to(ROOT)}.\n"
-            "Download APRA's spreadsheets into that folder first — see docs/setup-steps.md."
+            "Download APRA's spreadsheets into that folder first: python etl/download.py (see the README)."
         )
 
     lines: list[str] = [

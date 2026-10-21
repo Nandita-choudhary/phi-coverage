@@ -4,11 +4,14 @@ One entry per load, newest first. The interesting entries are the failures and t
 changes: they show the checks catch real things.
 
 ```
-2026-10-18  Loaded into Azure SQL: 33,488 rows in 6 tables, latest quarter 2026-06-30.
-2026-10-18  Loaded into Azure SQL: 33,488 rows in 6 tables, latest quarter 2026-06-30.
-2026-10-18  Loaded into Azure SQL: 33,483 rows in 5 tables, latest quarter 2026-06-30.
-2026-10-18  Loaded into Azure SQL: 33,483 rows in 5 tables, latest quarter 2026-06-30.
-2026-10-18  Loaded into Azure SQL: 33,483 rows in 5 tables, latest quarter 2026-06-30.
+2026-10-18  Rebuilt Azure SQL with the reconciliation table and reloaded: 33,488 rows in
+            6 tables, latest quarter 2026-06-30. Loaded twice: the --init rebuild from the
+            Mac, then GitHub Actions run #4 reloading the same release.
+2026-10-18  First loads into Azure SQL: 33,483 rows in 5 tables, latest quarter 2026-06-30.
+            Loaded three times: the --init load from the Mac, then GitHub Actions runs #1
+            and #2 reloading the same release to prove the schedule. Run #3, on a branch
+            with a deliberately wrong published figure, stopped at the reconciliation step
+            and loaded nothing.
 2026-10-17  Recorded files already in data/raw (downloaded by hand): Quarterly Private
             Health Insurance Membership and Benefits June 2026.xlsx; Quarterly Private
             Health Insurance Membership Trends June 2026_0.xlsx; Quarterly Private Health

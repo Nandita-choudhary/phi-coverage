@@ -25,3 +25,7 @@ powerbi/**/.pbi/cache.abf
 
 # OS
 .DS_Store
+
+# Working notes, addressed to the builder rather than to readers of the repo
+notes/
+CLAUDE.md

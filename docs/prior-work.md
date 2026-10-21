@@ -1,6 +1,6 @@
 # Prior work
 
-Read this before writing a single sentence of findings.
+What has already been published about this market, and what this project can therefore claim.
 
 Australian private health insurance is one of the most heavily analysed markets in the country.
 A regulator reports on it to Parliament annually. A professional actuarial body publishes papers
@@ -56,7 +56,7 @@ methods for it than this project will.
 - [Is the Gold Hospital Private Health Insurance Category Ill?](https://www.actuaries.asn.au/research-analysis/is-the-gold-hospital-private-health-insurance-category-ill)
 - [Time to Rethink Risk Equalisation to Save Gold Hospital](https://www.actuaries.asn.au/research-analysis/time-to-rethink-risk-equalisation-to-save-gold-hospital)
 
-Do not reinvent this. Cite it.
+This project cites that work rather than repeating it.
 
 ### APRA — the source data
 
@@ -73,21 +73,12 @@ after moving off Gold policies (February 2026), and CHOICE's analysis of Gold pr
 
 ---
 
-## What this means for the claims this project makes
+## What this project claims
 
-| Claim | Allowed? |
-| ----- | -------- |
-| "I found that people are downgrading" | **No.** The ACCC has reported this for years |
-| "Gold cover is in an adverse-selection spiral" | **No.** The Actuaries Institute got there, with better data |
-| "I reproduced the published tier shift from APRA's raw files and it matches" | **Yes** — and this is the valuable part |
-| "Here is that shift broken down by age and state, which the published work does not do" | **Yes**, if the data supports it |
-| "Here it is as a live dashboard rather than an annual PDF" | **Yes** — a real contribution of form, not of finding |
-
-## The interview answer this produces
-
-> "Private health insurance is well covered — the ACCC reports on it annually and the Actuaries
-> Institute has published on the Gold tier specifically. I wasn't trying to find something new.
-> I rebuilt their measures from APRA's raw spreadsheets to prove my pipeline was right, then
-> added the age and state breakdown that the published work doesn't carry."
-
-That is a stronger thing to be able to say than any invented discovery, and it is true.
+| Claim | Claimed here? |
+| ----- | ------------- |
+| People are downgrading rather than leaving | **No.** The ACCC has reported this for years; the project verifies it |
+| Gold cover is in an adverse-selection spiral | **No.** The Actuaries Institute studied that with better data, and APRA's files carry no tiers |
+| The ACCC's exclusion and excess shares and APRA's coverage rate, rebuilt from APRA's raw files, match the published figures | **Yes.** The verification is the point ([reconciliation](reconciliation.md)) |
+| The same measures broken down by state and five-year age band, which the published work does not carry | **Yes**, where the data supports it; [user stories](user-stories.md) lists where it does not |
+| The result as a live report that refreshes each quarter, rather than an annual PDF | **Yes.** A contribution of form, not of finding |
