@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "donut_first_share",
   "position": {
-    "x": 922,
-    "y": 462,
+    "x": 904,
+    "y": 466,
     "z": 32000,
-    "height": 34,
-    "width": 140,
+    "height": 40,
+    "width": 176,
     "tabOrder": 21000
   },
   "visual": {

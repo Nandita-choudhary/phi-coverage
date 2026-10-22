@@ -524,10 +524,12 @@ $combo = [ordered]@{
 AddVisual $pg 'members_and_coverage' 24 296 856 296 $combo (Filters @( (JunesOnly) ))
 
 # Two donuts: the covered slice orange, the rest #334155, a wide hole; the share and people in each hole.
-# The donut's own centre value and slice borders are off; the hole text is two cards laid over it. Captions and
-# donuts sit 12 px lower than the two-line heading needed, as the computed heading can run to three lines.
+# The donut's own centre value and slice borders are off; the hole text is two cards laid over it.
+# Power BI draws the circle at about 80% of its box's shorter side, so a 200 px box gives a 160 px donut: the
+# largest two that fit side by side in the panel (8 px apart), sitting low in it under the computed heading,
+# which can run to three lines. CX is each donut's centre; the hole text boxes are wider than the text needs.
 AddTextPanel $pg 'donut_panel' 896 296 360 296 '=Title, Donuts' @() '=Title, Donuts'
-foreach ($d in @(@{ Tag = 'First'; X = 908 }, @{ Tag = 'Latest'; X = 1072 })) {
+foreach ($d in @(@{ Tag = 'First'; CX = 992 }, @{ Tag = 'Latest'; CX = 1160 })) {
     $donut = [ordered]@{
         visualType = 'donutChart'
         query = [ordered]@{ queryState = [ordered]@{ Y = [ordered]@{ projections = @(
@@ -547,10 +549,10 @@ foreach ($d in @(@{ Tag = 'First'; X = 908 }, @{ Tag = 'Latest'; X = 1072 })) {
         drillFilterOtherVisuals = $true
     }
     $lower = $d.Tag.ToLower()
-    AddVisual $pg "donut_${lower}_caption" $d.X 394 168 20 (CardText "Quarter Label, $($d.Tag)" 'Quarter' 10 $Text2 $Font 'center' "Donut caption, $lower quarter") -Group "donut_$lower"
-    AddVisual $pg "donut_$lower" $d.X 402 168 176 $donut -Group "donut_$lower"
-    AddVisual $pg "donut_${lower}_share" ($d.X + 14) 462 140 34 (CardText "Coverage Share Label, $($d.Tag) Quarter" 'Share covered' 24 $Text $Semi 'center' "Share covered, $lower quarter") -Group "donut_$lower"
-    AddVisual $pg "donut_${lower}_people" ($d.X + 4) 498 160 18 (CardText "Coverage People Label, $($d.Tag) Quarter" 'People' 10 $Text2 $Font 'center' "People covered of all Australians, $lower quarter") -Group "donut_$lower"
+    AddVisual $pg "donut_${lower}_caption" ($d.CX - 84) 388 168 20 (CardText "Quarter Label, $($d.Tag)" 'Quarter' 10 $Text2 $Font 'center' "Donut caption, $lower quarter") -Group "donut_$lower"
+    AddVisual $pg "donut_$lower" ($d.CX - 100) 396 200 200 $donut -Group "donut_$lower"
+    AddVisual $pg "donut_${lower}_share" ($d.CX - 88) 466 176 40 (CardText "Coverage Share Label, $($d.Tag) Quarter" 'Share covered' 24 $Text $Semi 'center' "Share covered, $lower quarter") -Group "donut_$lower"
+    AddVisual $pg "donut_${lower}_people" ($d.CX - 88) 506 176 20 (CardText "Coverage People Label, $($d.Tag) Quarter" 'People' 10 $Text2 $Font 'center' "People covered of all Australians, $lower quarter") -Group "donut_$lower"
 }
 
 AddTextPanel $pg 'how_numbers_work' 24 608 480 232 'How the numbers work' @(
